@@ -298,7 +298,7 @@ export default function PixelPlayHub() {
             }}></div>
           </div>
   
-          <div className="flex-shrink-0 pt-4 px-2 sm:px-8 flex flex-wrap justify-around items-center gap-4 sm:gap-2">
+          <div className="flex-shrink-0 pt-4 px-2 sm:px-8 flex flex-wrap sm:flex-nowrap justify-around items-center gap-4 sm:gap-2">
             <div className="flex items-center gap-4 sm:gap-6">
               <div 
                 className="relative select-none"
