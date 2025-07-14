@@ -1,12 +1,14 @@
+
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import type { Synth } from 'tone';
 
 // This hook safely handles Tone.js which is a client-side library.
 export default function useArcadeSounds() {
   const Tone = useRef<typeof import('tone') | null>(null);
   const synth = useRef<Synth | null>(null);
+  const isSoundPlaying = useRef(false);
 
   useEffect(() => {
     // Dynamically import Tone.js only on the client side
@@ -26,24 +28,36 @@ export default function useArcadeSounds() {
     };
   }, []);
 
-  const playSound = (note: string, duration: string) => {
-    if (!Tone.current || !synth.current) return;
+  const playSound = useCallback((note: string, duration: string) => {
+    if (!Tone.current || !synth.current || isSoundPlaying.current) return;
+    
+    const T = Tone.current;
     
     // Ensure the audio context is running
-    if (Tone.current.context.state !== 'running') {
-      Tone.current.context.resume().catch(e => console.error("Could not resume audio context", e));
+    if (T.context.state !== 'running') {
+      T.context.resume().catch(e => console.error("Could not resume audio context", e));
     }
+    
+    isSoundPlaying.current = true;
+    
+    try {
+        // Play the sound
+        synth.current.triggerAttackRelease(note, duration, T.now());
+    } catch(e) {
+        console.error("Failed to play sound", e);
+    }
+    
 
-    // Stop any previously playing note before starting a new one.
-    synth.current.triggerRelease();
-    // Play the sound
-    synth.current.triggerAttackRelease(note, duration);
-  };
+    // Use a short timeout to unlock sound playing
+    setTimeout(() => {
+        isSoundPlaying.current = false;
+    }, 50); // A 50ms buffer should be enough to prevent race conditions
+  }, []);
 
-  const playNavigate = () => playSound('C3', '16n');
-  const playSelect = () => playSound('G4', '8n');
-  const playBack = () => playSound('C4', '8n');
-  const playStart = () => playSound('C5', '8n');
+  const playNavigate = useCallback(() => playSound('C3', '16n'), [playSound]);
+  const playSelect = useCallback(() => playSound('G4', '8n'), [playSound]);
+  const playBack = useCallback(() => playSound('C4', '8n'), [playSound]);
+  const playStart = useCallback(() => playSound('C5', '8n'), [playSound]);
 
   return { playNavigate, playSelect, playBack, playStart };
 }
