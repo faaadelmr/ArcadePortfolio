@@ -9,8 +9,11 @@ import SettingsPage from '@/components/pixelplay/SettingsPage';
 import useArcadeSounds from '@/hooks/useArcadeSounds';
 import { cn } from '@/lib/utils';
 import { Gamepad2, Trophy, Settings as SettingsIcon } from 'lucide-react';
+import BootScreen from '@/components/pixelplay/BootScreen';
+import LoadingScreen from '@/components/pixelplay/LoadingScreen';
 
 type Page = 'main' | 'games' | 'scores' | 'settings';
+type GameState = 'booting' | 'loading' | 'active';
 
 const menuItems = [
   { id: 'games', label: 'Project List', icon: Gamepad2, target: 'games' as Page },
@@ -21,6 +24,7 @@ const menuItems = [
 const DRAG_THRESHOLD = 20; // pixels
 
 export default function PixelPlayHub() {
+  const [gameState, setGameState] = useState<GameState>('booting');
   const [currentPage, setCurrentPage] = useState<Page>('main');
   const [selectedItem, setSelectedItem] = useState(0);
   const [activeButton, setActiveButton] = useState<string | null>(null);
@@ -29,10 +33,10 @@ export default function PixelPlayHub() {
   const [dragStartPos, setDragStartPos] = useState<number | null>(null);
   const [joystickTranslateY, setJoystickTranslateY] = useState(0);
 
-  const { playNavigate, playSelect, playBack } = useArcadeSounds();
+  const { playNavigate, playSelect, playBack, playStart } = useArcadeSounds();
 
   const handleNavigation = useCallback((direction: 'up' | 'down') => {
-    if (isTransitioning) return;
+    if (isTransitioning || gameState !== 'active') return;
     playNavigate();
     const upEvent = new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true });
     const downEvent = new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true });
@@ -42,10 +46,10 @@ export default function PixelPlayHub() {
     } else {
         window.dispatchEvent(downEvent);
     }
-  }, [isTransitioning, playNavigate]);
+  }, [isTransitioning, playNavigate, gameState]);
 
   const handleSelect = useCallback(() => {
-    if (isTransitioning) return;
+    if (isTransitioning || gameState !== 'active') return;
     
     if (currentPage === 'main') {
       playSelect();
@@ -60,10 +64,10 @@ export default function PixelPlayHub() {
       const selectEvent = new KeyboardEvent('keydown', { key: 'a', bubbles: true });
       window.dispatchEvent(selectEvent);
     }
-  }, [currentPage, isTransitioning, playSelect, selectedItem]);
+  }, [currentPage, isTransitioning, playSelect, selectedItem, gameState]);
 
   const handleBack = useCallback(() => {
-    if (isTransitioning || currentPage === 'main') return;
+    if (isTransitioning || gameState !== 'active' || currentPage === 'main') return;
     playBack();
     setActiveButton('b');
     
@@ -71,19 +75,28 @@ export default function PixelPlayHub() {
     const backEvent = new KeyboardEvent('keydown', { key: 'b', bubbles: true });
     window.dispatchEvent(backEvent);
 
-  }, [currentPage, isTransitioning, playBack]);
+  }, [currentPage, isTransitioning, playBack, gameState]);
 
-  const handleStart = useCallback(() => {
+  const handleStartButton = useCallback(() => {
     if (isTransitioning) return;
+    playStart();
     setActiveButton('start');
-    if (currentPage === 'main') {
-      handleSelect();
-    } else {
-       // Forward the start action to the current component
-      const startEvent = new KeyboardEvent('keydown', { key: 's', bubbles: true });
-      window.dispatchEvent(startEvent);
+
+    if (gameState === 'booting') {
+        setGameState('loading');
+        setTimeout(() => {
+            setGameState('active');
+        }, 1500); // Loading screen duration
+    } else if (gameState === 'active') {
+        if (currentPage === 'main') {
+            handleSelect();
+        } else {
+           // Forward the start action to the current component
+          const startEvent = new KeyboardEvent('keydown', { key: 's', bubbles: true });
+          window.dispatchEvent(startEvent);
+        }
     }
-  }, [isTransitioning, currentPage, handleSelect]);
+  }, [isTransitioning, gameState, currentPage, handleSelect, playStart]);
 
   const getClientY = (e: React.MouseEvent | React.TouchEvent) => {
     return 'touches' in e ? e.touches[0].clientY : e.clientY;
@@ -151,6 +164,17 @@ export default function PixelPlayHub() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       let keyHandled = false;
+
+      if (gameState === 'booting') {
+          if (e.key.toLowerCase() === 's' || e.key.toLowerCase() === 'enter') {
+              handleStartButton();
+              keyHandled = true;
+          }
+          return;
+      }
+      
+      if (gameState !== 'active') return;
+
       if (currentPage === 'main') {
         switch (e.key.toLowerCase()) {
           case 'arrowup':
@@ -165,8 +189,11 @@ export default function PixelPlayHub() {
             break;
           case 'a':
           case 'enter':
-          case 's':
             handleSelect();
+            keyHandled = true;
+            break;
+          case 's':
+            handleStartButton();
             keyHandled = true;
             break;
         }
@@ -203,7 +230,7 @@ export default function PixelPlayHub() {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('backToMain', onBackFromComponent);
     };
-  }, [handleNavigation, handleSelect, handleBack, handleStart, currentPage, playNavigate, isTransitioning]);
+  }, [handleNavigation, handleSelect, handleBack, handleStartButton, currentPage, playNavigate, isTransitioning, gameState]);
 
   useEffect(() => {
     if (activeButton) {
@@ -213,6 +240,13 @@ export default function PixelPlayHub() {
   }, [activeButton]);
 
   const CurrentPageComponent = useMemo(() => {
+    if (gameState === 'booting') {
+      return <BootScreen />;
+    }
+    if (gameState === 'loading') {
+      return <LoadingScreen />;
+    }
+
     switch (currentPage) {
       case 'games':
         return <ProjectList />;
@@ -224,7 +258,7 @@ export default function PixelPlayHub() {
       default:
         return <MainMenu menuItems={menuItems} selectedItem={selectedItem} />;
     }
-  }, [currentPage, selectedItem]);
+  }, [currentPage, selectedItem, gameState]);
 
   const handleButtonPress = (action: 'a' | 'b' | 'start') => {
     switch(action) {
@@ -235,7 +269,7 @@ export default function PixelPlayHub() {
         handleBack();
         break;
       case 'start':
-        handleStart();
+        handleStartButton();
         break;
     }
   };
@@ -328,4 +362,5 @@ export default function PixelPlayHub() {
       </main>
     </div>
   );
-}
+
+    
