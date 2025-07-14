@@ -275,9 +275,9 @@ export default function PixelPlayHub() {
   };
 
   return (
-    <div className="bg-background text-foreground h-screen flex flex-col font-body overflow-hidden">
-      <main className="flex-grow flex items-center justify-center p-2 sm:p-4">
-        <div className="w-full h-full max-w-7xl max-h-[1024px] bg-[#1a1a1a] rounded-2xl shadow-2xl p-2 sm:p-4 flex flex-col border-4 border-gray-600 shadow-[inset_0_0_20px_black]">
+    <div className="bg-background text-foreground h-screen flex items-center justify-center overflow-hidden">
+      <main className="w-full max-w-[480px] h-full max-h-[1024px] flex flex-col items-center justify-center p-2 sm:p-4">
+        <div className="w-full h-full bg-[#1a1a1a] rounded-2xl shadow-2xl p-2 sm:p-4 flex flex-col border-4 border-gray-600 shadow-[inset_0_0_20px_black]">
           
           <div className="bg-black flex-grow rounded-lg p-2 border-2 border-gray-700 relative overflow-hidden flex flex-col">
             <div className="absolute top-2 right-4 flex items-center gap-2 z-10">
@@ -298,7 +298,7 @@ export default function PixelPlayHub() {
             }}></div>
           </div>
   
-          <div className="flex-shrink-0 pt-4 px-2 sm:px-8 flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-2">
+          <div className="flex-shrink-0 pt-4 px-2 sm:px-8 flex flex-wrap justify-around items-center gap-4 sm:gap-2">
             <div className="flex items-center gap-4 sm:gap-6">
               <div 
                 className="relative select-none"
@@ -318,7 +318,7 @@ export default function PixelPlayHub() {
               </div>
             </div>
             
-            <div className="flex items-center gap-2 sm:gap-4">
+            <div className="flex items-end gap-2 sm:gap-4">
                <div className="text-center">
                 <button
                   onMouseDown={(e) => { e.preventDefault(); handleButtonPress('start'); }}
