@@ -85,14 +85,12 @@ export default function ProjectList({ onBack }: PageProps) {
   const [selectedDetailButton, setSelectedDetailButton] = useState(0);
   const { playNavigate, playSelect, playBack } = useArcadeSounds();
 
-  const websiteButtonRef = useRef<HTMLAnchorElement>(null);
-  const githubButtonRef = useRef<HTMLAnchorElement>(null);
-  const backButtonRef = useRef<HTMLButtonElement>(null);
   const itemRefs = useRef<(HTMLLIElement | null)[]>([]);
   const detailItemRefs = useRef<(HTMLElement | null)[]>([]);
   
   useEffect(() => {
     itemRefs.current = itemRefs.current.slice(0, projects.length);
+    detailItemRefs.current = detailItemRefs.current.slice(0, 3);
   }, []);
 
   useEffect(() => {
@@ -103,19 +101,16 @@ export default function ProjectList({ onBack }: PageProps) {
       });
     }
   }, [selectedItem, viewingProjectIndex]);
-
+  
   useEffect(() => {
     if (viewingProjectIndex !== null && detailItemRefs.current[selectedDetailButton]) {
-      detailItemRefs.current[selectedDetailButton]?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'nearest'
-      });
+        detailItemRefs.current[selectedDetailButton]?.scrollIntoView({
+            behavior: 'smooth',
+            block: 'nearest',
+        });
     }
   }, [selectedDetailButton, viewingProjectIndex]);
-
-
-  const detailButtons = [backButtonRef, websiteButtonRef, githubButtonRef];
-
+  
   const handleNavigation = useCallback((direction: 'up' | 'down') => {
     if (viewingProjectIndex !== null) return;
     playNavigate();
@@ -130,9 +125,10 @@ export default function ProjectList({ onBack }: PageProps) {
     playNavigate();
     setSelectedDetailButton(prev => {
       const newIndex = direction === 'up' ? prev - 1 : prev + 1;
-      return (newIndex + detailButtons.length) % detailButtons.length;
+      const totalButtons = 3; // Back, Website, GitHub
+      return (newIndex + totalButtons) % totalButtons;
     });
-  }, [viewingProjectIndex, playNavigate, detailButtons.length]);
+  }, [viewingProjectIndex, playNavigate]);
   
   const handleSelectProject = useCallback(() => {
     if (viewingProjectIndex !== null) return;
@@ -149,55 +145,70 @@ export default function ProjectList({ onBack }: PageProps) {
   const handleSelectDetail = useCallback(() => {
     if (viewingProjectIndex === null) return;
     playSelect();
-    const currentButtonRef = detailButtons[selectedDetailButton]?.current;
-    if (currentButtonRef) {
-      currentButtonRef.click();
+    const element = detailItemRefs.current[selectedDetailButton];
+    if (element) {
+      if (element instanceof HTMLButtonElement || element instanceof HTMLAnchorElement) {
+        element.click();
+      } else if (element.querySelector('a, button')) {
+        (element.querySelector('a, button') as HTMLElement)?.click();
+      } else if (selectedDetailButton === 0) { // Back button case
+        handleBackToList();
+      }
     }
-  }, [viewingProjectIndex, selectedDetailButton, playSelect, detailButtons]);
+  }, [viewingProjectIndex, selectedDetailButton, playSelect, handleBackToList]);
 
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      e.preventDefault();
+      let keyHandled = false;
       if (viewingProjectIndex !== null) {
         switch (e.key.toLowerCase()) {
           case 'arrowup':
             handleDetailNavigation('up');
+            keyHandled = true;
             break;
           case 'arrowdown':
             handleDetailNavigation('down');
+            keyHandled = true;
             break;
           case 'a':
           case 'enter':
           case 's':
             handleSelectDetail();
+            keyHandled = true;
             break;
           case 'b':
           case 'backspace':
           case 'escape':
             handleBackToList();
+            keyHandled = true;
             break;
         }
       } else {
         switch (e.key.toLowerCase()) {
           case 'arrowup':
             handleNavigation('up');
+            keyHandled = true;
             break;
           case 'arrowdown':
             handleNavigation('down');
+            keyHandled = true;
             break;
           case 'a':
           case 'enter':
           case 's':
             handleSelectProject();
+            keyHandled = true;
             break;
           case 'b':
           case 'backspace':
           case 'escape':
             onBack();
+            keyHandled = true;
             break;
         }
       }
+      if (keyHandled) e.preventDefault();
     };
     
     window.addEventListener('keydown', handleKeyDown);
@@ -213,7 +224,7 @@ export default function ProjectList({ onBack }: PageProps) {
     return (
       <div className="w-full h-full flex flex-col p-4 sm:p-8 text-white animate-pixel-in">
         <div className="flex items-center mb-4 flex-shrink-0">
-           <Button ref={backButtonRef} variant="ghost" size="icon" onClick={handleBackToList} className={cn("mr-4 text-accent hover:bg-accent/20 hover:text-accent", selectedDetailButton === 0 ? 'ring-2 ring-accent' : '')}>
+           <Button ref={el => detailItemRefs.current[0] = el} variant="ghost" size="icon" onClick={handleBackToList} className={cn("mr-4 text-accent hover:bg-accent/20 hover:text-accent", selectedDetailButton === 0 ? 'ring-2 ring-accent' : '')}>
             <ArrowLeft />
           </Button>
           <h1 className="text-4xl sm:text-5xl font-headline text-primary">{project.title}</h1>
@@ -222,12 +233,11 @@ export default function ProjectList({ onBack }: PageProps) {
           <div className="flex flex-col md:flex-row gap-8 pr-4">
             <div className="w-full md:w-1/2">
               <Image 
-                ref={el => detailItemRefs.current[0] = el}
                 src={project.imageUrl}
                 alt={project.title}
                 width={600}
                 height={400}
-                className={cn("rounded-lg border-2", selectedDetailButton === 0 ? 'border-primary' : 'border-primary/50')}
+                className="rounded-lg border-2 border-primary/50"
                 data-ai-hint={project.imageHint}
               />
             </div>
@@ -235,24 +245,22 @@ export default function ProjectList({ onBack }: PageProps) {
               <p className="text-lg text-gray-300 mb-4">{project.description}</p>
               <p className="text-sm text-accent font-code mb-6">Created: {project.date}</p>
               <div className="flex flex-col gap-4 mt-auto">
-                <a ref={websiteButtonRef} href={project.liveUrl} target="_blank" rel="noopener noreferrer" tabIndex={-1} 
-                  onClick={(e) => e.preventDefault()}
+                <a ref={el => detailItemRefs.current[1] = el} href={project.liveUrl} target="_blank" rel="noopener noreferrer" tabIndex={-1} 
+                  onClick={(e) => window.open(project.liveUrl, '_blank')}
                   className={cn("focus:outline-none", selectedDetailButton === 1 ? 'ring-2 ring-primary rounded-md' : '')}
                   >
-                  <Button asChild className={cn("w-full bg-primary hover:bg-primary/90 text-primary-foreground font-headline")}
-                     onClick={() => window.open(project.liveUrl, '_blank')}>
+                  <Button asChild className={cn("w-full bg-primary hover:bg-primary/90 text-primary-foreground font-headline")}>
                     <span>
                       <Globe className="mr-2 h-5 w-5" />
                       Visit Website
                     </span>
                   </Button>
                 </a>
-                <a ref={githubButtonRef} href={project.githubUrl} target="_blank" rel="noopener noreferrer" tabIndex={-1} 
-                   onClick={(e) => e.preventDefault()}
+                <a ref={el => detailItemRefs.current[2] = el} href={project.githubUrl} target="_blank" rel="noopener noreferrer" tabIndex={-1} 
+                   onClick={(e) => window.open(project.githubUrl, '_blank')}
                    className={cn("focus:outline-none", selectedDetailButton === 2 ? 'ring-2 ring-accent rounded-md' : '')}
                   >
-                  <Button asChild variant="outline" className={cn("w-full font-headline border-accent text-accent hover:bg-accent hover:text-accent-foreground")}
-                    onClick={() => window.open(project.githubUrl, '_blank')}>
+                  <Button asChild variant="outline" className={cn("w-full font-headline border-accent text-accent hover:bg-accent hover:text-accent-foreground")}>
                     <span>
                       <Github className="mr-2 h-5 w-5" />
                       GitHub
