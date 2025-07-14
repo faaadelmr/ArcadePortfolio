@@ -90,7 +90,7 @@ export default function ProjectList({ onBack }: PageProps) {
   
   useEffect(() => {
     itemRefs.current = itemRefs.current.slice(0, projects.length);
-    detailItemRefs.current = detailItemRefs.current.slice(0, 3);
+    detailItemRefs.current = detailItemRefs.current.slice(0, 4); // back, image, site, github
   }, []);
 
   useEffect(() => {
@@ -107,6 +107,7 @@ export default function ProjectList({ onBack }: PageProps) {
         detailItemRefs.current[selectedDetailButton]?.scrollIntoView({
             behavior: 'smooth',
             block: 'nearest',
+            inline: 'nearest'
         });
     }
   }, [selectedDetailButton, viewingProjectIndex]);
@@ -125,7 +126,7 @@ export default function ProjectList({ onBack }: PageProps) {
     playNavigate();
     setSelectedDetailButton(prev => {
       const newIndex = direction === 'up' ? prev - 1 : prev + 1;
-      const totalButtons = 3; // Back, Website, GitHub
+      const totalButtons = 4; // Back, Image, Website, GitHub
       return (newIndex + totalButtons) % totalButtons;
     });
   }, [viewingProjectIndex, playNavigate]);
@@ -147,13 +148,19 @@ export default function ProjectList({ onBack }: PageProps) {
     playSelect();
     const element = detailItemRefs.current[selectedDetailButton];
     if (element) {
-      if (element instanceof HTMLButtonElement || element instanceof HTMLAnchorElement) {
-        element.click();
-      } else if (element.querySelector('a, button')) {
-        (element.querySelector('a, button') as HTMLElement)?.click();
-      } else if (selectedDetailButton === 0) { // Back button case
-        handleBackToList();
-      }
+        if (selectedDetailButton === 0) { // Back button
+            handleBackToList();
+            return;
+        }
+
+        let targetUrl: string | undefined;
+        if(selectedDetailButton === 1) targetUrl = projects[viewingProjectIndex].liveUrl;
+        if(selectedDetailButton === 2) targetUrl = projects[viewingProjectIndex].liveUrl;
+        if(selectedDetailButton === 3) targetUrl = projects[viewingProjectIndex].githubUrl;
+        
+        if (targetUrl) {
+            window.open(targetUrl, '_blank');
+        }
     }
   }, [viewingProjectIndex, selectedDetailButton, playSelect, handleBackToList]);
 
@@ -222,45 +229,45 @@ export default function ProjectList({ onBack }: PageProps) {
 
   if (project) {
     return (
-      <div className="w-full h-full flex flex-col p-4 sm:p-8 text-white animate-pixel-in">
+      <div className="w-full h-full flex flex-col p-4 sm:p-6 md:p-8 text-white animate-pixel-in">
         <div className="flex items-center mb-4 flex-shrink-0">
            <Button ref={el => detailItemRefs.current[0] = el} variant="ghost" size="icon" onClick={handleBackToList} className={cn("mr-4 text-accent hover:bg-accent/20 hover:text-accent", selectedDetailButton === 0 ? 'ring-2 ring-accent' : '')}>
             <ArrowLeft />
           </Button>
-          <h1 className="text-4xl sm:text-5xl font-headline text-primary">{project.title}</h1>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-headline text-primary truncate">{project.title}</h1>
         </div>
-        <ScrollArea className="flex-grow">
-          <div className="flex flex-col md:flex-row gap-8 pr-4">
-            <div className="w-full md:w-1/2">
+        <ScrollArea className="flex-grow pr-2">
+          <div className="flex flex-col md:flex-row gap-6 md:gap-8">
+            <div ref={el => detailItemRefs.current[1] = el} className={cn("w-full md:w-1/2 flex-shrink-0 rounded-lg", selectedDetailButton === 1 ? 'ring-2 ring-primary' : '')}>
               <Image 
                 src={project.imageUrl}
                 alt={project.title}
                 width={600}
                 height={400}
-                className="rounded-lg border-2 border-primary/50"
+                className="rounded-lg border-2 border-primary/50 object-cover w-full h-auto"
                 data-ai-hint={project.imageHint}
               />
             </div>
             <div className="w-full md:w-1/2 flex flex-col">
-              <p className="text-lg text-gray-300 mb-4">{project.description}</p>
+              <p className="text-base sm:text-lg text-gray-300 mb-4">{project.description}</p>
               <p className="text-sm text-accent font-code mb-6">Created: {project.date}</p>
               <div className="flex flex-col gap-4 mt-auto">
-                <a ref={el => detailItemRefs.current[1] = el} href={project.liveUrl} target="_blank" rel="noopener noreferrer" tabIndex={-1} 
-                  onClick={(e) => window.open(project.liveUrl, '_blank')}
-                  className={cn("focus:outline-none", selectedDetailButton === 1 ? 'ring-2 ring-primary rounded-md' : '')}
+                <a ref={el => detailItemRefs.current[2] = el} href={project.liveUrl} target="_blank" rel="noopener noreferrer" tabIndex={-1} 
+                  onClick={(e) => { e.preventDefault(); window.open(project.liveUrl, '_blank') }}
+                  className={cn("focus:outline-none", selectedDetailButton === 2 ? 'ring-2 ring-primary rounded-md' : '')}
                   >
-                  <Button asChild className={cn("w-full bg-primary hover:bg-primary/90 text-primary-foreground font-headline")}>
+                  <Button asChild className={cn("w-full bg-primary hover:bg-primary/90 text-primary-foreground font-headline text-sm sm:text-base")}>
                     <span>
                       <Globe className="mr-2 h-5 w-5" />
                       Visit Website
                     </span>
                   </Button>
                 </a>
-                <a ref={el => detailItemRefs.current[2] = el} href={project.githubUrl} target="_blank" rel="noopener noreferrer" tabIndex={-1} 
-                   onClick={(e) => window.open(project.githubUrl, '_blank')}
-                   className={cn("focus:outline-none", selectedDetailButton === 2 ? 'ring-2 ring-accent rounded-md' : '')}
+                <a ref={el => detailItemRefs.current[3] = el} href={project.githubUrl} target="_blank" rel="noopener noreferrer" tabIndex={-1} 
+                   onClick={(e) => { e.preventDefault(); window.open(project.githubUrl, '_blank') }}
+                   className={cn("focus:outline-none", selectedDetailButton === 3 ? 'ring-2 ring-accent rounded-md' : '')}
                   >
-                  <Button asChild variant="outline" className={cn("w-full font-headline border-accent text-accent hover:bg-accent hover:text-accent-foreground")}>
+                  <Button asChild variant="outline" className={cn("w-full font-headline border-accent text-accent hover:bg-accent hover:text-accent-foreground text-sm sm:text-base")}>
                     <span>
                       <Github className="mr-2 h-5 w-5" />
                       GitHub
@@ -271,7 +278,7 @@ export default function ProjectList({ onBack }: PageProps) {
             </div>
           </div>
         </ScrollArea>
-        <div className="mt-8 text-center text-lg text-gray-400 font-code flex-shrink-0">
+        <div className="mt-4 sm:mt-8 text-center text-sm sm:text-lg text-gray-400 font-code flex-shrink-0">
           <p>Use [ARROW KEYS] to select. [A] or [ENTER] to activate.</p>
           <p>[B] or [ESC] to go back to list.</p>
         </div>
@@ -280,10 +287,10 @@ export default function ProjectList({ onBack }: PageProps) {
   }
 
   return (
-    <div className="w-full h-full flex flex-col p-8 text-white">
-      <h1 className="text-5xl font-headline text-primary mb-8 text-center">PROJECT LIST</h1>
+    <div className="w-full h-full flex flex-col p-4 sm:p-8 text-white">
+      <h1 className="text-3xl sm:text-5xl font-headline text-primary mb-4 sm:mb-8 text-center">PROJECT LIST</h1>
       <ScrollArea className="flex-grow">
-        <ul className="space-y-2 text-2xl font-headline pr-4">
+        <ul className="space-y-2 text-xl sm:text-2xl font-headline pr-4">
           {projects.map((proj, index) => (
             <li 
               key={proj.title}
@@ -293,13 +300,13 @@ export default function ProjectList({ onBack }: PageProps) {
                 selectedItem === index ? "bg-primary/20 text-accent" : ""
               )}
             >
-              <span>{proj.title}</span>
-              <span className="font-code text-accent text-opacity-80">{proj.date}</span>
+              <span className="truncate pr-4">{proj.title}</span>
+              <span className="font-code text-accent text-opacity-80 text-base sm:text-xl flex-shrink-0">{proj.date}</span>
             </li>
           ))}
         </ul>
       </ScrollArea>
-      <div className="mt-8 text-center text-lg text-gray-400 font-code">
+      <div className="mt-4 sm:mt-8 text-center text-sm sm:text-lg text-gray-400 font-code">
         <p>Use [ARROW KEYS] to navigate. [A] or [ENTER] to select.</p>
         <p>[B] or [ESC] to go back to Main Menu.</p>
       </div>
