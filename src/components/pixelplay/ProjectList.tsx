@@ -40,6 +40,42 @@ const projects = [
     liveUrl: '#',
     githubUrl: '#'
   },
+  { 
+    title: 'bayarGess2', 
+    date: '2024-05-20',
+    description: 'A streamlined payment and invoicing solution for freelancers and small businesses, making it easy to track payments and manage finances.',
+    imageUrl: 'https://placehold.co/600x400',
+    imageHint: 'finance payment',
+    liveUrl: '#',
+    githubUrl: '#'
+  },
+  { 
+    title: 'bayarGess3', 
+    date: '2024-05-20',
+    description: 'A streamlined payment and invoicing solution for freelancers and small businesses, making it easy to track payments and manage finances.',
+    imageUrl: 'https://placehold.co/600x400',
+    imageHint: 'finance payment',
+    liveUrl: '#',
+    githubUrl: '#'
+  },
+  { 
+    title: 'bayarGess4', 
+    date: '2024-05-20',
+    description: 'A streamlined payment and invoicing solution for freelancers and small businesses, making it easy to track payments and manage finances.',
+    imageUrl: 'https://placehold.co/600x400',
+    imageHint: 'finance payment',
+    liveUrl: '#',
+    githubUrl: '#'
+  },
+  { 
+    title: 'bayarGess5', 
+    date: '2024-05-20',
+    description: 'A streamlined payment and invoicing solution for freelancers and small businesses, making it easy to track payments and manage finances.',
+    imageUrl: 'https://placehold.co/600x400',
+    imageHint: 'finance payment',
+    liveUrl: '#',
+    githubUrl: '#'
+  },
 ];
 
 export default function ProjectList({ onBack }: PageProps) {
