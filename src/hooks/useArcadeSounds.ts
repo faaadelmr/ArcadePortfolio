@@ -27,12 +27,17 @@ export default function useArcadeSounds() {
   }, []);
 
   const playSound = (note: string, duration: string) => {
+    if (!Tone.current || !synth.current) return;
+    
     // Ensure the audio context is running
-    if (Tone.current && Tone.current.context.state !== 'running') {
+    if (Tone.current.context.state !== 'running') {
       Tone.current.context.resume().catch(e => console.error("Could not resume audio context", e));
     }
+
+    // Stop any previously playing note before starting a new one.
+    synth.current.triggerRelease();
     // Play the sound
-    synth.current?.triggerAttackRelease(note, duration);
+    synth.current.triggerAttackRelease(note, duration);
   };
 
   const playNavigate = () => playSound('C3', '16n');
