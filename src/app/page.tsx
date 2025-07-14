@@ -17,11 +17,16 @@ const menuItems = [
   { id: 'settings', label: 'Settings', icon: SettingsIcon, target: 'settings' as Page },
 ];
 
+const DRAG_THRESHOLD = 20; // pixels
+
 export default function PixelPlayHub() {
   const [currentPage, setCurrentPage] = useState<Page>('main');
   const [selectedItem, setSelectedItem] = useState(0);
   const [activeButton, setActiveButton] = useState<string | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStartPos, setDragStartPos] = useState<number | null>(null);
+  const [joystickTranslateY, setJoystickTranslateY] = useState(0);
 
   const { playNavigate, playSelect, playBack, playStart } = useArcadeSounds();
 
@@ -70,6 +75,51 @@ export default function PixelPlayHub() {
       setIsTransitioning(false);
     }, 500);
   }, [isTransitioning, playStart]);
+
+  const getClientY = (e: React.MouseEvent | React.TouchEvent) => {
+    return 'touches' in e ? e.touches[0].clientY : e.clientY;
+  };
+  
+  const handleDragStart = (e: React.MouseEvent | React.TouchEvent) => {
+    if (currentPage !== 'main') return;
+    setIsDragging(true);
+    setDragStartPos(getClientY(e));
+  };
+  
+  const handleDragMove = (e: React.MouseEvent | React.TouchEvent) => {
+    if (!isDragging || dragStartPos === null) return;
+    const clientY = getClientY(e);
+    const deltaY = clientY - dragStartPos;
+    setJoystickTranslateY(Math.max(-32, Math.min(32, deltaY))); // Clamp translation
+  };
+  
+  const handleDragEnd = () => {
+    if (!isDragging || dragStartPos === null) return;
+    if (joystickTranslateY < -DRAG_THRESHOLD) {
+      handleNavigation('up');
+    } else if (joystickTranslateY > DRAG_THRESHOLD) {
+      handleNavigation('down');
+    }
+    setIsDragging(false);
+    setDragStartPos(null);
+    setJoystickTranslateY(0);
+  };
+
+  useEffect(() => {
+    const handleMouseUp = () => handleDragEnd();
+    const handleMouseMove = (e: MouseEvent) => handleDragMove(e as any);
+    
+    if (isDragging) {
+      window.addEventListener('mousemove', handleMouseMove);
+      window.addEventListener('mouseup', handleMouseUp);
+    }
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [isDragging, handleDragMove, handleDragEnd]);
+
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -153,9 +203,18 @@ export default function PixelPlayHub() {
 
         <div className="flex-shrink-0 pt-6 px-8 flex justify-between items-center">
           <div className="flex items-center gap-6">
-            <div className="relative">
+            <div 
+              className="relative"
+              onMouseDown={handleDragStart}
+              onTouchStart={handleDragStart}
+              onTouchMove={handleDragMove}
+              onTouchEnd={handleDragEnd}
+            >
               <div className="w-24 h-24 bg-gray-700 rounded-full flex items-center justify-center border-4 border-gray-800">
-                <div className="w-8 h-8 bg-red-600 rounded-full border-2 border-red-800 shadow-lg"></div>
+                <div 
+                  className="w-8 h-8 bg-red-600 rounded-full border-2 border-red-800 shadow-lg transition-transform duration-75"
+                  style={{ transform: `translateY(${joystickTranslateY}px)` }}
+                ></div>
               </div>
             </div>
             <div className="font-headline text-center text-sm text-gray-400">
