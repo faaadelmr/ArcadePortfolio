@@ -28,7 +28,7 @@ export default function PixelPlayHub() {
   const [dragStartPos, setDragStartPos] = useState<number | null>(null);
   const [joystickTranslateY, setJoystickTranslateY] = useState(0);
 
-  const { playNavigate, playSelect, playBack, playStart } = useArcadeSounds();
+  const { playNavigate, playSelect, playBack } = useArcadeSounds();
 
   const handleNavigation = useCallback((direction: 'up' | 'down') => {
     if (currentPage !== 'main' || isTransitioning) return;
@@ -66,15 +66,9 @@ export default function PixelPlayHub() {
 
   const handleStart = useCallback(() => {
     if (isTransitioning) return;
-    playStart();
     setActiveButton('start');
-    setIsTransitioning(true);
-    setTimeout(() => {
-      setCurrentPage('games');
-      setSelectedItem(0);
-      setIsTransitioning(false);
-    }, 500);
-  }, [isTransitioning, playStart]);
+    handleSelect();
+  }, [isTransitioning, handleSelect]);
 
   const getClientY = (e: React.MouseEvent | React.TouchEvent) => {
     return 'touches' in e ? e.touches[0].clientY : e.clientY;
