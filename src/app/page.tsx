@@ -29,19 +29,20 @@ export default function PixelPlayHub() {
   const [dragStartPos, setDragStartPos] = useState<number | null>(null);
   const [joystickTranslateY, setJoystickTranslateY] = useState(0);
 
-  const { playNavigate, playSelect, playBack, playStart } = useArcadeSounds();
+  const { playNavigate, playSelect, playBack } = useArcadeSounds();
 
   const handleNavigation = useCallback((direction: 'up' | 'down') => {
     if (isTransitioning) return;
     playNavigate();
+    const upEvent = new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true });
+    const downEvent = new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true });
 
-    if (currentPage === 'main') {
-        setSelectedItem(prev => {
-          const newIndex = direction === 'up' ? prev - 1 : prev + 1;
-          return (newIndex + menuItems.length) % menuItems.length;
-        });
+    if (direction === 'up') {
+        window.dispatchEvent(upEvent);
+    } else {
+        window.dispatchEvent(downEvent);
     }
-  }, [currentPage, isTransitioning, playNavigate]);
+  }, [isTransitioning, playNavigate]);
 
   const handleSelect = useCallback(() => {
     if (isTransitioning) return;
@@ -54,6 +55,10 @@ export default function PixelPlayHub() {
         setCurrentPage(menuItems[selectedItem].target);
         setIsTransitioning(false);
       }, 500); // match animation duration
+    } else {
+      // Forward the select action to the current component
+      const selectEvent = new KeyboardEvent('keydown', { key: 'a', bubbles: true });
+      window.dispatchEvent(selectEvent);
     }
   }, [currentPage, isTransitioning, playSelect, selectedItem]);
 
@@ -61,12 +66,11 @@ export default function PixelPlayHub() {
     if (isTransitioning || currentPage === 'main') return;
     playBack();
     setActiveButton('b');
-    setIsTransitioning(true);
-    setTimeout(() => {
-      setCurrentPage('main');
-      setSelectedItem(0);
-      setIsTransitioning(false);
-    }, 500);
+    
+    // Forward the back action to the current component instead of handling it here
+    const backEvent = new KeyboardEvent('keydown', { key: 'b', bubbles: true });
+    window.dispatchEvent(backEvent);
+
   }, [currentPage, isTransitioning, playBack]);
 
   const handleStart = useCallback(() => {
@@ -74,6 +78,10 @@ export default function PixelPlayHub() {
     setActiveButton('start');
     if (currentPage === 'main') {
       handleSelect();
+    } else {
+       // Forward the start action to the current component
+      const startEvent = new KeyboardEvent('keydown', { key: 's', bubbles: true });
+      window.dispatchEvent(startEvent);
     }
   }, [isTransitioning, currentPage, handleSelect]);
 
@@ -83,6 +91,7 @@ export default function PixelPlayHub() {
   
   const handleDragStart = (e: React.MouseEvent | React.TouchEvent) => {
     e.stopPropagation();
+    e.preventDefault();
     setIsDragging(true);
     setDragStartPos(getClientY(e));
   };
@@ -90,6 +99,7 @@ export default function PixelPlayHub() {
   const handleDragMove = (e: React.MouseEvent | React.TouchEvent) => {
     if (!isDragging || dragStartPos === null) return;
     e.stopPropagation();
+    e.preventDefault();
     const clientY = getClientY(e);
     const deltaY = clientY - dragStartPos;
     setJoystickTranslateY(Math.max(-32, Math.min(32, deltaY))); // Clamp translation
@@ -97,16 +107,13 @@ export default function PixelPlayHub() {
   
   const handleDragEnd = (e: React.MouseEvent | React.TouchEvent) => {
     e.stopPropagation();
+    e.preventDefault();
     if (!isDragging || dragStartPos === null) return;
     
-    // Create a new KeyboardEvent to simulate key presses
-    const upEvent = new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true });
-    const downEvent = new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true });
-
     if (joystickTranslateY < -DRAG_THRESHOLD) {
-      window.dispatchEvent(upEvent);
+      handleNavigation('up');
     } else if (joystickTranslateY > DRAG_THRESHOLD) {
-      window.dispatchEvent(downEvent);
+      handleNavigation('down');
     }
     setIsDragging(false);
     setDragStartPos(null);
@@ -114,23 +121,29 @@ export default function PixelPlayHub() {
   };
 
   useEffect(() => {
-    const handleMouseUp = (e: MouseEvent) => handleDragEnd(e as any);
-    const handleMouseMove = (e: MouseEvent) => handleDragMove(e as any);
-    const handleTouchMove = (e: TouchEvent) => handleDragMove(e as any);
-    const handleTouchEnd = (e: TouchEvent) => handleDragEnd(e as any);
-    
-    if (isDragging) {
-      window.addEventListener('mousemove', handleMouseMove);
-      window.addEventListener('mouseup', handleMouseUp);
-      window.addEventListener('touchmove', handleTouchMove);
-      window.addEventListener('touchend', handleTouchEnd);
+    const handleGlobalMouseUp = (e: MouseEvent) => {
+        if(isDragging) handleDragEnd(e as any);
     }
+    const handleGlobalMouseMove = (e: MouseEvent) => {
+        if(isDragging) handleDragMove(e as any);
+    }
+    const handleGlobalTouchMove = (e: TouchEvent) => {
+        if(isDragging) handleDragMove(e as any);
+    }
+    const handleGlobalTouchEnd = (e: TouchEvent) => {
+        if(isDragging) handleDragEnd(e as any);
+    }
+    
+    window.addEventListener('mousemove', handleGlobalMouseMove);
+    window.addEventListener('mouseup', handleGlobalMouseUp);
+    window.addEventListener('touchmove', handleGlobalTouchMove, { passive: false });
+    window.addEventListener('touchend', handleGlobalTouchEnd);
 
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseup', handleMouseUp);
-      window.removeEventListener('touchmove', handleTouchMove);
-      window.removeEventListener('touchend', handleTouchEnd);
+      window.removeEventListener('mousemove', handleGlobalMouseMove);
+      window.removeEventListener('mouseup', handleGlobalMouseUp);
+      window.removeEventListener('touchmove', handleGlobalTouchMove);
+      window.removeEventListener('touchend', handleGlobalTouchEnd);
     };
   }, [isDragging, handleDragMove, handleDragEnd]);
 
@@ -141,38 +154,31 @@ export default function PixelPlayHub() {
       if (currentPage === 'main') {
         switch (e.key.toLowerCase()) {
           case 'arrowup':
-            handleNavigation('up');
+            setSelectedItem(prev => (prev - 1 + menuItems.length) % menuItems.length);
+            playNavigate();
             keyHandled = true;
             break;
           case 'arrowdown':
-            handleNavigation('down');
+            setSelectedItem(prev => (prev + 1) % menuItems.length);
+            playNavigate();
+            keyHandled = true;
+            break;
+          case 'a':
+          case 'enter':
+          case 's':
+            handleSelect();
             keyHandled = true;
             break;
         }
-      }
-
-      switch (e.key.toLowerCase()) {
-        case 'a':
-        case 'enter':
-          if (currentPage === 'main') {
-            handleSelect();
-            keyHandled = true;
-          }
-          break;
-        case 'b':
-        case 'backspace':
-        case 'escape':
-          if (currentPage !== 'main') {
-            handleBack();
-            keyHandled = true;
-          }
-          break;
-        case 's':
-          if (currentPage === 'main') {
-            handleStart();
-            keyHandled = true;
-          }
-          break;
+      } else {
+         // Other pages handle their own key events
+         switch (e.key.toLowerCase()) {
+            case 'b':
+            case 'escape':
+              handleBack();
+              keyHandled = true;
+              break;
+         }
       }
       
       if(keyHandled) e.preventDefault();
@@ -180,10 +186,24 @@ export default function PixelPlayHub() {
     
     window.addEventListener('keydown', handleKeyDown);
 
+    const onBackFromComponent = () => {
+        if (isTransitioning) return;
+        setIsTransitioning(true);
+        setTimeout(() => {
+            setCurrentPage('main');
+            setSelectedItem(0);
+            setIsTransitioning(false);
+        }, 500);
+    }
+
+    // Custom event listener
+    window.addEventListener('backToMain', onBackFromComponent);
+
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('backToMain', onBackFromComponent);
     };
-  }, [handleNavigation, handleSelect, handleBack, handleStart, currentPage]);
+  }, [handleNavigation, handleSelect, handleBack, handleStart, currentPage, playNavigate, isTransitioning]);
 
   useEffect(() => {
     if (activeButton) {
@@ -195,30 +215,27 @@ export default function PixelPlayHub() {
   const CurrentPageComponent = useMemo(() => {
     switch (currentPage) {
       case 'games':
-        return <ProjectList onBack={handleBack} />;
+        return <ProjectList />;
       case 'scores':
-        return <Certified onBack={handleBack} />;
+        return <Certified />;
       case 'settings':
-        return <SettingsPage onBack={handleBack} />;
+        return <SettingsPage />;
       case 'main':
       default:
         return <MainMenu menuItems={menuItems} selectedItem={selectedItem} />;
     }
-  }, [currentPage, selectedItem, handleBack]);
+  }, [currentPage, selectedItem]);
 
   const handleButtonPress = (action: 'a' | 'b' | 'start') => {
     switch(action) {
       case 'a': 
-        if (currentPage === 'main') handleSelect();
-        else (document.querySelector('[data-internal-key="a"]') as HTMLElement)?.click();
+        handleSelect();
         break;
       case 'b': 
-        if (currentPage !== 'main') handleBack();
-        else (document.querySelector('[data-internal-key="b"]') as HTMLElement)?.click();
+        handleBack();
         break;
       case 'start':
-        if (currentPage === 'main') handleStart();
-        else (document.querySelector('[data-internal-key="start"]') as HTMLElement)?.click();
+        handleStart();
         break;
     }
   };
@@ -226,7 +243,7 @@ export default function PixelPlayHub() {
   return (
     <div className="bg-background text-foreground h-screen flex flex-col font-body overflow-hidden">
       <main className="flex-grow flex items-center justify-center p-4 sm:p-6 md:p-8">
-        <div className="w-full max-w-4xl aspect-[4/3] max-h-[95vh] bg-[#1a1a1a] rounded-2xl shadow-2xl p-4 flex flex-col border-4 border-gray-600 shadow-[inset_0_0_20px_black]">
+        <div className="w-full max-w-4xl aspect-[4/3] max-h-[90vh] bg-[#1a1a1a] rounded-2xl shadow-2xl p-4 flex flex-col border-4 border-gray-600 shadow-[inset_0_0_20px_black]">
           
           <div className="bg-black flex-grow rounded-lg p-2 border-2 border-gray-700 relative overflow-hidden">
             <div className="absolute top-2 right-4 flex items-center gap-2 z-10">
@@ -250,7 +267,7 @@ export default function PixelPlayHub() {
           <div className="flex-shrink-0 pt-6 px-2 sm:px-8 flex flex-col sm:flex-row justify-between items-center gap-6 sm:gap-4">
             <div className="flex items-center gap-6">
               <div 
-                className="relative"
+                className="relative select-none"
                 onMouseDown={handleDragStart}
                 onTouchStart={handleDragStart}
               >

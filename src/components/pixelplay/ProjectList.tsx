@@ -9,10 +9,6 @@ import useArcadeSounds from '@/hooks/useArcadeSounds';
 import { cn } from '@/lib/utils';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
-interface PageProps {
-  onBack: () => void;
-}
-
 const projects = [
   { 
     title: 'Tanma', 
@@ -79,7 +75,9 @@ const projects = [
   },
 ];
 
-export default function ProjectList({ onBack }: PageProps) {
+const backToMainEvent = new Event('backToMain', { bubbles: true });
+
+export default function ProjectList() {
   const [selectedItem, setSelectedItem] = useState(0);
   const [viewingProjectIndex, setViewingProjectIndex] = useState<number | null>(null);
   const [selectedDetailButton, setSelectedDetailButton] = useState(0);
@@ -103,12 +101,11 @@ export default function ProjectList({ onBack }: PageProps) {
   }, [selectedItem, viewingProjectIndex]);
   
   useEffect(() => {
-    if (viewingProjectIndex !== null && detailItemRefs.current[selectedDetailButton]) {
-        detailItemRefs.current[selectedDetailButton]?.scrollIntoView({
-            behavior: 'smooth',
-            block: 'nearest',
-            inline: 'nearest'
-        });
+    if (viewingProjectIndex !== null) {
+      const element = detailItemRefs.current[selectedDetailButton];
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
     }
   }, [selectedDetailButton, viewingProjectIndex]);
   
@@ -142,6 +139,11 @@ export default function ProjectList({ onBack }: PageProps) {
     playBack();
     setViewingProjectIndex(null);
   }, [playBack]);
+  
+  const handleBackToMain = useCallback(() => {
+    playBack();
+    window.dispatchEvent(backToMainEvent);
+  }, [playBack]);
 
   const handleSelectDetail = useCallback(() => {
     if (viewingProjectIndex === null) return;
@@ -158,7 +160,7 @@ export default function ProjectList({ onBack }: PageProps) {
         if(selectedDetailButton === 2) targetUrl = projects[viewingProjectIndex].liveUrl;
         if(selectedDetailButton === 3) targetUrl = projects[viewingProjectIndex].githubUrl;
         
-        if (targetUrl) {
+        if (targetUrl && targetUrl !== '#') {
             window.open(targetUrl, '_blank');
         }
     }
@@ -210,7 +212,7 @@ export default function ProjectList({ onBack }: PageProps) {
           case 'b':
           case 'backspace':
           case 'escape':
-            onBack();
+            handleBackToMain();
             keyHandled = true;
             break;
         }
@@ -222,7 +224,7 @@ export default function ProjectList({ onBack }: PageProps) {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [viewingProjectIndex, handleNavigation, handleSelectProject, onBack, handleBackToList, handleDetailNavigation, handleSelectDetail]);
+  }, [viewingProjectIndex, handleNavigation, handleSelectProject, handleBackToMain, handleBackToList, handleDetailNavigation, handleSelectDetail]);
 
 
   const project = viewingProjectIndex !== null ? projects[viewingProjectIndex] : null;
@@ -238,8 +240,9 @@ export default function ProjectList({ onBack }: PageProps) {
         </div>
         <ScrollArea className="flex-grow pr-2">
           <div className="flex flex-col md:flex-row gap-6 md:gap-8">
-            <div ref={el => detailItemRefs.current[1] = el} className={cn("w-full md:w-1/2 flex-shrink-0 rounded-lg", selectedDetailButton === 1 ? 'ring-2 ring-primary' : '')}>
+            <div className={cn("w-full md:w-1/2 flex-shrink-0 rounded-lg", selectedDetailButton === 1 ? 'ring-2 ring-primary' : '')}>
               <Image 
+                ref={el => detailItemRefs.current[1] = el as HTMLImageElement}
                 src={project.imageUrl}
                 alt={project.title}
                 width={600}
@@ -252,28 +255,18 @@ export default function ProjectList({ onBack }: PageProps) {
               <p className="text-base sm:text-lg text-gray-300 mb-4">{project.description}</p>
               <p className="text-sm text-accent font-code mb-6">Created: {project.date}</p>
               <div className="flex flex-col gap-4 mt-auto">
-                <a ref={el => detailItemRefs.current[2] = el} href={project.liveUrl} target="_blank" rel="noopener noreferrer" tabIndex={-1} 
-                  onClick={(e) => { e.preventDefault(); window.open(project.liveUrl, '_blank') }}
-                  className={cn("focus:outline-none", selectedDetailButton === 2 ? 'ring-2 ring-primary rounded-md' : '')}
-                  >
-                  <Button asChild className={cn("w-full bg-primary hover:bg-primary/90 text-primary-foreground font-headline text-sm sm:text-base")}>
-                    <span>
-                      <Globe className="mr-2 h-5 w-5" />
-                      Visit Website
-                    </span>
-                  </Button>
-                </a>
-                <a ref={el => detailItemRefs.current[3] = el} href={project.githubUrl} target="_blank" rel="noopener noreferrer" tabIndex={-1} 
-                   onClick={(e) => { e.preventDefault(); window.open(project.githubUrl, '_blank') }}
-                   className={cn("focus:outline-none", selectedDetailButton === 3 ? 'ring-2 ring-accent rounded-md' : '')}
-                  >
-                  <Button asChild variant="outline" className={cn("w-full font-headline border-accent text-accent hover:bg-accent hover:text-accent-foreground text-sm sm:text-base")}>
-                    <span>
-                      <Github className="mr-2 h-5 w-5" />
-                      GitHub
-                    </span>
-                  </Button>
-                </a>
+                <Button ref={el => detailItemRefs.current[2] = el} asChild className={cn("w-full bg-primary hover:bg-primary/90 text-primary-foreground font-headline text-sm sm:text-base", selectedDetailButton === 2 ? 'ring-2 ring-primary' : '')}>
+                  <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" tabIndex={-1} onClick={(e) => { e.preventDefault(); if(project.liveUrl !== '#') window.open(project.liveUrl, '_blank') }}>
+                    <Globe className="mr-2 h-5 w-5" />
+                    Visit Website
+                  </a>
+                </Button>
+                <Button ref={el => detailItemRefs.current[3] = el} asChild variant="outline" className={cn("w-full font-headline border-accent text-accent hover:bg-accent hover:text-accent-foreground text-sm sm:text-base", selectedDetailButton === 3 ? 'ring-2 ring-accent' : '')}>
+                  <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" tabIndex={-1} onClick={(e) => { e.preventDefault(); if(project.githubUrl !== '#') window.open(project.githubUrl, '_blank') }}>
+                    <Github className="mr-2 h-5 w-5" />
+                    GitHub
+                  </a>
+                </Button>
               </div>
             </div>
           </div>

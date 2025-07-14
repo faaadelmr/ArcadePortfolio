@@ -6,10 +6,6 @@ import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 import useArcadeSounds from '@/hooks/useArcadeSounds';
 
-interface PageProps {
-  onBack: () => void;
-}
-
 const settings = [
   { id: 'sound', label: 'Sound FX', defaultChecked: true },
   { id: 'music', label: 'Music', defaultChecked: false },
@@ -17,9 +13,11 @@ const settings = [
   { id: 'difficulty', label: 'Hard Mode', defaultChecked: false },
 ];
 
-export default function SettingsPage({ onBack }: PageProps) {
+const backToMainEvent = new Event('backToMain', { bubbles: true });
+
+export default function SettingsPage() {
   const [selectedItem, setSelectedItem] = useState(0);
-  const { playNavigate, playSelect } = useArcadeSounds();
+  const { playNavigate, playSelect, playBack } = useArcadeSounds();
 
   const handleNavigation = useCallback((direction: 'up' | 'down') => {
     playNavigate();
@@ -35,6 +33,11 @@ export default function SettingsPage({ onBack }: PageProps) {
     const switchElement = document.getElementById(settingId) as HTMLButtonElement | null;
     switchElement?.click();
   }, [selectedItem, playSelect]);
+
+  const handleBack = useCallback(() => {
+    playBack();
+    window.dispatchEvent(backToMainEvent);
+  }, [playBack]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -54,7 +57,7 @@ export default function SettingsPage({ onBack }: PageProps) {
         case 'b':
         case 'backspace':
         case 'escape':
-          onBack();
+          handleBack();
           break;
       }
     };
@@ -62,7 +65,7 @@ export default function SettingsPage({ onBack }: PageProps) {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [handleNavigation, handleToggle, onBack]);
+  }, [handleNavigation, handleToggle, handleBack]);
 
   return (
     <div className="w-full h-full flex flex-col p-8 text-white">

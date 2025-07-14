@@ -1,10 +1,8 @@
 import React from 'react';
 
-interface PageProps {
-  onBack: () => void;
-}
+const backToMainEvent = new Event('backToMain', { bubbles: true });
 
-export default function Certified({ onBack }: PageProps) {
+export default function Certified() {
   const scores = [
     { rank: 1, name: 'ACE', score: 999990 },
     { rank: 2, name: 'PXL', score: 850100 },
@@ -12,6 +10,17 @@ export default function Certified({ onBack }: PageProps) {
     { rank: 4, name: 'DEV', score: 610000 },
     { rank: 5, name: 'BIT', score: 555550 },
   ];
+
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key.toLowerCase() === 'b' || e.key.toLowerCase() === 'escape') {
+            e.preventDefault();
+            window.dispatchEvent(backToMainEvent);
+        }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   return (
     <div className="w-full h-full flex flex-col p-8 text-white">
