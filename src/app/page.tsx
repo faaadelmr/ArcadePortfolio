@@ -275,8 +275,8 @@ export default function PixelPlayHub() {
   };
 
   return (
-    <div className="bg-background text-foreground h-screen flex items-center justify-center overflow-hidden">
-      <main className="w-full max-w-[480px] h-full max-h-[1024px] flex flex-col items-center justify-center p-2 sm:p-4">
+    <div className="bg-background text-foreground h-screen flex items-center justify-center overflow-hidden p-2 sm:p-4">
+      <main className="w-full max-w-lg h-full max-h-[1024px] aspect-[9/19.5] flex flex-col items-center justify-center">
         <div className="w-full h-full bg-[#1a1a1a] rounded-2xl shadow-2xl p-2 sm:p-4 flex flex-col border-4 border-gray-600 shadow-[inset_0_0_20px_black]">
           
           <div className="bg-black flex-grow rounded-lg p-2 border-2 border-gray-700 relative overflow-hidden flex flex-col">
