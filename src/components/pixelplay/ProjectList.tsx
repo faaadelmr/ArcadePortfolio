@@ -88,8 +88,8 @@ export default function ProjectList({ onBack }: PageProps) {
   const websiteButtonRef = useRef<HTMLAnchorElement>(null);
   const githubButtonRef = useRef<HTMLAnchorElement>(null);
   const backButtonRef = useRef<HTMLButtonElement>(null);
-
   const itemRefs = useRef<(HTMLLIElement | null)[]>([]);
+  const detailItemRefs = useRef<(HTMLElement | null)[]>([]);
   
   useEffect(() => {
     itemRefs.current = itemRefs.current.slice(0, projects.length);
@@ -104,6 +104,15 @@ export default function ProjectList({ onBack }: PageProps) {
     }
   }, [selectedItem, viewingProjectIndex]);
 
+  useEffect(() => {
+    if (viewingProjectIndex !== null && detailItemRefs.current[selectedDetailButton]) {
+      detailItemRefs.current[selectedDetailButton]?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest'
+      });
+    }
+  }, [selectedDetailButton, viewingProjectIndex]);
+
 
   const detailButtons = [backButtonRef, websiteButtonRef, githubButtonRef];
 
@@ -116,11 +125,11 @@ export default function ProjectList({ onBack }: PageProps) {
     });
   }, [viewingProjectIndex, playNavigate]);
 
-  const handleDetailNavigation = useCallback((direction: 'left' | 'right') => {
+  const handleDetailNavigation = useCallback((direction: 'up' | 'down') => {
     if (viewingProjectIndex === null) return;
     playNavigate();
     setSelectedDetailButton(prev => {
-      const newIndex = direction === 'right' ? prev + 1 : prev - 1;
+      const newIndex = direction === 'up' ? prev - 1 : prev + 1;
       return (newIndex + detailButtons.length) % detailButtons.length;
     });
   }, [viewingProjectIndex, playNavigate, detailButtons.length]);
@@ -152,11 +161,11 @@ export default function ProjectList({ onBack }: PageProps) {
       e.preventDefault();
       if (viewingProjectIndex !== null) {
         switch (e.key.toLowerCase()) {
-          case 'arrowleft':
-            handleDetailNavigation('left');
+          case 'arrowup':
+            handleDetailNavigation('up');
             break;
-          case 'arrowright':
-            handleDetailNavigation('right');
+          case 'arrowdown':
+            handleDetailNavigation('down');
             break;
           case 'a':
           case 'enter':
@@ -203,48 +212,59 @@ export default function ProjectList({ onBack }: PageProps) {
   if (project) {
     return (
       <div className="w-full h-full flex flex-col p-4 sm:p-8 text-white animate-pixel-in">
-        <div className="flex items-center mb-4">
+        <div className="flex items-center mb-4 flex-shrink-0">
            <Button ref={backButtonRef} variant="ghost" size="icon" onClick={handleBackToList} className={cn("mr-4 text-accent hover:bg-accent/20 hover:text-accent", selectedDetailButton === 0 ? 'ring-2 ring-accent' : '')}>
             <ArrowLeft />
           </Button>
           <h1 className="text-4xl sm:text-5xl font-headline text-primary">{project.title}</h1>
         </div>
-        <div className="flex-grow flex flex-col md:flex-row gap-8">
-          <div className="w-full md:w-1/2">
-            <Image 
-              src={project.imageUrl}
-              alt={project.title}
-              width={600}
-              height={400}
-              className="rounded-lg border-2 border-primary/50"
-              data-ai-hint={project.imageHint}
-            />
-          </div>
-          <div className="w-full md:w-1/2 flex flex-col">
-            <p className="text-lg text-gray-300 mb-4">{project.description}</p>
-            <p className="text-sm text-accent font-code mb-6">Created: {project.date}</p>
-            <div className="flex gap-4 mt-auto">
-              <a ref={websiteButtonRef} href={project.liveUrl} target="_blank" rel="noopener noreferrer" tabIndex={-1}>
-                <Button asChild className={cn("bg-primary hover:bg-primary/90 text-primary-foreground font-headline", selectedDetailButton === 1 ? 'ring-2 ring-primary' : '')}>
-                  <span>
-                    <Globe className="mr-2 h-5 w-5" />
-                    Visit Website
-                  </span>
-                </Button>
-              </a>
-              <a ref={githubButtonRef} href={project.githubUrl} target="_blank" rel="noopener noreferrer" tabIndex={-1}>
-                <Button asChild variant="outline" className={cn("font-headline border-accent text-accent hover:bg-accent hover:text-accent-foreground", selectedDetailButton === 2 ? 'ring-2 ring-accent' : '')}>
-                  <span>
-                    <Github className="mr-2 h-5 w-5" />
-                    GitHub
-                  </span>
-                </Button>
-              </a>
+        <ScrollArea className="flex-grow">
+          <div className="flex flex-col md:flex-row gap-8 pr-4">
+            <div className="w-full md:w-1/2">
+              <Image 
+                ref={el => detailItemRefs.current[0] = el}
+                src={project.imageUrl}
+                alt={project.title}
+                width={600}
+                height={400}
+                className={cn("rounded-lg border-2", selectedDetailButton === 0 ? 'border-primary' : 'border-primary/50')}
+                data-ai-hint={project.imageHint}
+              />
+            </div>
+            <div className="w-full md:w-1/2 flex flex-col">
+              <p className="text-lg text-gray-300 mb-4">{project.description}</p>
+              <p className="text-sm text-accent font-code mb-6">Created: {project.date}</p>
+              <div className="flex flex-col gap-4 mt-auto">
+                <a ref={websiteButtonRef} href={project.liveUrl} target="_blank" rel="noopener noreferrer" tabIndex={-1} 
+                  onClick={(e) => e.preventDefault()}
+                  className={cn("focus:outline-none", selectedDetailButton === 1 ? 'ring-2 ring-primary rounded-md' : '')}
+                  >
+                  <Button asChild className={cn("w-full bg-primary hover:bg-primary/90 text-primary-foreground font-headline")}
+                     onClick={() => window.open(project.liveUrl, '_blank')}>
+                    <span>
+                      <Globe className="mr-2 h-5 w-5" />
+                      Visit Website
+                    </span>
+                  </Button>
+                </a>
+                <a ref={githubButtonRef} href={project.githubUrl} target="_blank" rel="noopener noreferrer" tabIndex={-1} 
+                   onClick={(e) => e.preventDefault()}
+                   className={cn("focus:outline-none", selectedDetailButton === 2 ? 'ring-2 ring-accent rounded-md' : '')}
+                  >
+                  <Button asChild variant="outline" className={cn("w-full font-headline border-accent text-accent hover:bg-accent hover:text-accent-foreground")}
+                    onClick={() => window.open(project.githubUrl, '_blank')}>
+                    <span>
+                      <Github className="mr-2 h-5 w-5" />
+                      GitHub
+                    </span>
+                  </Button>
+                </a>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="mt-8 text-center text-lg text-gray-400 font-code">
-          <p>Use [ARROW KEYS] to select buttons. [A] or [ENTER] to click.</p>
+        </ScrollArea>
+        <div className="mt-8 text-center text-lg text-gray-400 font-code flex-shrink-0">
+          <p>Use [ARROW KEYS] to select. [A] or [ENTER] to activate.</p>
           <p>[B] or [ESC] to go back to list.</p>
         </div>
       </div>
