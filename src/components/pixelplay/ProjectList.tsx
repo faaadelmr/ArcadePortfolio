@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Globe, Github, ArrowLeft } from 'lucide-react';
 import useArcadeSounds from '@/hooks/useArcadeSounds';
 import { cn } from '@/lib/utils';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface PageProps {
   onBack: () => void;
@@ -87,6 +88,22 @@ export default function ProjectList({ onBack }: PageProps) {
   const websiteButtonRef = useRef<HTMLAnchorElement>(null);
   const githubButtonRef = useRef<HTMLAnchorElement>(null);
   const backButtonRef = useRef<HTMLButtonElement>(null);
+
+  const itemRefs = useRef<(HTMLLIElement | null)[]>([]);
+  
+  useEffect(() => {
+    itemRefs.current = itemRefs.current.slice(0, projects.length);
+  }, []);
+
+  useEffect(() => {
+    if (viewingProjectIndex === null && itemRefs.current[selectedItem]) {
+      itemRefs.current[selectedItem]?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+      });
+    }
+  }, [selectedItem, viewingProjectIndex]);
+
 
   const detailButtons = [backButtonRef, websiteButtonRef, githubButtonRef];
 
@@ -237,20 +254,23 @@ export default function ProjectList({ onBack }: PageProps) {
   return (
     <div className="w-full h-full flex flex-col p-8 text-white">
       <h1 className="text-5xl font-headline text-primary mb-8 text-center">PROJECT LIST</h1>
-      <ul className="flex-grow space-y-2 text-2xl font-headline">
-        {projects.map((proj, index) => (
-          <li 
-            key={proj.title}
-            className={cn(
-              "flex justify-between items-center p-2 border-b-2 border-dashed border-gray-700 transition-all duration-200",
-              selectedItem === index ? "bg-primary/20 text-accent" : ""
-            )}
-          >
-            <span>{proj.title}</span>
-            <span className="font-code text-accent text-opacity-80">{proj.date}</span>
-          </li>
-        ))}
-      </ul>
+      <ScrollArea className="flex-grow">
+        <ul className="space-y-2 text-2xl font-headline pr-4">
+          {projects.map((proj, index) => (
+            <li 
+              key={proj.title}
+              ref={el => itemRefs.current[index] = el}
+              className={cn(
+                "flex justify-between items-center p-2 border-b-2 border-dashed border-gray-700 transition-all duration-200 rounded-md",
+                selectedItem === index ? "bg-primary/20 text-accent" : ""
+              )}
+            >
+              <span>{proj.title}</span>
+              <span className="font-code text-accent text-opacity-80">{proj.date}</span>
+            </li>
+          ))}
+        </ul>
+      </ScrollArea>
       <div className="mt-8 text-center text-lg text-gray-400 font-code">
         <p>Use [ARROW KEYS] to navigate. [A] or [ENTER] to select.</p>
         <p>[B] or [ESC] to go back to Main Menu.</p>
