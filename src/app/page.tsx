@@ -276,17 +276,17 @@ export default function PixelPlayHub() {
 
   return (
     <div className="bg-background text-foreground h-screen flex flex-col font-body overflow-hidden">
-      <main className="flex-grow flex items-center justify-center p-4 sm:p-6 md:p-8">
-        <div className="w-full max-w-4xl aspect-[4/3] max-h-[90vh] bg-[#1a1a1a] rounded-2xl shadow-2xl p-4 flex flex-col border-4 border-gray-600 shadow-[inset_0_0_20px_black]">
+      <main className="flex-grow flex items-center justify-center p-2 sm:p-4">
+        <div className="w-full h-full max-w-7xl max-h-[1024px] bg-[#1a1a1a] rounded-2xl shadow-2xl p-2 sm:p-4 flex flex-col border-4 border-gray-600 shadow-[inset_0_0_20px_black]">
           
-          <div className="bg-black flex-grow rounded-lg p-2 border-2 border-gray-700 relative overflow-hidden">
+          <div className="bg-black flex-grow rounded-lg p-2 border-2 border-gray-700 relative overflow-hidden flex flex-col">
             <div className="absolute top-2 right-4 flex items-center gap-2 z-10">
               <span className="text-accent font-headline text-sm">P1</span>
               <div className="w-3 h-3 bg-red-600 rounded-full shadow-[0_0_8px_red]"></div>
             </div>
             
             <div className={cn(
-              "w-full h-full",
+              "w-full h-full flex-grow",
               isTransitioning ? 'animate-pixel-out' : 'animate-pixel-in'
             )}>
               {CurrentPageComponent}
@@ -298,69 +298,68 @@ export default function PixelPlayHub() {
             }}></div>
           </div>
   
-          <div className="flex-shrink-0 pt-6 px-2 sm:px-8 flex flex-col sm:flex-row justify-between items-center gap-6 sm:gap-4">
-            <div className="flex items-center gap-6">
+          <div className="flex-shrink-0 pt-4 px-2 sm:px-8 flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-2">
+            <div className="flex items-center gap-4 sm:gap-6">
               <div 
                 className="relative select-none"
                 onMouseDown={handleDragStart}
                 onTouchStart={handleDragStart}
               >
-                <div className="w-24 h-24 bg-gray-700 rounded-full flex items-center justify-center border-4 border-gray-800">
+                <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gray-700 rounded-full flex items-center justify-center border-4 border-gray-800">
                   <div 
                     className="w-8 h-8 bg-red-600 rounded-full border-2 border-red-800 shadow-lg transition-transform duration-75"
                     style={{ transform: `translateY(${joystickTranslateY}px)` }}
                   ></div>
                 </div>
               </div>
-              <div className="font-headline text-center text-sm text-gray-400">
+              <div className="font-headline text-center text-xs sm:text-sm text-gray-400">
                 <p>JOYSTICK</p>
                 <p>UP/DOWN</p>
               </div>
             </div>
             
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 sm:gap-4">
                <div className="text-center">
                 <button
                   onMouseDown={(e) => { e.preventDefault(); handleButtonPress('start'); }}
                   data-internal-key="start"
                   className={cn(
-                    'w-20 h-8 rounded-lg bg-gray-500 border-b-4 border-gray-700 transition-all duration-100 active:translate-y-1 active:border-b-0',
+                    'w-16 h-7 sm:w-20 sm:h-8 rounded-lg bg-gray-500 border-b-4 border-gray-700 transition-all duration-100 active:translate-y-1 active:border-b-0',
                     activeButton === 'start' ? 'translate-y-1 border-b-0' : ''
                   )}
                 ></button>
-                <p className="mt-2 font-headline text-sm text-gray-400">START</p>
+                <p className="mt-2 font-headline text-xs sm:text-sm text-gray-400">START</p>
               </div>
               <div className="text-center">
                 <button 
                   onMouseDown={(e) => { e.preventDefault(); handleButtonPress('b'); }}
                   data-internal-key="b"
                   className={cn(
-                    'w-16 h-16 rounded-full bg-primary border-b-8 border-blue-800 transition-all duration-100 active:translate-y-1 active:border-b-2',
+                    'w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-primary border-b-8 border-blue-800 transition-all duration-100 active:translate-y-1 active:border-b-2',
                     activeButton === 'b' ? 'translate-y-1 border-b-2' : ''
                   )}
                 ></button>
-                <p className="mt-2 font-headline text-primary">B (Back)</p>
+                <p className="mt-2 font-headline text-xs sm:text-sm text-primary">B (Back)</p>
               </div>
               <div className="text-center">
                 <button 
                   onMouseDown={(e) => { e.preventDefault(); handleButtonPress('a'); }}
                   data-internal-key="a"
                   className={cn(
-                    'w-16 h-16 rounded-full bg-accent border-b-8 border-green-800 transition-all duration-100 active:translate-y-1 active:border-b-2',
+                    'w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-accent border-b-8 border-green-800 transition-all duration-100 active:translate-y-1 active:border-b-2',
                     activeButton === 'a' ? 'translate-y-1 border-b-2' : ''
                   )}
                 ></button>
-                <p className="mt-2 font-headline text-accent">A (Select)</p>
+                <p className="mt-2 font-headline text-xs sm:text-sm text-accent">A (Select)</p>
               </div>
             </div>
           </div>
   
-          <div className="text-center pt-4">
-              <h1 className="text-xl sm:text-2xl md:text-3xl font-headline text-primary tracking-widest">FADEL MUHAMAD RIFAI</h1>
+          <div className="text-center pt-2 sm:pt-4">
+              <h1 className="text-lg sm:text-2xl md:text-3xl font-headline text-primary tracking-widest">FADEL MUHAMAD RIFAI</h1>
           </div>
         </div>
       </main>
     </div>
   );
-
-    
+}
