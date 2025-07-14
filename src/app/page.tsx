@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import MainMenu from '@/components/pixelplay/MainMenu';
-import GameList from '@/components/pixelplay/GameList';
-import HighScores from '@/components/pixelplay/HighScores';
+import ProjectList from '@/components/pixelplay/ProjectList';
+import Certified from '@/components/pixelplay/Certified';
 import SettingsPage from '@/components/pixelplay/SettingsPage';
 import useArcadeSounds from '@/hooks/useArcadeSounds';
 import { cn } from '@/lib/utils';
@@ -12,8 +12,8 @@ import { Gamepad2, Trophy, Settings as SettingsIcon } from 'lucide-react';
 type Page = 'main' | 'games' | 'scores' | 'settings';
 
 const menuItems = [
-  { id: 'games', label: 'Game List', icon: Gamepad2, target: 'games' as Page },
-  { id: 'scores', label: 'High Scores', icon: Trophy, target: 'scores' as Page },
+  { id: 'games', label: 'Project List', icon: Gamepad2, target: 'games' as Page },
+  { id: 'scores', label: 'Certified', icon: Trophy, target: 'scores' as Page },
   { id: 'settings', label: 'Settings', icon: SettingsIcon, target: 'settings' as Page },
 ];
 
@@ -167,9 +167,9 @@ export default function PixelPlayHub() {
   const CurrentPageComponent = useMemo(() => {
     switch (currentPage) {
       case 'games':
-        return <GameList onBack={handleBack} />;
+        return <ProjectList onBack={handleBack} />;
       case 'scores':
-        return <HighScores onBack={handleBack} />;
+        return <Certified onBack={handleBack} />;
       case 'settings':
         return <SettingsPage onBack={handleBack} />;
       case 'main':
@@ -258,7 +258,7 @@ export default function PixelPlayHub() {
         </div>
 
         <div className="text-center pt-2">
-            <h1 className="text-3xl font-headline text-primary tracking-widest">PIXELPLAY HUB</h1>
+            <h1 className="text-3xl font-headline text-primary tracking-widest">FADEL MUHAMAD RIFAI</h1>
         </div>
       </div>
     </div>

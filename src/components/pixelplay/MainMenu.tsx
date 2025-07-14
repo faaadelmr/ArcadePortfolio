@@ -16,7 +16,7 @@ interface MainMenuProps {
 export default function MainMenu({ menuItems, selectedItem }: MainMenuProps) {
   return (
     <div className="w-full h-full flex flex-col items-center justify-center p-8">
-      <h1 className="text-6xl font-headline text-primary mb-12" style={{textShadow: '0 0 10px hsl(var(--primary))'}}>PIXELPLAY HUB</h1>
+      <h1 className="text-4xl font-headline text-primary mb-12" style={{textShadow: '0 0 10px hsl(var(--primary))'}}>FADEL MUHAMAD RIFAI</h1>
       <ul className="space-y-6">
         {menuItems.map((item, index) => (
           <li

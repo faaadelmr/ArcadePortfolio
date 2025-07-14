@@ -3,7 +3,7 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
-  title: 'PixelPlay Hub',
+  title: 'Fadel Muhamad Rifai',
   description: 'A retro arcade game hub.',
 };
 
