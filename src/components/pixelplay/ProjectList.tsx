@@ -48,8 +48,8 @@ export default function ProjectList({ onBack }: PageProps) {
   const [selectedDetailButton, setSelectedDetailButton] = useState(0);
   const { playNavigate, playSelect, playBack } = useArcadeSounds();
 
-  const websiteButtonRef = useRef<HTMLButtonElement>(null);
-  const githubButtonRef = useRef<HTMLButtonElement>(null);
+  const websiteButtonRef = useRef<HTMLAnchorElement>(null);
+  const githubButtonRef = useRef<HTMLAnchorElement>(null);
   const backButtonRef = useRef<HTMLButtonElement>(null);
 
   const detailButtons = [backButtonRef, websiteButtonRef, githubButtonRef];
@@ -107,6 +107,7 @@ export default function ProjectList({ onBack }: PageProps) {
             break;
           case 'a':
           case 'enter':
+          case 's':
             handleSelectDetail();
             break;
           case 'b':
@@ -125,6 +126,7 @@ export default function ProjectList({ onBack }: PageProps) {
             break;
           case 'a':
           case 'enter':
+          case 's':
             handleSelectProject();
             break;
           case 'b':
@@ -169,16 +171,20 @@ export default function ProjectList({ onBack }: PageProps) {
             <p className="text-lg text-gray-300 mb-4">{project.description}</p>
             <p className="text-sm text-accent font-code mb-6">Created: {project.date}</p>
             <div className="flex gap-4 mt-auto">
-              <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" tabIndex={-1}>
-                <Button ref={websiteButtonRef} className={cn("bg-primary hover:bg-primary/90 text-primary-foreground font-headline", selectedDetailButton === 1 ? 'ring-2 ring-primary' : '')}>
-                  <Globe className="mr-2 h-5 w-5" />
-                  Visit Website
+              <a ref={websiteButtonRef} href={project.liveUrl} target="_blank" rel="noopener noreferrer" tabIndex={-1}>
+                <Button asChild className={cn("bg-primary hover:bg-primary/90 text-primary-foreground font-headline", selectedDetailButton === 1 ? 'ring-2 ring-primary' : '')}>
+                  <span>
+                    <Globe className="mr-2 h-5 w-5" />
+                    Visit Website
+                  </span>
                 </Button>
               </a>
-              <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" tabIndex={-1}>
-                <Button ref={githubButtonRef} variant="outline" className={cn("font-headline border-accent text-accent hover:bg-accent hover:text-accent-foreground", selectedDetailButton === 2 ? 'ring-2 ring-accent' : '')}>
-                  <Github className="mr-2 h-5 w-5" />
-                  GitHub
+              <a ref={githubButtonRef} href={project.githubUrl} target="_blank" rel="noopener noreferrer" tabIndex={-1}>
+                <Button asChild variant="outline" className={cn("font-headline border-accent text-accent hover:bg-accent hover:text-accent-foreground", selectedDetailButton === 2 ? 'ring-2 ring-accent' : '')}>
+                  <span>
+                    <Github className="mr-2 h-5 w-5" />
+                    GitHub
+                  </span>
                 </Button>
               </a>
             </div>
@@ -199,9 +205,8 @@ export default function ProjectList({ onBack }: PageProps) {
         {projects.map((proj, index) => (
           <li 
             key={proj.title}
-            onClick={() => { setSelectedItem(index); handleSelectProject(); }}
             className={cn(
-              "flex justify-between items-center p-2 border-b-2 border-dashed border-gray-700 hover:bg-primary/20 cursor-pointer transition-all duration-200",
+              "flex justify-between items-center p-2 border-b-2 border-dashed border-gray-700 transition-all duration-200",
               selectedItem === index ? "bg-primary/20 text-accent" : ""
             )}
           >

@@ -31,16 +31,20 @@ export default function PixelPlayHub() {
   const { playNavigate, playSelect, playBack } = useArcadeSounds();
 
   const handleNavigation = useCallback((direction: 'up' | 'down') => {
-    if (currentPage !== 'main' || isTransitioning) return;
+    if (isTransitioning) return;
     playNavigate();
-    setSelectedItem(prev => {
-      const newIndex = direction === 'up' ? prev - 1 : prev + 1;
-      return (newIndex + menuItems.length) % menuItems.length;
-    });
+
+    if (currentPage === 'main') {
+        setSelectedItem(prev => {
+          const newIndex = direction === 'up' ? prev - 1 : prev + 1;
+          return (newIndex + menuItems.length) % menuItems.length;
+        });
+    }
   }, [currentPage, isTransitioning, playNavigate]);
 
   const handleSelect = useCallback(() => {
     if (isTransitioning) return;
+    
     if (currentPage === 'main') {
       playSelect();
       setActiveButton('a');
@@ -75,7 +79,6 @@ export default function PixelPlayHub() {
   };
   
   const handleDragStart = (e: React.MouseEvent | React.TouchEvent) => {
-    if (currentPage !== 'main') return;
     setIsDragging(true);
     setDragStartPos(getClientY(e));
   };
@@ -89,10 +92,15 @@ export default function PixelPlayHub() {
   
   const handleDragEnd = () => {
     if (!isDragging || dragStartPos === null) return;
+    
+    // Create a new KeyboardEvent to simulate key presses
+    const upEvent = new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true });
+    const downEvent = new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true });
+
     if (joystickTranslateY < -DRAG_THRESHOLD) {
-      handleNavigation('up');
+      window.dispatchEvent(upEvent);
     } else if (joystickTranslateY > DRAG_THRESHOLD) {
-      handleNavigation('down');
+      window.dispatchEvent(downEvent);
     }
     setIsDragging(false);
     setDragStartPos(null);
@@ -119,12 +127,16 @@ export default function PixelPlayHub() {
     const handleKeyDown = (e: KeyboardEvent) => {
       switch (e.key.toLowerCase()) {
         case 'arrowup':
-          e.preventDefault();
-          handleNavigation('up');
+          if (currentPage === 'main') {
+            e.preventDefault();
+            handleNavigation('up');
+          }
           break;
         case 'arrowdown':
-          e.preventDefault();
-          handleNavigation('down');
+           if (currentPage === 'main') {
+            e.preventDefault();
+            handleNavigation('down');
+          }
           break;
         case 'a':
         case 'enter':
@@ -144,12 +156,15 @@ export default function PixelPlayHub() {
       }
     };
     
-    window.addEventListener('keydown', handleKeyDown);
+    // Only add listener if not in a sub-page that handles its own keys
+    if (currentPage === 'main') {
+        window.addEventListener('keydown', handleKeyDown);
+    }
 
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [handleNavigation, handleSelect, handleBack, handleStart]);
+  }, [handleNavigation, handleSelect, handleBack, handleStart, currentPage]);
 
   useEffect(() => {
     if (activeButton) {
@@ -220,7 +235,7 @@ export default function PixelPlayHub() {
           <div className="flex items-center gap-4">
              <div className="text-center">
               <button
-                onClick={handleStart}
+                onMouseDown={(e) => { e.preventDefault(); handleStart(); }}
                 className={cn(
                   'w-20 h-8 rounded-lg bg-gray-500 border-b-4 border-gray-700 transition-all duration-100 active:translate-y-1 active:border-b-0',
                   activeButton === 'start' ? 'translate-y-1 border-b-0' : ''
@@ -230,7 +245,7 @@ export default function PixelPlayHub() {
             </div>
             <div className="text-center">
               <button 
-                onClick={handleBack}
+                onMouseDown={(e) => { e.preventDefault(); handleBack(); }}
                 className={cn(
                   'w-16 h-16 rounded-full bg-primary border-b-8 border-blue-800 transition-all duration-100 active:translate-y-1 active:border-b-2',
                   activeButton === 'b' ? 'translate-y-1 border-b-2' : ''
@@ -240,7 +255,7 @@ export default function PixelPlayHub() {
             </div>
             <div className="text-center">
               <button 
-                onClick={handleSelect}
+                onMouseDown={(e) => { e.preventDefault(); handleSelect(); }}
                 className={cn(
                   'w-16 h-16 rounded-full bg-accent border-b-8 border-green-800 transition-all duration-100 active:translate-y-1 active:border-b-2',
                   activeButton === 'a' ? 'translate-y-1 border-b-2' : ''
