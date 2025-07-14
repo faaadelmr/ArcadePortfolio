@@ -1,10 +1,12 @@
 
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Globe, Github, ArrowLeft } from 'lucide-react';
+import useArcadeSounds from '@/hooks/useArcadeSounds';
+import { cn } from '@/lib/utils';
 
 interface PageProps {
   onBack: () => void;
@@ -41,17 +43,66 @@ const projects = [
 ];
 
 export default function ProjectList({ onBack }: PageProps) {
-  const [selectedProject, setSelectedProject] = useState<number | null>(null);
+  const [selectedItem, setSelectedItem] = useState(0);
+  const [viewingProjectIndex, setViewingProjectIndex] = useState<number | null>(null);
+  const { playNavigate, playSelect, playBack } = useArcadeSounds();
 
-  const handleSelectProject = (index: number) => {
-    setSelectedProject(index);
-  };
+  const handleNavigation = useCallback((direction: 'up' | 'down') => {
+    if (viewingProjectIndex !== null) return;
+    playNavigate();
+    setSelectedItem(prev => {
+      const newIndex = direction === 'up' ? prev - 1 : prev + 1;
+      return (newIndex + projects.length) % projects.length;
+    });
+  }, [viewingProjectIndex, playNavigate]);
+  
+  const handleSelectProject = useCallback(() => {
+    if (viewingProjectIndex !== null) return;
+    playSelect();
+    setViewingProjectIndex(selectedItem);
+  }, [viewingProjectIndex, selectedItem, playSelect]);
+  
+  const handleBackToList = useCallback(() => {
+    playBack();
+    setViewingProjectIndex(null);
+  }, [playBack]);
 
-  const handleBackToList = () => {
-    setSelectedProject(null);
-  };
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      e.preventDefault();
+      if (viewingProjectIndex !== null) {
+        if (e.key.toLowerCase() === 'b' || e.key === 'Backspace' || e.key === 'Escape') {
+          handleBackToList();
+        }
+      } else {
+        switch (e.key.toLowerCase()) {
+          case 'arrowup':
+            handleNavigation('up');
+            break;
+          case 'arrowdown':
+            handleNavigation('down');
+            break;
+          case 'a':
+          case 'enter':
+            handleSelectProject();
+            break;
+          case 'b':
+          case 'backspace':
+          case 'escape':
+            onBack();
+            break;
+        }
+      }
+    };
+    
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [viewingProjectIndex, handleNavigation, handleSelectProject, onBack, handleBackToList]);
 
-  const project = selectedProject !== null ? projects[selectedProject] : null;
+
+  const project = viewingProjectIndex !== null ? projects[viewingProjectIndex] : null;
 
   if (project) {
     return (
@@ -92,6 +143,9 @@ export default function ProjectList({ onBack }: PageProps) {
             </div>
           </div>
         </div>
+        <div className="mt-8 text-center text-lg text-gray-400 font-code">
+          <p>[B] or [ESC] to go back to list.</p>
+        </div>
       </div>
     );
   }
@@ -102,17 +156,20 @@ export default function ProjectList({ onBack }: PageProps) {
       <ul className="flex-grow space-y-2 text-2xl font-headline">
         {projects.map((proj, index) => (
           <li 
-            key={proj.title} 
-            onClick={() => handleSelectProject(index)}
-            className="flex justify-between items-center p-2 border-b-2 border-dashed border-gray-700 hover:bg-primary/20 cursor-pointer transition-colors"
+            key={proj.title}
+            onClick={() => { setSelectedItem(index); handleSelectProject(); }}
+            className={cn(
+              "flex justify-between items-center p-2 border-b-2 border-dashed border-gray-700 hover:bg-primary/20 cursor-pointer transition-all duration-200",
+              selectedItem === index ? "bg-primary/20 text-accent" : ""
+            )}
           >
             <span>{proj.title}</span>
-            <span className="font-code text-accent">{proj.date}</span>
+            <span className="font-code text-accent text-opacity-80">{proj.date}</span>
           </li>
         ))}
       </ul>
       <div className="mt-8 text-center text-lg text-gray-400 font-code">
-        <p>Select a project to view details.</p>
+        <p>Use [ARROW KEYS] to navigate. [A] or [ENTER] to select.</p>
         <p>[B] or [ESC] to go back to Main Menu.</p>
       </div>
     </div>
