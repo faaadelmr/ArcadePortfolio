@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
@@ -225,7 +226,7 @@ export default function PixelPlayHub() {
   return (
     <div className="bg-background text-foreground h-screen flex flex-col font-body overflow-hidden">
       <main className="flex-grow flex items-center justify-center p-4 sm:p-6 md:p-8">
-        <div className="w-full max-w-4xl h-full max-h-[800px] bg-[#1a1a1a] rounded-2xl shadow-2xl p-4 flex flex-col border-4 border-gray-600 shadow-[inset_0_0_20px_black]">
+        <div className="w-full max-w-4xl aspect-[4/3] max-h-[95vh] bg-[#1a1a1a] rounded-2xl shadow-2xl p-4 flex flex-col border-4 border-gray-600 shadow-[inset_0_0_20px_black]">
           
           <div className="bg-black flex-grow rounded-lg p-2 border-2 border-gray-700 relative overflow-hidden">
             <div className="absolute top-2 right-4 flex items-center gap-2 z-10">
@@ -310,5 +311,4 @@ export default function PixelPlayHub() {
       </main>
     </div>
   );
-
-    
+}
