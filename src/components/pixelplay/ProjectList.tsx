@@ -14,7 +14,7 @@ const projects = [
     title: 'Tanma', 
     date: '2024-05-01',
     description: 'An application about daily reports at my workplace (reliance insurance) to simplify reporting that can be exported and display graphs for an analysis if needed. there are additional tools to support work such as meeting minutes, user management, chat rooms, PDF tools (merging, selection), and separate bills manually.',
-    imageUrl: '/public/project/tanma.png',
+    imageUrl: '/project/tanma.png',
     imageHint: 'Daily Report Claim',
     liveUrl: 'https://mentanma.cyou',
     githubUrl: 'https://github.com/faaadelmr/tanma'
@@ -23,7 +23,7 @@ const projects = [
     title: 'cewe(k)alcer', 
     date: '2024-06-09',
     description: 'application to provide affiliate links with the main feature of QR Code and can add 3 links (Shopee, TiktokShop, Tokopedia).',
-    imageUrl: '/public/project/cewekalcer.png',
+    imageUrl: '/project/cewekalcer.png',
     imageHint: 'CewekKalcer',
     liveUrl: 'https://cewekalcer.pages.dev/',
   },
@@ -31,7 +31,7 @@ const projects = [
     title: 'bayarGess', 
     date: '2025-07-12',
     description: 'A separate billing app that uses AI for receipt reading and item sharing. perfect for those of you who are bothered to share the cost of food with friends.',
-    imageUrl: '/public/project/bayargess.png',
+    imageUrl: '/project/bayargess.png',
     imageHint: 'splitbill sharing',
     liveUrl: 'https://bayargess.vercel.app/',
     githubUrl: 'https://github.com/faaadelmr/bayarGess.git'
@@ -49,10 +49,22 @@ export default function ProjectList() {
   const itemRefs = useRef<(HTMLLIElement | null)[]>([]);
   const detailItemRefs = useRef<(HTMLElement | null)[]>([]);
   
+  const project = viewingProjectIndex !== null ? projects[viewingProjectIndex] : null;
+
+  const detailButtons = React.useMemo(() => {
+    const buttons = [];
+    if (!project) return buttons;
+    buttons.push({ id: 'back', url: null });
+    buttons.push({ id: 'image', url: project.imageUrl });
+    if (project.liveUrl) buttons.push({ id: 'live', url: project.liveUrl });
+    if (project.githubUrl) buttons.push({ id: 'github', url: project.githubUrl });
+    return buttons;
+  }, [project]);
+
   useEffect(() => {
     itemRefs.current = itemRefs.current.slice(0, projects.length);
-    detailItemRefs.current = detailItemRefs.current.slice(0, 4); // back, image, site, github
-  }, []);
+    detailItemRefs.current = detailItemRefs.current.slice(0, detailButtons.length);
+  }, [detailButtons.length]);
 
   useEffect(() => {
     if (viewingProjectIndex === null && itemRefs.current[selectedItem]) {
@@ -86,10 +98,9 @@ export default function ProjectList() {
     playNavigate();
     setSelectedDetailButton(prev => {
       const newIndex = direction === 'up' ? prev - 1 : prev + 1;
-      const totalButtons = 4; // Back, Image, Website, GitHub
-      return (newIndex + totalButtons) % totalButtons;
+      return (newIndex + detailButtons.length) % detailButtons.length;
     });
-  }, [viewingProjectIndex, playNavigate]);
+  }, [viewingProjectIndex, playNavigate, detailButtons.length]);
   
   const handleSelectProject = useCallback(() => {
     if (viewingProjectIndex !== null) return;
@@ -111,23 +122,18 @@ export default function ProjectList() {
   const handleSelectDetail = useCallback(() => {
     if (viewingProjectIndex === null) return;
     playSelect();
-    const element = detailItemRefs.current[selectedDetailButton];
-    if (element) {
-        if (selectedDetailButton === 0) { // Back button
-            handleBackToList();
-            return;
-        }
 
-        let targetUrl: string | undefined;
-        if(selectedDetailButton === 1) targetUrl = projects[viewingProjectIndex].liveUrl;
-        if(selectedDetailButton === 2) targetUrl = projects[viewingProjectIndex].liveUrl;
-        if(selectedDetailButton === 3) targetUrl = projects[viewingProjectIndex].githubUrl;
-        
-        if (targetUrl && targetUrl !== '#') {
-            window.open(targetUrl, '_blank');
-        }
+    const selectedButton = detailButtons[selectedDetailButton];
+
+    if (selectedButton.id === 'back') {
+        handleBackToList();
+        return;
     }
-  }, [viewingProjectIndex, selectedDetailButton, playSelect, handleBackToList]);
+
+    if (selectedButton.url) {
+        window.open(selectedButton.url, '_blank');
+    }
+  }, [viewingProjectIndex, selectedDetailButton, playSelect, handleBackToList, detailButtons]);
 
 
   useEffect(() => {
@@ -190,9 +196,8 @@ export default function ProjectList() {
   }, [viewingProjectIndex, handleNavigation, handleSelectProject, handleBackToMain, handleBackToList, handleDetailNavigation, handleSelectDetail]);
 
 
-  const project = viewingProjectIndex !== null ? projects[viewingProjectIndex] : null;
-
   if (project) {
+    let buttonIndex = 2; // Start after back and image
     return (
       <div className="w-full h-full flex flex-col p-4 sm:p-6 md:p-8 text-white animate-pixel-in">
         <div className="flex items-center mb-4 flex-shrink-0">
@@ -218,18 +223,22 @@ export default function ProjectList() {
               <p className="text-base sm:text-lg text-gray-300 mb-4">{project.description}</p>
               <p className="text-sm text-accent font-code mb-6">Created: {project.date}</p>
               <div className="flex flex-col gap-4 mt-auto">
-                <Button ref={el => detailItemRefs.current[2] = el} asChild className={cn("w-full bg-primary text-primary-foreground font-headline text-sm sm:text-base", selectedDetailButton === 2 ? 'ring-2 ring-white bg-primary/90' : '')}>
-                  <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" tabIndex={-1} onClick={(e) => { e.preventDefault(); if(project.liveUrl !== '#') window.open(project.liveUrl, '_blank') }}>
-                    <Globe className="mr-2 h-5 w-5" />
-                    Visit Website
-                  </a>
-                </Button>
-                <Button ref={el => detailItemRefs.current[3] = el} asChild variant="outline" className={cn("w-full font-headline border-accent text-accent text-sm sm:text-base", selectedDetailButton === 3 ? 'ring-2 ring-accent bg-accent text-accent-foreground' : '')}>
-                  <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" tabIndex={-1} onClick={(e) => { e.preventDefault(); if(project.githubUrl !== '#') window.open(project.githubUrl, '_blank') }}>
-                    <Github className="mr-2 h-5 w-5" />
-                    GitHub
-                  </a>
-                </Button>
+                {project.liveUrl && (
+                  <Button ref={el => detailItemRefs.current[buttonIndex++] = el} asChild className={cn("w-full bg-primary text-primary-foreground font-headline text-sm sm:text-base", selectedDetailButton === detailButtons.findIndex(b => b.id === 'live') ? 'ring-2 ring-white bg-primary/90' : '')}>
+                    <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" tabIndex={-1} onClick={(e) => { e.preventDefault(); if(project.liveUrl) window.open(project.liveUrl, '_blank') }}>
+                      <Globe className="mr-2 h-5 w-5" />
+                      Visit Website
+                    </a>
+                  </Button>
+                )}
+                {project.githubUrl && (
+                  <Button ref={el => detailItemRefs.current[buttonIndex++] = el} asChild variant="outline" className={cn("w-full font-headline border-accent text-accent text-sm sm:text-base", selectedDetailButton === detailButtons.findIndex(b => b.id === 'github') ? 'ring-2 ring-accent bg-accent text-accent-foreground' : '')}>
+                    <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" tabIndex={-1} onClick={(e) => { e.preventDefault(); if(project.githubUrl) window.open(project.githubUrl, '_blank') }}>
+                      <Github className="mr-2 h-5 w-5" />
+                      GitHub
+                    </a>
+                  </Button>
+                )}
               </div>
             </div>
           </div>
