@@ -9,7 +9,7 @@ interface UseArcadeSoundsProps {
 }
 
 // This hook safely handles Tone.js which is a client-side library.
-export default function useArcadeSounds({ volume = 0.5 }: UseArcadeSoundsProps) {
+export default function useArcadeSounds({ volume = 0.5 }: UseArcadeSoundsProps = {}) {
   const Tone = useRef<typeof import('tone') | null>(null);
   const synth = useRef<Synth | null>(null);
   const isSoundPlaying = useRef(false);
