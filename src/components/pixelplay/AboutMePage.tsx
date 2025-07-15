@@ -1,19 +1,28 @@
 
 'use client';
 
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useRef } from 'react';
 import useArcadeSounds from '@/hooks/useArcadeSounds';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 const backToMainEvent = new Event('backToMain', { bubbles: true });
 
 export default function AboutMePage() {
-  const { playBack } = useArcadeSounds();
+  const { playBack, playNavigate } = useArcadeSounds();
+  const scrollViewportRef = useRef<HTMLDivElement>(null);
 
   const handleBack = useCallback(() => {
     playBack();
     window.dispatchEvent(backToMainEvent);
   }, [playBack]);
+
+  const handleScroll = useCallback((direction: 'up' | 'down') => {
+    if (scrollViewportRef.current) {
+        playNavigate();
+        const scrollAmount = direction === 'up' ? -100 : 100;
+        scrollViewportRef.current.scrollBy({ top: scrollAmount, behavior: 'smooth' });
+    }
+  }, [playNavigate]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -24,18 +33,24 @@ export default function AboutMePage() {
         case 'escape':
           handleBack();
           break;
+        case 'arrowup':
+          handleScroll('up');
+          break;
+        case 'arrowdown':
+          handleScroll('down');
+          break;
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [handleBack]);
+  }, [handleBack, handleScroll]);
 
   return (
     <div className="w-full h-full flex flex-col p-4 sm:p-8 text-white animate-pixel-in">
       <h1 className="text-3xl sm:text-5xl font-headline text-primary mb-4 sm:mb-8 text-center">ABOUT ME</h1>
-      <ScrollArea className="flex-grow pr-4">
+      <ScrollArea viewportRef={scrollViewportRef} className="flex-grow pr-4">
         <div className="space-y-4 text-base sm:text-lg text-gray-300">
             <p>
                 Hello! I'm Fadel Muhamad Rifai, a passionate software engineer with a love for creating innovative and engaging digital experiences. 
@@ -62,6 +77,7 @@ export default function AboutMePage() {
         </div>
       </ScrollArea>
       <div className="mt-4 sm:mt-8 text-center text-sm sm:text-lg text-gray-400 font-code">
+        <p>Use [JOYSTICK] or [ARROW KEYS] to scroll.</p>
         <p>[B] or [ESC] to go back to Main Menu.</p>
       </div>
     </div>
