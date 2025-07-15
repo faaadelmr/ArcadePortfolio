@@ -277,12 +277,17 @@ export default function PixelPlayHub() {
   return (
     <div className="bg-background text-foreground h-screen flex items-center justify-center overflow-hidden p-2 sm:p-4">
       <main className="w-full max-w-lg h-full max-h-[1024px] aspect-[9/19.5] flex flex-col items-center justify-center">
-        <div className="w-full h-full bg-[#1a1a1a] rounded-2xl shadow-2xl p-2 sm:p-4 flex flex-col border-4 border-gray-600 shadow-[inset_0_0_20px_black]">
+        <div className="w-full h-full bg-[#1a1a1a] rounded-2xl shadow-2xl p-2 sm:p-4 flex flex-col border-4 border-yellow-600 shadow-[inset_0_0_20px_black]">
           
-          <div className="bg-black flex-grow rounded-lg p-2 border-2 border-gray-700 relative overflow-hidden flex flex-col">
+          <div className="bg-black flex-grow rounded-lg p-2 border-2 border-yellow-700 relative overflow-hidden flex flex-col">
             <div className="absolute top-2 right-4 flex items-center gap-2 z-10">
               <span className="text-accent font-headline text-sm">P1</span>
-              <div className="w-3 h-3 bg-red-600 rounded-full shadow-[0_0_8px_red]"></div>
+              <div className={cn(
+                "w-3 h-3 rounded-full",
+                gameState === 'booting' || gameState === 'loading'
+                  ? 'bg-red-600 shadow-[0_0_8px_red]'
+                  : 'bg-green-600 shadow-[0_0_8px_green]'
+              )}></div>
             </div>
             
             <div className={cn(
