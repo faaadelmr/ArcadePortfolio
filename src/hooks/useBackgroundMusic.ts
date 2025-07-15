@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
@@ -18,12 +19,15 @@ const getAudioInstance = () => {
 }
 
 export default function useBackgroundMusic() {
-  const audioRef = useRef<HTMLAudioElement | null>(getAudioInstance());
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isMusicEnabled, setIsMusicEnabled] = useState(false);
   const [volume, setVolumeState] = useState(0.3);
   const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
+    // This effect runs only on the client side after the component mounts
+    audioRef.current = getAudioInstance();
+    
     // On initial load, get preferences from localStorage
     const storedMusicPref = localStorage.getItem(MUSIC_STORAGE_KEY);
     const initialMusicState = storedMusicPref ? JSON.parse(storedMusicPref) : true;
