@@ -7,13 +7,11 @@ const MUSIC_STORAGE_KEY = 'pixelplay-music-enabled';
 const VOLUME_STORAGE_KEY = 'pixelplay-music-volume';
 const MUSIC_SRC = '/Hyper Olympic (NES) Music.m4a'; // Path from public folder
 
-// This global instance ensures we don't create multiple audio elements
 let audioInstance: HTMLAudioElement | null = null;
 const getAudioInstance = () => {
     if (typeof window === 'undefined') return null;
     if (!audioInstance) {
-        audioInstance = new Audio(MUSIC_SRC);
-        audioInstance.loop = true;
+        audioInstance = new Audio();
     }
     return audioInstance;
 }
@@ -23,12 +21,27 @@ export default function useBackgroundMusic() {
   const [isMusicEnabled, setIsMusicEnabled] = useState(false);
   const [volume, setVolumeState] = useState(0.3);
   const [isInitialized, setIsInitialized] = useState(false);
+  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    // This effect runs only on the client side after the component mounts
     audioRef.current = getAudioInstance();
     
-    // On initial load, get preferences from localStorage
+    const handleCanPlayThrough = () => {
+        setIsReady(true);
+    };
+
+    if (audioRef.current) {
+        if (audioRef.current.readyState >= 4) { // HAVE_ENOUGH_DATA
+            handleCanPlayThrough();
+        } else {
+            audioRef.current.addEventListener('canplaythrough', handleCanPlayThrough);
+            // Set src only if it's not set, to avoid re-triggering load
+            if (audioRef.current.src !== window.location.origin + MUSIC_SRC) {
+                 audioRef.current.src = MUSIC_SRC;
+            }
+        }
+    }
+
     const storedMusicPref = localStorage.getItem(MUSIC_STORAGE_KEY);
     const initialMusicState = storedMusicPref ? JSON.parse(storedMusicPref) : true;
     setIsMusicEnabled(initialMusicState);
@@ -39,19 +52,25 @@ export default function useBackgroundMusic() {
     
     if(audioRef.current) {
         audioRef.current.volume = initialVolume;
+        audioRef.current.loop = true;
     }
 
     setIsInitialized(true);
+    
+    return () => {
+        if (audioRef.current) {
+            audioRef.current.removeEventListener('canplaythrough', handleCanPlayThrough);
+        }
+    };
   }, []);
 
   const playMusic = useCallback(() => {
-    if (audioRef.current && audioRef.current.paused && isMusicEnabled) {
+    if (isReady && audioRef.current && audioRef.current.paused && isMusicEnabled) {
       audioRef.current.play().catch(error => {
-        // Autoplay was prevented. User interaction is needed.
         console.error("Music autoplay was prevented:", error);
       });
     }
-  }, [isMusicEnabled]);
+  }, [isMusicEnabled, isReady]);
 
   const pauseMusic = useCallback(() => {
     if (audioRef.current && !audioRef.current.paused) {
@@ -89,12 +108,10 @@ export default function useBackgroundMusic() {
     }
   }, [isMusicEnabled, isInitialized, playMusic, pauseMusic]);
 
-  // This component will be rendered once in the app to provide the audio element
-  const MusicPlayer = useCallback(() => {
-    return null;
-  }, []);
+  const MusicPlayer = useCallback(() => null, []);
 
   return {
+    isReady,
     isMusicEnabled: isInitialized ? isMusicEnabled : false,
     volume: isInitialized ? volume : 0.3,
     isInitialized,

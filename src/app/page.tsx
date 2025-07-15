@@ -36,8 +36,8 @@ export default function PixelPlayHub() {
   const [dragStartPos, setDragStartPos] = useState<number | null>(null);
   const [joystickTranslateY, setJoystickTranslateY] = useState(0);
 
-  const { playNavigate, playSelect, playBack, playStart } = useArcadeSounds();
-  const { MusicPlayer, isMusicEnabled, playMusic, pauseMusic } = useBackgroundMusic();
+  const { isReady: soundsReady, playNavigate, playSelect, playBack, playStart } = useArcadeSounds();
+  const { isReady: musicReady, MusicPlayer, isMusicEnabled, playMusic, pauseMusic } = useBackgroundMusic();
 
   useEffect(() => {
     if (gameState === 'active' && isMusicEnabled) {
@@ -46,6 +46,12 @@ export default function PixelPlayHub() {
       pauseMusic();
     }
   }, [gameState, isMusicEnabled, playMusic, pauseMusic]);
+
+  useEffect(() => {
+    if (gameState === 'loading' && soundsReady && musicReady) {
+        setGameState('active');
+    }
+  }, [gameState, soundsReady, musicReady]);
 
 
   const handleNavigation = useCallback((direction: 'up' | 'down') => {
@@ -97,9 +103,6 @@ export default function PixelPlayHub() {
 
     if (gameState === 'booting') {
         setGameState('loading');
-        setTimeout(() => {
-            setGameState('active');
-        }, 1500); // Loading screen duration
     } else if (gameState === 'active') {
         if (currentPage === 'main') {
             handleSelect();

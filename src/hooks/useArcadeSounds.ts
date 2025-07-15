@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback, useState } from 'react';
 import type { Synth } from 'tone';
 
 // This hook safely handles Tone.js which is a client-side library.
@@ -9,6 +9,7 @@ export default function useArcadeSounds() {
   const Tone = useRef<typeof import('tone') | null>(null);
   const synth = useRef<Synth | null>(null);
   const isSoundPlaying = useRef(false);
+  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
     // Dynamically import Tone.js only on the client side
@@ -17,6 +18,7 @@ export default function useArcadeSounds() {
       if (!synth.current) {
         // Create a synth and connect it to the main output
         synth.current = new T.Synth().toDestination();
+        setIsReady(true);
       }
     });
 
@@ -29,7 +31,7 @@ export default function useArcadeSounds() {
   }, []);
 
   const playSound = useCallback((note: string, duration: string) => {
-    if (!Tone.current || !synth.current || isSoundPlaying.current) return;
+    if (!Tone.current || !synth.current || !isReady || isSoundPlaying.current) return;
     
     const T = Tone.current;
     
@@ -52,12 +54,12 @@ export default function useArcadeSounds() {
     setTimeout(() => {
         isSoundPlaying.current = false;
     }, 50); // A 50ms buffer should be enough to prevent race conditions
-  }, []);
+  }, [isReady]);
 
   const playNavigate = useCallback(() => playSound('C3', '16n'), [playSound]);
   const playSelect = useCallback(() => playSound('G4', '8n'), [playSound]);
   const playBack = useCallback(() => playSound('C4', '8n'), [playSound]);
   const playStart = useCallback(() => playSound('C5', '8n'), [playSound]);
 
-  return { playNavigate, playSelect, playBack, playStart };
+  return { isReady, playNavigate, playSelect, playBack, playStart };
 }
