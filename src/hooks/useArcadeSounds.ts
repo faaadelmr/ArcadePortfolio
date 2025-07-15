@@ -4,8 +4,12 @@
 import { useEffect, useRef, useCallback, useState } from 'react';
 import type { Synth } from 'tone';
 
+interface UseArcadeSoundsProps {
+  volume: number;
+}
+
 // This hook safely handles Tone.js which is a client-side library.
-export default function useArcadeSounds() {
+export default function useArcadeSounds({ volume }: UseArcadeSoundsProps) {
   const Tone = useRef<typeof import('tone') | null>(null);
   const synth = useRef<Synth | null>(null);
   const isSoundPlaying = useRef(false);
@@ -29,6 +33,14 @@ export default function useArcadeSounds() {
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (Tone.current && Tone.current.Destination) {
+      // Convert linear volume (0-1) to dB. 0 is -Infinity, 1 is 0.
+      const dbVolume = volume > 0 ? Tone.current.gainToDb(volume) : -Infinity;
+      Tone.current.Destination.volume.value = dbVolume;
+    }
+  }, [volume]);
 
   const playSound = useCallback((note: string, duration: string) => {
     if (!Tone.current || !synth.current || !isReady || isSoundPlaying.current) return;

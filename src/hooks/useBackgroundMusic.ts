@@ -38,6 +38,7 @@ export default function useBackgroundMusic() {
             // Set src only if it's not set, to avoid re-triggering load
             if (audioRef.current.src !== window.location.origin + MUSIC_SRC) {
                  audioRef.current.src = MUSIC_SRC;
+                 audioRef.current.load();
             }
         }
     }
@@ -108,8 +109,6 @@ export default function useBackgroundMusic() {
     }
   }, [isMusicEnabled, isInitialized, playMusic, pauseMusic]);
 
-  const MusicPlayer = useCallback(() => null, []);
-
   return {
     isReady,
     isMusicEnabled: isInitialized ? isMusicEnabled : false,
@@ -119,6 +118,5 @@ export default function useBackgroundMusic() {
     setVolume,
     playMusic,
     pauseMusic,
-    MusicPlayer
   };
 }

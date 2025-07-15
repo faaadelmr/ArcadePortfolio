@@ -35,9 +35,9 @@ export default function PixelPlayHub() {
   const [isDragging, setIsDragging] = useState(false);
   const [dragStartPos, setDragStartPos] = useState<number | null>(null);
   const [joystickTranslateY, setJoystickTranslateY] = useState(0);
-
-  const { isReady: soundsReady, playNavigate, playSelect, playBack, playStart } = useArcadeSounds();
-  const { isReady: musicReady, MusicPlayer, isMusicEnabled, playMusic, pauseMusic } = useBackgroundMusic();
+  
+  const { isReady: musicReady, isMusicEnabled, playMusic, pauseMusic, volume } = useBackgroundMusic();
+  const { isReady: soundsReady, playNavigate, playSelect, playBack, playStart } = useArcadeSounds({ volume: isMusicEnabled ? volume : 0 });
 
   useEffect(() => {
     if (gameState === 'active' && isMusicEnabled) {
@@ -294,7 +294,6 @@ export default function PixelPlayHub() {
 
   return (
     <div className="bg-background text-foreground h-screen flex items-center justify-center overflow-hidden p-2 sm:p-4">
-      <MusicPlayer />
       <main className="w-full max-w-lg h-full max-h-[1024px] aspect-[9/19.5] flex flex-col items-center justify-center">
         <div className="w-full h-full bg-[#1a1a1a] rounded-2xl shadow-2xl p-2 sm:p-4 flex flex-col border-4 border-yellow-600 shadow-[inset_0_0_20px_black]">
           
