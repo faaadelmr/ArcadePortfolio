@@ -62,6 +62,8 @@ export default function Certified() {
   const itemRefs = useRef<(HTMLLIElement | null)[]>([]);
   const scrollViewportRef = useRef<HTMLDivElement>(null);
   const { playNavigate, playSelect, playBack } = useArcadeSounds();
+  const scrollIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const [scrollingDirection, setScrollingDirection] = useState<'up' | 'down' | null>(null);
 
   useEffect(() => {
     itemRefs.current = itemRefs.current.slice(0, certifications.length);
@@ -105,62 +107,103 @@ export default function Certified() {
     }
   }, [playBack, viewingCertIndex, handleBackToList]);
   
-  const handleScroll = useCallback((direction: 'up' | 'down') => {
-    if (viewingCertIndex !== null && scrollViewportRef.current) {
-        playNavigate();
-        const scrollAmount = direction === 'up' ? -100 : 100;
-        scrollViewportRef.current.scrollBy({ top: scrollAmount, behavior: 'smooth' });
+  const startScrolling = useCallback((direction: 'up' | 'down') => {
+    if (scrollIntervalRef.current) return;
+    if (viewingCertIndex === null) return;
+    playNavigate();
+    
+    const scroll = () => {
+        if (scrollViewportRef.current) {
+            const scrollAmount = direction === 'up' ? -10 : 10;
+            scrollViewportRef.current.scrollBy({ top: scrollAmount, behavior: 'smooth' });
+        }
+    };
+    
+    scroll(); // a single scroll on press
+    scrollIntervalRef.current = setInterval(scroll, 50); // continuous scroll
+  }, [playNavigate, viewingCertIndex]);
+
+  const stopScrolling = useCallback(() => {
+    if (scrollIntervalRef.current) {
+      clearInterval(scrollIntervalRef.current);
+      scrollIntervalRef.current = null;
     }
-  }, [viewingCertIndex, playNavigate]);
+  }, []);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-        let keyHandled = false;
+        if (e.repeat) return;
+
         if (viewingCertIndex !== null) {
             switch (e.key.toLowerCase()) {
                 case 'b':
                 case 'escape':
+                    e.preventDefault();
                     handleBackToList();
-                    keyHandled = true;
                     break;
                 case 'arrowup':
-                    handleScroll('up');
-                    keyHandled = true;
+                    e.preventDefault();
+                    setScrollingDirection('up');
+                    startScrolling('up');
                     break;
                 case 'arrowdown':
-                    handleScroll('down');
-                    keyHandled = true;
+                    e.preventDefault();
+                    setScrollingDirection('down');
+                    startScrolling('down');
                     break;
             }
         } else {
             switch (e.key.toLowerCase()) {
                 case 'arrowup':
+                    e.preventDefault();
                     handleNavigation('up');
-                    keyHandled = true;
                     break;
                 case 'arrowdown':
+                    e.preventDefault();
                     handleNavigation('down');
-                    keyHandled = true;
                     break;
                 case 'a':
                 case 'enter':
+                    e.preventDefault();
                     handleSelectCert();
-                    keyHandled = true;
                     break;
                 case 'b':
                 case 'escape':
+                    e.preventDefault();
                     handleBackToMain();
-                    keyHandled = true;
                     break;
             }
         }
-        if (keyHandled) {
-          e.preventDefault();
-        }
     };
+
+    const handleKeyUp = (e: KeyboardEvent) => {
+      if (viewingCertIndex === null) return;
+      switch (e.key.toLowerCase()) {
+        case 'arrowup':
+          if (scrollingDirection === 'up') {
+            e.preventDefault();
+            stopScrolling();
+            setScrollingDirection(null);
+          }
+          break;
+        case 'arrowdown':
+          if (scrollingDirection === 'down') {
+            e.preventDefault();
+            stopScrolling();
+            setScrollingDirection(null);
+          }
+          break;
+      }
+    };
+
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [handleNavigation, handleSelectCert, handleBackToMain, handleBackToList, handleScroll, viewingCertIndex]);
+    window.addEventListener('keyup', handleKeyUp);
+    return () => {
+        window.removeEventListener('keydown', handleKeyDown);
+        window.removeEventListener('keyup', handleKeyUp);
+        stopScrolling();
+    }
+  }, [handleNavigation, handleSelectCert, handleBackToMain, handleBackToList, startScrolling, stopScrolling, viewingCertIndex, scrollingDirection]);
 
   const cert = viewingCertIndex !== null ? certifications[viewingCertIndex] : null;
 
@@ -187,7 +230,7 @@ export default function Certified() {
             />
         </ScrollArea>
         <div className="mt-4 text-center text-sm sm:text-lg text-gray-400 font-code flex-shrink-0">
-          <p>Use [JOYSTICK] or [ARROW KEYS] to scroll.</p>
+          <p>Hold [JOYSTICK] or [ARROW KEYS] to scroll.</p>
           <p>[B] or [ESC] to go back to list.</p>
         </div>
       </div>

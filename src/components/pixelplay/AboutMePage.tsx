@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, { useEffect, useCallback, useRef } from 'react';
+import React, { useEffect, useCallback, useRef, useState } from 'react';
 import useArcadeSounds from '@/hooks/useArcadeSounds';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
@@ -10,42 +10,88 @@ const backToMainEvent = new Event('backToMain', { bubbles: true });
 export default function AboutMePage() {
   const { playBack, playNavigate } = useArcadeSounds();
   const scrollViewportRef = useRef<HTMLDivElement>(null);
+  const scrollIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const [scrollingDirection, setScrollingDirection] = useState<'up' | 'down' | null>(null);
 
   const handleBack = useCallback(() => {
     playBack();
     window.dispatchEvent(backToMainEvent);
   }, [playBack]);
 
-  const handleScroll = useCallback((direction: 'up' | 'down') => {
-    if (scrollViewportRef.current) {
-        playNavigate();
-        const scrollAmount = direction === 'up' ? -100 : 100;
+  const startScrolling = useCallback((direction: 'up' | 'down') => {
+    if (scrollIntervalRef.current) return;
+    playNavigate();
+
+    const scroll = () => {
+      if (scrollViewportRef.current) {
+        const scrollAmount = direction === 'up' ? -10 : 10;
         scrollViewportRef.current.scrollBy({ top: scrollAmount, behavior: 'smooth' });
-    }
+      }
+    };
+    
+    scroll(); // a single scroll on press
+    scrollIntervalRef.current = setInterval(scroll, 50); // continuous scroll
   }, [playNavigate]);
+
+  const stopScrolling = useCallback(() => {
+    if (scrollIntervalRef.current) {
+      clearInterval(scrollIntervalRef.current);
+      scrollIntervalRef.current = null;
+    }
+  }, []);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      e.preventDefault();
+      if (e.repeat) return; // Prevent multiple triggers for held keys
+      
       switch (e.key.toLowerCase()) {
         case 'b':
         case 'backspace':
         case 'escape':
+          e.preventDefault();
           handleBack();
           break;
         case 'arrowup':
-          handleScroll('up');
+          e.preventDefault();
+          setScrollingDirection('up');
+          startScrolling('up');
           break;
         case 'arrowdown':
-          handleScroll('down');
+          e.preventDefault();
+          setScrollingDirection('down');
+          startScrolling('down');
           break;
       }
     };
+    
+    const handleKeyUp = (e: KeyboardEvent) => {
+      switch (e.key.toLowerCase()) {
+        case 'arrowup':
+          if (scrollingDirection === 'up') {
+            e.preventDefault();
+            stopScrolling();
+            setScrollingDirection(null);
+          }
+          break;
+        case 'arrowdown':
+          if (scrollingDirection === 'down') {
+            e.preventDefault();
+            stopScrolling();
+            setScrollingDirection(null);
+          }
+          break;
+      }
+    };
+
     window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
+    
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
+      stopScrolling(); // Cleanup on unmount
     };
-  }, [handleBack, handleScroll]);
+  }, [handleBack, startScrolling, stopScrolling, scrollingDirection]);
 
   return (
     <div className="w-full h-full flex flex-col p-4 sm:p-8 text-white animate-pixel-in">
@@ -77,7 +123,7 @@ export default function AboutMePage() {
         </div>
       </ScrollArea>
       <div className="mt-4 sm:mt-8 text-center text-sm sm:text-lg text-gray-400 font-code">
-        <p>Use [JOYSTICK] or [ARROW KEYS] to scroll.</p>
+        <p>Hold [JOYSTICK] or [ARROW KEYS] to scroll.</p>
         <p>[B] or [ESC] to go back to Main Menu.</p>
       </div>
     </div>
