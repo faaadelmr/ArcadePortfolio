@@ -33,21 +33,21 @@ export default function SettingsPage() {
   }, [playNavigate, settings.length]);
 
   const handleToggle = useCallback(() => {
-    playSelect();
     const currentSetting = settings[selectedItem];
     if (currentSetting.type === 'switch' && currentSetting.onToggle) {
+        playSelect();
         currentSetting.onToggle();
     }
   }, [selectedItem, playSelect, settings]);
 
-  const handleSliderChange = useCallback((direction: 'left' | 'right') => {
+  const handleSliderChange = useCallback((direction: 'up' | 'down') => {
     const currentSetting = settings[selectedItem];
     if (currentSetting.type !== 'slider') return;
     
     playNavigate();
     const currentValue = currentSetting.value;
     const step = 5;
-    const newValue = direction === 'left' 
+    const newValue = direction === 'down' 
       ? Math.max(0, currentValue - step)
       : Math.min(100, currentValue + step);
     
@@ -64,18 +64,39 @@ export default function SettingsPage() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       e.preventDefault();
+      const currentSetting = settings[selectedItem];
+
+      // Special handling for slider
+      if (currentSetting.type === 'slider') {
+          switch (e.key.toLowerCase()) {
+              case 'arrowup':
+                  handleSliderChange('up');
+                  break;
+              case 'arrowdown':
+                  handleSliderChange('down');
+                  break;
+              case 'arrowleft': // Navigate up in the list
+                  handleNavigation('up');
+                  break;
+              case 'arrowright': // Navigate down in the list
+                  handleNavigation('down');
+                  break;
+              case 'b':
+              case 'backspace':
+              case 'escape':
+                  handleBack();
+                  break;
+          }
+          return;
+      }
+      
+      // Default handling for other items
       switch (e.key.toLowerCase()) {
         case 'arrowup':
           handleNavigation('up');
           break;
         case 'arrowdown':
           handleNavigation('down');
-          break;
-        case 'arrowleft':
-          handleSliderChange('left');
-          break;
-        case 'arrowright':
-          handleSliderChange('right');
           break;
         case 'a':
         case 'enter':
@@ -93,7 +114,7 @@ export default function SettingsPage() {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [handleNavigation, handleToggle, handleBack, handleSliderChange]);
+  }, [handleNavigation, handleToggle, handleBack, handleSliderChange, selectedItem, settings]);
 
   const getVolumeIcon = () => {
     if (volume === 0 || !isMusicEnabled) return <VolumeX className="w-6 h-6" />;
@@ -149,7 +170,7 @@ export default function SettingsPage() {
         ))}
       </ul>
       <div className="mt-8 text-center text-lg text-gray-400 font-code">
-        <p>[ARROW KEYS] to navigate/adjust. [A] to toggle.</p>
+        <p>[UP/DOWN] to navigate/adjust. [A] to toggle.</p>
         <p>[B] or [ESC] to go back.</p>
       </div>
     </div>
