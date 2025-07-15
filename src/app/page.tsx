@@ -6,18 +6,20 @@ import MainMenu from '@/components/pixelplay/MainMenu';
 import ProjectList from '@/components/pixelplay/ProjectList';
 import Certified from '@/components/pixelplay/Certified';
 import SettingsPage from '@/components/pixelplay/SettingsPage';
+import AboutMePage from '@/components/pixelplay/AboutMePage';
 import useArcadeSounds from '@/hooks/useArcadeSounds';
 import { cn } from '@/lib/utils';
-import { Gamepad2, Trophy, Settings as SettingsIcon } from 'lucide-react';
+import { Gamepad2, Trophy, Settings as SettingsIcon, User } from 'lucide-react';
 import BootScreen from '@/components/pixelplay/BootScreen';
 import LoadingScreen from '@/components/pixelplay/LoadingScreen';
 
-type Page = 'main' | 'games' | 'scores' | 'settings';
+type Page = 'main' | 'games' | 'scores' | 'settings' | 'about';
 type GameState = 'booting' | 'loading' | 'active';
 
 const menuItems = [
   { id: 'games', label: 'Project List', icon: Gamepad2, target: 'games' as Page },
   { id: 'scores', label: 'Certified', icon: Trophy, target: 'scores' as Page },
+  { id: 'about', label: 'About Me', icon: User, target: 'about' as Page },
   { id: 'settings', label: 'Settings', icon: SettingsIcon, target: 'settings' as Page },
 ];
 
@@ -252,6 +254,8 @@ export default function PixelPlayHub() {
         return <ProjectList />;
       case 'scores':
         return <Certified />;
+      case 'about':
+        return <AboutMePage />;
       case 'settings':
         return <SettingsPage />;
       case 'main':
