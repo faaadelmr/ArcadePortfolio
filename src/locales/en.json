@@ -12,12 +12,12 @@
         "aboutMe": "About Me",
         "settings": "Settings",
         "controls": {
-            "navigate": "Use [ARROW KEYS] or [JOYSTICK] to navigate.",
+            "navigate": "Use [ARROW KEYS] or [D-PAD] to navigate.",
             "select": "[A] or [ENTER] to select."
         }
     },
     "controls": {
-        "joystick": "JOYSTICK",
+        "dpad": "D-PAD",
         "upDown": "UP/DOWN",
         "start": "START",
         "bBack": "B (Back)",
@@ -54,9 +54,9 @@
         "title": "CERTIFICATIONS",
         "alt": "Certificate for",
         "controls": {
-            "navigate": "Use [ARROW KEYS] or [JOYSTICK] to navigate. [A] to view.",
+            "navigate": "Use [ARROW KEYS] or [D-PAD] to navigate. [A] to view.",
             "backToMain": "[B] or [ESC] to go back to Main Menu.",
-            "scroll": "Hold [JOYSTICK] or [ARROW KEYS] to scroll.",
+            "scroll": "Hold [D-PAD] or [ARROW KEYS] to scroll.",
             "backToList": "[B] or [ESC] to go back to list."
         },
         "list": {
@@ -102,7 +102,7 @@
         },
         "thanks": "Thank you for visiting my arcade hub. Feel free to explore my projects and don't hesitate to reach out!",
         "controls": {
-            "scroll": "Hold [JOYSTICK] or [ARROW KEYS] to scroll.",
+            "scroll": "Hold [D-PAD] or [ARROW KEYS] to scroll.",
             "back": "[B] or [ESC] to go back to Main Menu."
         }
     },

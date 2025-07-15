@@ -11,7 +11,7 @@ import useArcadeSounds from '@/hooks/useArcadeSounds';
 import useBackgroundMusic from '@/hooks/useBackgroundMusic';
 import { useLocalization } from '@/hooks/useLocalization';
 import { cn } from '@/lib/utils';
-import { Gamepad2, Trophy, Settings as SettingsIcon, User } from 'lucide-react';
+import { Gamepad2, Trophy, Settings as SettingsIcon, User, ArrowUp, ArrowDown } from 'lucide-react';
 import BootScreen from '@/components/pixelplay/BootScreen';
 import LoadingScreen from '@/components/pixelplay/LoadingScreen';
 
@@ -24,9 +24,6 @@ export default function PixelPlayHub() {
   const [selectedItem, setSelectedItem] = useState(0);
   const [activeButton, setActiveButton] = useState<string | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
-  const [dragStartPos, setDragStartPos] = useState<number | null>(null);
-  const [joystickTranslateY, setJoystickTranslateY] = useState(0);
   const { t, isLocalizationReady } = useLocalization();
 
   const menuItems = useMemo(() => [
@@ -53,8 +50,6 @@ export default function PixelPlayHub() {
     }
   }, [gameState, soundsReady, musicReady, isLocalizationReady]);
 
-
-  const DRAG_THRESHOLD = 20; // pixels
 
   const handleNavigation = useCallback((direction: 'up' | 'down') => {
     if (isTransitioning || gameState !== 'active') return;
@@ -116,69 +111,6 @@ export default function PixelPlayHub() {
         }
     }
   }, [isTransitioning, gameState, currentPage, handleSelect, playStart, playMusic]);
-
-  const getClientY = (e: React.MouseEvent | React.TouchEvent) => {
-    return 'touches' in e ? e.touches[0].clientY : e.clientY;
-  };
-  
-  const handleDragStart = (e: React.MouseEvent | React.TouchEvent) => {
-    e.stopPropagation();
-    e.preventDefault();
-    setIsDragging(true);
-    setDragStartPos(getClientY(e));
-  };
-  
-  const handleDragMove = (e: React.MouseEvent | React.TouchEvent) => {
-    if (!isDragging || dragStartPos === null) return;
-    e.stopPropagation();
-    e.preventDefault();
-    const clientY = getClientY(e);
-    const deltaY = clientY - dragStartPos;
-    setJoystickTranslateY(Math.max(-32, Math.min(32, deltaY))); // Clamp translation
-  };
-  
-  const handleDragEnd = (e: React.MouseEvent | React.TouchEvent) => {
-    e.stopPropagation();
-    e.preventDefault();
-    if (!isDragging || dragStartPos === null) return;
-    
-    if (joystickTranslateY < -DRAG_THRESHOLD) {
-      handleNavigation('up');
-    } else if (joystickTranslateY > DRAG_THRESHOLD) {
-      handleNavigation('down');
-    }
-    setIsDragging(false);
-    setDragStartPos(null);
-    setJoystickTranslateY(0);
-  };
-
-  useEffect(() => {
-    const handleGlobalMouseUp = (e: MouseEvent) => {
-        if(isDragging) handleDragEnd(e as any);
-    }
-    const handleGlobalMouseMove = (e: MouseEvent) => {
-        if(isDragging) handleDragMove(e as any);
-    }
-    const handleGlobalTouchMove = (e: TouchEvent) => {
-        if(isDragging) handleDragMove(e as any);
-    }
-    const handleGlobalTouchEnd = (e: TouchEvent) => {
-        if(isDragging) handleDragEnd(e as any);
-    }
-    
-    window.addEventListener('mousemove', handleGlobalMouseMove);
-    window.addEventListener('mouseup', handleGlobalMouseUp);
-    window.addEventListener('touchmove', handleGlobalTouchMove, { passive: false });
-    window.addEventListener('touchend', handleGlobalTouchEnd);
-
-    return () => {
-      window.removeEventListener('mousemove', handleGlobalMouseMove);
-      window.removeEventListener('mouseup', handleGlobalMouseUp);
-      window.removeEventListener('touchmove', handleGlobalTouchMove);
-      window.removeEventListener('touchend', handleGlobalTouchEnd);
-    };
-  }, [isDragging, handleDragMove, handleDragEnd]);
-
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -326,20 +258,27 @@ export default function PixelPlayHub() {
   
           <div className="flex-shrink-0 pt-4 px-2 sm:px-8 flex flex-wrap sm:flex-nowrap justify-around items-center gap-4 sm:gap-2">
             <div className="flex items-center gap-4 sm:gap-6">
-              <div 
-                className="relative select-none"
-                onMouseDown={handleDragStart}
-                onTouchStart={handleDragStart}
-              >
-                <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gray-700 rounded-full flex items-center justify-center border-4 border-gray-800">
-                  <div 
-                    className="w-8 h-8 bg-red-600 rounded-full border-2 border-red-800 shadow-lg transition-transform duration-75"
-                    style={{ transform: `translateY(${joystickTranslateY}px)` }}
-                  ></div>
-                </div>
+              <div className="relative w-24 h-24 select-none">
+                  <div className="absolute inset-0 grid grid-cols-3 grid-rows-3">
+                      <div
+                          onMouseDown={(e) => { e.preventDefault(); handleNavigation('up'); }}
+                          className="col-start-2 row-start-1 bg-gray-700 rounded-t-md border-2 border-b-0 border-gray-800 active:bg-gray-600 cursor-pointer flex items-center justify-center"
+                      >
+                         <ArrowUp className="w-6 h-6 text-gray-400"/>
+                      </div>
+                      <div className="col-start-2 row-start-2 bg-gray-700 border-x-2 border-gray-800"></div>
+                      <div className="col-start-1 row-start-2 bg-gray-700 rounded-l-md border-2 border-r-0 border-gray-800"></div>
+                      <div className="col-start-3 row-start-2 bg-gray-700 rounded-r-md border-2 border-l-0 border-gray-800"></div>
+                      <div
+                          onMouseDown={(e) => { e.preventDefault(); handleNavigation('down'); }}
+                          className="col-start-2 row-start-3 bg-gray-700 rounded-b-md border-2 border-t-0 border-gray-800 active:bg-gray-600 cursor-pointer flex items-center justify-center"
+                      >
+                         <ArrowDown className="w-6 h-6 text-gray-400"/>
+                      </div>
+                  </div>
               </div>
               <div className="font-headline text-center text-xs sm:text-sm text-gray-400">
-                <p>{t('controls.joystick')}</p>
+                <p>{t('controls.dpad')}</p>
                 <p>{t('controls.upDown')}</p>
               </div>
             </div>
