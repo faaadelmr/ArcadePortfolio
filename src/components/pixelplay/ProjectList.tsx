@@ -12,66 +12,29 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 const projects = [
   { 
     title: 'Tanma', 
-    date: '2023-10-26',
-    description: 'A comprehensive platform for farmers to manage their crops, get weather forecasts, and connect with a community of agricultural experts.',
-    imageUrl: 'https://placehold.co/600x400',
-    imageHint: 'agriculture technology',
-    liveUrl: '#',
-    githubUrl: '#'
+    date: '2024-05-01',
+    description: 'An application about daily reports at my workplace (reliance insurance) to simplify reporting that can be exported and display graphs for an analysis if needed. there are additional tools to support work such as meeting minutes, user management, chat rooms, PDF tools (merging, selection), and separate bills manually.',
+    imageUrl: '/public/project/tanma.png',
+    imageHint: 'Daily Report Claim',
+    liveUrl: 'https://mentanma.cyou',
+    githubUrl: 'https://github.com/faaadelmr/tanma'
   },
   { 
     title: 'cewe(k)alcer', 
-    date: '2024-01-15',
-    description: 'An awareness and support application for cervical cancer, providing information, community forums, and resources for early detection.',
-    imageUrl: 'https://placehold.co/600x400',
-    imageHint: 'health app',
-    liveUrl: '#',
-    githubUrl: '#'
+    date: '2024-06-09',
+    description: 'application to provide affiliate links with the main feature of QR Code and can add 3 links (Shopee, TiktokShop, Tokopedia).',
+    imageUrl: '/public/project/cewekalcer.png',
+    imageHint: 'CewekKalcer',
+    liveUrl: 'https://cewekalcer.pages.dev/',
   },
   { 
     title: 'bayarGess', 
-    date: '2024-05-20',
-    description: 'A streamlined payment and invoicing solution for freelancers and small businesses, making it easy to track payments and manage finances.',
-    imageUrl: 'https://placehold.co/600x400',
-    imageHint: 'finance payment',
-    liveUrl: '#',
-    githubUrl: '#'
-  },
-  { 
-    title: 'bayarGess2', 
-    date: '2024-05-20',
-    description: 'A streamlined payment and invoicing solution for freelancers and small businesses, making it easy to track payments and manage finances.',
-    imageUrl: 'https://placehold.co/600x400',
-    imageHint: 'finance payment',
-    liveUrl: '#',
-    githubUrl: '#'
-  },
-  { 
-    title: 'bayarGess3', 
-    date: '2024-05-20',
-    description: 'A streamlined payment and invoicing solution for freelancers and small businesses, making it easy to track payments and manage finances.',
-    imageUrl: 'https://placehold.co/600x400',
-    imageHint: 'finance payment',
-    liveUrl: '#',
-    githubUrl: '#'
-  },
-  { 
-    title: 'bayarGess4', 
-    date: '2024-05-20',
-    description: 'A streamlined payment and invoicing solution for freelancers and small businesses, making it easy to track payments and manage finances.',
-    imageUrl: 'https://placehold.co/600x400',
-    imageHint: 'finance payment',
-    liveUrl: '#',
-    githubUrl: '#'
-  },
-  { 
-    title: 'bayarGess5', 
-    date: '2024-05-20',
-    description: 'A streamlined payment and invoicing solution for freelancers and small businesses, making it easy to track payments and manage finances.',
-    imageUrl: 'https://placehold.co/600x400',
-    imageHint: 'finance payment',
-    liveUrl: '#',
-    githubUrl: '#'
+    date: '2025-07-12',
+    description: 'A separate billing app that uses AI for receipt reading and item sharing. perfect for those of you who are bothered to share the cost of food with friends.',
+    imageUrl: '/public/project/bayargess.png',
+    imageHint: 'splitbill sharing',
+    liveUrl: 'https://bayargess.vercel.app/',
+    githubUrl: 'https://github.com/faaadelmr/bayarGess.git'
   },
 ];
 

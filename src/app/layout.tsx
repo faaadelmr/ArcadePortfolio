@@ -3,8 +3,8 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
-  title: 'Fadel Muhamad Rifai',
-  description: 'A retro arcade game hub.',
+  title: 'Fadel bukan Padel',
+  description: 'A retro arcade portfolio hub.',
 };
 
 export default function RootLayout({

@@ -37,7 +37,7 @@ export default function MainMenu({ menuItems, selectedItem }: MainMenuProps) {
         ))}
       </ul>
       <div className="mt-16 text-center text-lg text-gray-400 font-code">
-        <p>Use [ARROW KEYS] to navigate.</p>
+        <p>Use [ARROW KEYS] or [JOYSTICK] to navigate.</p>
         <p>[A] or [ENTER] to select.</p>
       </div>
     </div>

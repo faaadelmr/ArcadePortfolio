@@ -379,7 +379,7 @@ export default function PixelPlayHub() {
           </div>
   
           <div className="text-center pt-2 sm:pt-4">
-              <h1 className="text-lg sm:text-2xl md:text-3xl font-headline text-primary tracking-widest">Fadel Bukan Padel</h1>
+              <h1 className="text-lg sm:text-2xl md:text-3xl font-headline text-primary tracking-widest">Arcade Portfolio</h1>
           </div>
         </div>
       </main>
