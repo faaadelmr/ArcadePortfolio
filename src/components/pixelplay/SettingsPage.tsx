@@ -14,6 +14,7 @@ const backToMainEvent = new Event('backToMain', { bubbles: true });
 
 export default function SettingsPage() {
   const [selectedItem, setSelectedItem] = useState(0);
+  const [isVolumeEditing, setIsVolumeEditing] = useState(false);
   const { isMusicEnabled, toggleMusic, volume, setVolume, isInitialized } = useBackgroundMusic();
   const { playNavigate, playSelect, playBack } = useArcadeSounds({ volume: isMusicEnabled ? volume : 0 });
 
@@ -25,24 +26,29 @@ export default function SettingsPage() {
   ];
 
   const handleNavigation = useCallback((direction: 'up' | 'down') => {
+    if (isVolumeEditing) return;
     playNavigate();
     setSelectedItem(prev => {
       const newIndex = direction === 'up' ? prev - 1 : prev + 1;
       return (newIndex + settings.length) % settings.length;
     });
-  }, [playNavigate, settings.length]);
+  }, [playNavigate, settings.length, isVolumeEditing]);
 
-  const handleToggle = useCallback(() => {
+  const handleSelect = useCallback(() => {
     const currentSetting = settings[selectedItem];
+    playSelect();
+
     if (currentSetting.type === 'switch' && currentSetting.onToggle) {
-        playSelect();
         currentSetting.onToggle();
+    } else if (currentSetting.type === 'slider') {
+        setIsVolumeEditing(prev => !prev);
     }
   }, [selectedItem, playSelect, settings]);
 
+
   const handleSliderChange = useCallback((direction: 'up' | 'down') => {
     const currentSetting = settings[selectedItem];
-    if (currentSetting.type !== 'slider') return;
+    if (currentSetting.type !== 'slider' || !isVolumeEditing) return;
     
     playNavigate();
     const currentValue = currentSetting.value;
@@ -54,54 +60,41 @@ export default function SettingsPage() {
     if (currentSetting.onValueChange) {
       currentSetting.onValueChange(newValue);
     }
-  }, [selectedItem, settings, playNavigate]);
+  }, [selectedItem, settings, playNavigate, isVolumeEditing]);
 
   const handleBack = useCallback(() => {
+    if (isVolumeEditing) {
+        setIsVolumeEditing(false);
+        playBack();
+        return;
+    }
     playBack();
     window.dispatchEvent(backToMainEvent);
-  }, [playBack]);
+  }, [playBack, isVolumeEditing]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       e.preventDefault();
-      const currentSetting = settings[selectedItem];
-
-      // Special handling for slider
-      if (currentSetting.type === 'slider') {
-          switch (e.key.toLowerCase()) {
-              case 'arrowup':
-                  handleSliderChange('up');
-                  break;
-              case 'arrowdown':
-                  handleSliderChange('down');
-                  break;
-              case 'arrowleft': // Navigate up in the list
-                  handleNavigation('up');
-                  break;
-              case 'arrowright': // Navigate down in the list
-                  handleNavigation('down');
-                  break;
-              case 'b':
-              case 'backspace':
-              case 'escape':
-                  handleBack();
-                  break;
-          }
-          return;
-      }
       
-      // Default handling for other items
       switch (e.key.toLowerCase()) {
         case 'arrowup':
-          handleNavigation('up');
+          if (isVolumeEditing) {
+              handleSliderChange('up');
+          } else {
+              handleNavigation('up');
+          }
           break;
         case 'arrowdown':
-          handleNavigation('down');
+          if (isVolumeEditing) {
+            handleSliderChange('down');
+          } else {
+            handleNavigation('down');
+          }
           break;
         case 'a':
         case 'enter':
         case 's':
-          handleToggle();
+          handleSelect();
           break;
         case 'b':
         case 'backspace':
@@ -114,7 +107,7 @@ export default function SettingsPage() {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [handleNavigation, handleToggle, handleBack, handleSliderChange, selectedItem, settings]);
+  }, [handleNavigation, handleSelect, handleBack, handleSliderChange, isVolumeEditing]);
 
   const getVolumeIcon = () => {
     if (volume === 0 || !isMusicEnabled) return <VolumeX className="w-6 h-6" />;
@@ -135,7 +128,7 @@ export default function SettingsPage() {
             key={setting.id} 
             className={cn(
                 "flex justify-between items-center p-2 rounded-md transition-colors",
-                selectedItem === index ? 'bg-primary/20' : ''
+                selectedItem === index && !isVolumeEditing ? 'bg-primary/20' : ''
             )}
           >
             <Label 
@@ -162,7 +155,7 @@ export default function SettingsPage() {
                 onValueChange={(value) => setting.onValueChange?.(value[0])}
                 max={100}
                 step={1}
-                className={cn('w-[50%]', selectedItem === index ? 'opacity-100' : 'opacity-70')}
+                className={cn('w-[50%]', (selectedItem === index && isVolumeEditing) ? 'ring-2 ring-primary rounded-lg' : '')}
                 disabled={!isMusicEnabled}
               />
             )}
@@ -170,7 +163,7 @@ export default function SettingsPage() {
         ))}
       </ul>
       <div className="mt-8 text-center text-lg text-gray-400 font-code">
-        <p>[UP/DOWN] to navigate/adjust. [A] to toggle.</p>
+        <p>[UP/DOWN] to navigate/adjust. [A] to toggle/select.</p>
         <p>[B] or [ESC] to go back.</p>
       </div>
     </div>
