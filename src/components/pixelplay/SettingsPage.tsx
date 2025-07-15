@@ -8,7 +8,8 @@ import { cn } from '@/lib/utils';
 import useArcadeSounds from '@/hooks/useArcadeSounds';
 import useBackgroundMusic from '@/hooks/useBackgroundMusic';
 import { Slider } from '@/components/ui/slider';
-import { Volume1, Volume2, VolumeX } from 'lucide-react';
+import { Volume1, Volume2, VolumeX, Languages } from 'lucide-react';
+import { useLocalization } from '@/hooks/useLocalization';
 
 const backToMainEvent = new Event('backToMain', { bubbles: true });
 
@@ -17,12 +18,19 @@ export default function SettingsPage() {
   const [isVolumeEditing, setIsVolumeEditing] = useState(false);
   const { isMusicEnabled, toggleMusic, volume, setVolume, isInitialized } = useBackgroundMusic();
   const { playNavigate, playSelect, playBack } = useArcadeSounds({ volume: isMusicEnabled ? volume : 0 });
+  const { t, language, setLanguage } = useLocalization();
 
+  const toggleLanguage = () => {
+    const newLang = language === 'en' ? 'id' : 'en';
+    setLanguage(newLang);
+  };
+  
   const settings = [
-    { id: 'music', label: 'Music', onToggle: toggleMusic, isEnabled: isMusicEnabled, type: 'switch' },
-    { id: 'volume', label: 'Volume', type: 'slider', value: volume * 100, onValueChange: (newVolume: number) => setVolume(newVolume / 100) },
-    { id: 'sound', label: 'Sound FX', onToggle: () => {}, isEnabled: true, type: 'switch' }, // Placeholder for sound FX
-    { id: 'scanlines', label: 'Scanline Effect', onToggle: () => {}, isEnabled: true, type: 'switch' },
+    { id: 'language', label: t('settings.language'), value: language.toUpperCase(), onToggle: toggleLanguage, type: 'toggle' },
+    { id: 'music', label: t('settings.music'), onToggle: toggleMusic, isEnabled: isMusicEnabled, type: 'switch' },
+    { id: 'volume', label: t('settings.volume'), type: 'slider', value: volume * 100, onValueChange: (newVolume: number) => setVolume(newVolume / 100) },
+    { id: 'sound', label: t('settings.soundFx'), onToggle: () => {}, isEnabled: true, type: 'switch' }, // Placeholder for sound FX
+    { id: 'scanlines', label: t('settings.scanlines'), onToggle: () => {}, isEnabled: true, type: 'switch' },
   ];
 
   const handleNavigation = useCallback((direction: 'up' | 'down') => {
@@ -39,6 +47,8 @@ export default function SettingsPage() {
     playSelect();
 
     if (currentSetting.type === 'switch' && currentSetting.onToggle) {
+        currentSetting.onToggle();
+    } else if (currentSetting.type === 'toggle' && currentSetting.onToggle) {
         currentSetting.onToggle();
     } else if (currentSetting.type === 'slider') {
         setIsVolumeEditing(prev => !prev);
@@ -121,7 +131,7 @@ export default function SettingsPage() {
   
   return (
     <div className="w-full h-full flex flex-col p-8 text-white">
-      <h1 className="text-5xl font-headline text-primary mb-8 text-center">SETTINGS</h1>
+      <h1 className="text-5xl font-headline text-primary mb-8 text-center">{t('settings.title')}</h1>
       <ul className="flex-grow space-y-6 text-2xl font-headline max-w-md mx-auto w-full">
         {settings.map((setting, index) => (
           <li 
@@ -139,6 +149,7 @@ export default function SettingsPage() {
                 )}
             >
                 {setting.id === 'volume' && getVolumeIcon()}
+                {setting.id === 'language' && <Languages className="w-6 h-6" />}
                 {setting.label}
             </Label>
             {setting.type === 'switch' && (
@@ -147,6 +158,11 @@ export default function SettingsPage() {
                 checked={setting.isEnabled}
                 onCheckedChange={setting.onToggle}
               />
+            )}
+            {setting.type === 'toggle' && (
+              <button onClick={setting.onToggle} className="text-2xl font-headline text-accent w-[50%] text-right">
+                {setting.value}
+              </button>
             )}
             {setting.type === 'slider' && (
                <Slider
@@ -163,8 +179,8 @@ export default function SettingsPage() {
         ))}
       </ul>
       <div className="mt-8 text-center text-lg text-gray-400 font-code">
-        <p>[UP/DOWN] to navigate/adjust. [A] to toggle/select.</p>
-        <p>[B] or [ESC] to go back.</p>
+        <p>{t('settings.controls.navigate')}</p>
+        <p>{t('settings.controls.back')}</p>
       </div>
     </div>
   );

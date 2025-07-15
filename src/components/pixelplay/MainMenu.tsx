@@ -1,6 +1,7 @@
 import React from 'react';
 import type { LucideProps } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useLocalization } from '@/hooks/useLocalization';
 
 interface MenuItem {
   id: string;
@@ -14,6 +15,8 @@ interface MainMenuProps {
 }
 
 export default function MainMenu({ menuItems, selectedItem }: MainMenuProps) {
+  const { t } = useLocalization();
+
   return (
     <div className="w-full h-full flex flex-col items-center justify-center p-8">
       <h1 className="text-4xl font-headline text-primary mb-12" style={{textShadow: '0 0 10px hsl(var(--primary))'}}>FADEL MUHAMAD RIFAI</h1>
@@ -37,8 +40,8 @@ export default function MainMenu({ menuItems, selectedItem }: MainMenuProps) {
         ))}
       </ul>
       <div className="mt-16 text-center text-lg text-gray-400 font-code">
-        <p>Use [ARROW KEYS] or [JOYSTICK] to navigate.</p>
-        <p>[A] or [ENTER] to select.</p>
+        <p>{t('mainMenu.controls.navigate')}</p>
+        <p>{t('mainMenu.controls.select')}</p>
       </div>
     </div>
   );

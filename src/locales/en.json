@@ -1,0 +1,121 @@
+
+{
+    "loading": "LOADING...",
+    "mainTitle": "Arcade Portfolio",
+    "bootScreen": {
+        "pressStart": "PRESS START",
+        "rightsReserved": "ALL RIGHTS RESERVED."
+    },
+    "mainMenu": {
+        "projectList": "Project List",
+        "certified": "Certified",
+        "aboutMe": "About Me",
+        "settings": "Settings",
+        "controls": {
+            "navigate": "Use [ARROW KEYS] or [JOYSTICK] to navigate.",
+            "select": "[A] or [ENTER] to select."
+        }
+    },
+    "controls": {
+        "joystick": "JOYSTICK",
+        "upDown": "UP/DOWN",
+        "start": "START",
+        "bBack": "B (Back)",
+        "aSelect": "A (Select)"
+    },
+    "projects": {
+        "title": "PROJECT LIST",
+        "created": "Created",
+        "visitWebsite": "Visit Website",
+        "controls": {
+            "list": {
+                "navigate": "Use [ARROW KEYS] to navigate. [A] or [ENTER] to select.",
+                "back": "[B] or [ESC] to go back to Main Menu."
+            },
+            "detail": {
+                "navigate": "Use [ARROW KEYS] to select. [A] or [ENTER] to activate.",
+                "back": "[B] or [ESC] to go back to list."
+            }
+        },
+        "tanma": {
+            "title": "Tanma",
+            "description": "An application about daily reports at my workplace (reliance insurance) to simplify reporting that can be exported and display graphs for an analysis if needed. there are additional tools to support work such as meeting minutes, user management, chat rooms, PDF tools (merging, selection), and separate bills manually."
+        },
+        "cewekalcer": {
+            "title": "cewe(k)alcer",
+            "description": "application to provide affiliate links with the main feature of QR Code and can add 3 links (Shopee, TiktokShop, Tokopedia)."
+        },
+        "bayargess": {
+            "title": "bayarGess",
+            "description": "A separate billing app that uses AI for receipt reading and item sharing. perfect for those of you who are bothered to share the cost of food with friends."
+        }
+    },
+    "certifications": {
+        "title": "CERTIFICATIONS",
+        "alt": "Certificate for",
+        "controls": {
+            "navigate": "Use [ARROW KEYS] or [JOYSTICK] to navigate. [A] to view.",
+            "backToMain": "[B] or [ESC] to go back to Main Menu.",
+            "scroll": "Hold [JOYSTICK] or [ARROW KEYS] to scroll.",
+            "backToList": "[B] or [ESC] to go back to list."
+        },
+        "list": {
+            "cs50Intro": {
+                "title": "CS50’s Introduction to Computer Science",
+                "issuer": "Harvard University"
+            },
+            "cs50Web": {
+                "title": "CS50’s Web Programming with Python and JavaScript",
+                "issuer": "Harvard University"
+            },
+            "cs50AI": {
+                "title": "CS50’s Introduction to Artificial Intelligence with Python",
+                "issuer": "Harvard University"
+            },
+            "cs50Game": {
+                "title": "CS50’s Introduction to Game Development",
+                "issuer": "Harvard University"
+            },
+            "cs50Python": {
+                "title": "CS50’s Introduction to Programming with Python",
+                "issuer": "Harvard University"
+            },
+            "hacktiv8": {
+                "title": "Software Engineer",
+                "issuer": "Hacktiv8 Indonesia"
+            }
+        }
+    },
+    "aboutMe": {
+        "title": "ABOUT ME",
+        "intro": "Hello! I'm Fadel Muhamad Rifai, a passionate software engineer with a love for creating innovative and engaging digital experiences. This retro arcade portfolio is a testament to my dedication to blending creative design with robust technical implementation.",
+        "journey": "My journey into the world of programming started with a fascination for video games and evolved into a deep interest in web development, AI, and system architecture. I thrive on challenges and am constantly exploring new technologies to push the boundaries of what's possible.",
+        "philosophyTitle": "My Philosophy",
+        "philosophy": "I believe that the best products are born from a combination of user-centric design, clean and efficient code, and a collaborative spirit. I strive to write code that is not only functional but also maintainable and scalable.",
+        "skillsTitle": "Skills & Expertise",
+        "skills": {
+            "frontend": "Frontend: React, Next.js, TypeScript, TailwindCSS",
+            "backend": "Backend: Node.js, Python, Go",
+            "databases": "Databases: PostgreSQL, MongoDB, Firebase",
+            "ai": "AI/ML: Genkit, TensorFlow, PyTorch",
+            "devops": "DevOps: Docker, Kubernetes, CI/CD"
+        },
+        "thanks": "Thank you for visiting my arcade hub. Feel free to explore my projects and don't hesitate to reach out!",
+        "controls": {
+            "scroll": "Hold [JOYSTICK] or [ARROW KEYS] to scroll.",
+            "back": "[B] or [ESC] to go back to Main Menu."
+        }
+    },
+    "settings": {
+        "title": "SETTINGS",
+        "language": "Language",
+        "music": "Music",
+        "volume": "Volume",
+        "soundFx": "Sound FX",
+        "scanlines": "Scanline Effect",
+        "controls": {
+            "navigate": "[UP/DOWN] to navigate/adjust. [A] to toggle/select.",
+            "back": "[B] or [ESC] to go back."
+        }
+    }
+}

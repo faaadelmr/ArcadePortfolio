@@ -1,60 +1,16 @@
 
 'use client';
 
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
-import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 import useArcadeSounds from '@/hooks/useArcadeSounds';
+import { useLocalization } from '@/hooks/useLocalization';
 
 const backToMainEvent = new Event('backToMain', { bubbles: true });
-
-const certifications = [
-  {
-    title: 'CS50’s Introduction to Computer Science',
-    issuer: 'Harvard University',
-    date: '2022-12-31',
-    imageUrl: 'https://placehold.co/800x600',
-    imageHint: 'certificate document',
-  },
-  {
-    title: 'CS50’s Web Programming with Python and JavaScript',
-    issuer: 'Harvard University',
-    date: '2023-01-20',
-    imageUrl: 'https://placehold.co/800x600',
-    imageHint: 'certificate document',
-  },
-  {
-    title: 'CS50’s Introduction to Artificial Intelligence with Python',
-    issuer: 'Harvard University',
-    date: '2023-01-20',
-    imageUrl: 'https://placehold.co/800x600',
-    imageHint: 'certificate document',
-  },
-  {
-    title: 'CS50’s Introduction to Game Development',
-    issuer: 'Harvard University',
-    date: '2023-01-20',
-    imageUrl: 'https://placehold.co/800x600',
-    imageHint: 'certificate document',
-  },
-  {
-    title: 'CS50’s Introduction to Programming with Python',
-    issuer: 'Harvard University',
-    date: '2023-01-20',
-    imageUrl: 'https://placehold.co/800x600',
-    imageHint: 'certificate document',
-  },
-  {
-    title: 'Software Engineer',
-    issuer: 'Hacktiv8 Indonesia',
-    date: '2023-01-20',
-    imageUrl: 'https://placehold.co/800x600',
-    imageHint: 'certificate document',
-  },
-];
 
 export default function Certified() {
   const [selectedItem, setSelectedItem] = useState(0);
@@ -64,10 +20,56 @@ export default function Certified() {
   const { playNavigate, playSelect, playBack } = useArcadeSounds();
   const scrollIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const [scrollingDirection, setScrollingDirection] = useState<'up' | 'down' | null>(null);
+  const { t } = useLocalization();
+  
+  const certifications = useMemo(() => [
+    {
+      titleKey: 'certifications.list.cs50Intro.title',
+      issuerKey: 'certifications.list.cs50Intro.issuer',
+      date: '2022-12-31',
+      imageUrl: 'https://placehold.co/800x600',
+      imageHint: 'certificate document',
+    },
+    {
+      titleKey: 'certifications.list.cs50Web.title',
+      issuerKey: 'certifications.list.cs50Web.issuer',
+      date: '2023-01-20',
+      imageUrl: 'https://placehold.co/800x600',
+      imageHint: 'certificate document',
+    },
+    {
+      titleKey: 'certifications.list.cs50AI.title',
+      issuerKey: 'certifications.list.cs50AI.issuer',
+      date: '2023-01-20',
+      imageUrl: 'https://placehold.co/800x600',
+      imageHint: 'certificate document',
+    },
+    {
+      titleKey: 'certifications.list.cs50Game.title',
+      issuerKey: 'certifications.list.cs50Game.issuer',
+      date: '2023-01-20',
+      imageUrl: 'https://placehold.co/800x600',
+      imageHint: 'certificate document',
+    },
+    {
+      titleKey: 'certifications.list.cs50Python.title',
+      issuerKey: 'certifications.list.cs50Python.issuer',
+      date: '2023-01-20',
+      imageUrl: 'https://placehold.co/800x600',
+      imageHint: 'certificate document',
+    },
+    {
+      titleKey: 'certifications.list.hacktiv8.title',
+      issuerKey: 'certifications.list.hacktiv8.issuer',
+      date: '2023-01-20',
+      imageUrl: 'https://placehold.co/800x600',
+      imageHint: 'certificate document',
+    },
+  ], []);
 
   useEffect(() => {
     itemRefs.current = itemRefs.current.slice(0, certifications.length);
-  }, []);
+  }, [certifications.length]);
 
   useEffect(() => {
     if (viewingCertIndex === null && itemRefs.current[selectedItem]) {
@@ -85,7 +87,7 @@ export default function Certified() {
       const newIndex = direction === 'up' ? prev - 1 : prev + 1;
       return (newIndex + certifications.length) % certifications.length;
     });
-  }, [playNavigate, viewingCertIndex]);
+  }, [playNavigate, viewingCertIndex, certifications.length]);
 
   const handleSelectCert = useCallback(() => {
     if (viewingCertIndex !== null) return;
@@ -208,6 +210,7 @@ export default function Certified() {
   const cert = viewingCertIndex !== null ? certifications[viewingCertIndex] : null;
 
   if (cert) {
+    const title = t(cert.titleKey);
     return (
       <div className="w-full h-full flex flex-col p-4 sm:p-6 text-white animate-pixel-in">
         <div className="flex items-center mb-4 flex-shrink-0">
@@ -215,14 +218,14 @@ export default function Certified() {
             <ArrowLeft />
           </Button>
           <div className='truncate'>
-            <h1 className="text-xl sm:text-2xl lg:text-3xl font-headline text-primary truncate">{cert.title}</h1>
-            <p className="text-sm sm:text-base text-gray-300 truncate">{cert.issuer}</p>
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-headline text-primary truncate">{title}</h1>
+            <p className="text-sm sm:text-base text-gray-300 truncate">{t(cert.issuerKey)}</p>
           </div>
         </div>
         <ScrollArea viewportRef={scrollViewportRef} className="flex-grow pr-2">
             <Image 
                 src={cert.imageUrl}
-                alt={`Certificate for ${cert.title}`}
+                alt={`${t('certifications.alt')} ${title}`}
                 width={800}
                 height={600}
                 className="rounded-lg border-2 border-primary/50 object-contain w-full h-auto"
@@ -230,8 +233,8 @@ export default function Certified() {
             />
         </ScrollArea>
         <div className="mt-4 text-center text-sm sm:text-lg text-gray-400 font-code flex-shrink-0">
-          <p>Hold [JOYSTICK] or [ARROW KEYS] to scroll.</p>
-          <p>[B] or [ESC] to go back to list.</p>
+          <p>{t('certifications.controls.scroll')}</p>
+          <p>{t('certifications.controls.backToList')}</p>
         </div>
       </div>
     );
@@ -239,7 +242,7 @@ export default function Certified() {
 
   return (
     <div className="w-full h-full flex flex-col p-4 sm:p-8 text-white">
-      <h1 className="text-3xl sm:text-5xl font-headline text-primary mb-4 sm:mb-8 text-center">CERTIFICATIONS</h1>
+      <h1 className="text-3xl sm:text-5xl font-headline text-primary mb-4 sm:mb-8 text-center">{t('certifications.title')}</h1>
       <ScrollArea className="flex-grow pr-4">
         <ul className="space-y-4">
           {certifications.map((cert, index) => (
@@ -257,17 +260,17 @@ export default function Certified() {
                   "text-xl sm:text-2xl font-headline truncate",
                   selectedItem === index ? 'text-accent' : 'text-white'
               )}>
-                {cert.title}
+                {t(cert.titleKey)}
               </h2>
-              <p className="text-base sm:text-lg text-gray-300">{cert.issuer}</p>
+              <p className="text-base sm:text-lg text-gray-300">{t(cert.issuerKey)}</p>
               <p className="text-sm font-code text-primary/80 mt-1">{cert.date}</p>
             </li>
           ))}
         </ul>
       </ScrollArea>
       <div className="mt-4 sm:mt-8 text-center text-sm sm:text-lg text-gray-400 font-code">
-        <p>Use [ARROW KEYS] or [JOYSTICK] to navigate. [A] to view.</p>
-        <p>[B] or [ESC] to go back to Main Menu.</p>
+        <p>{t('certifications.controls.navigate')}</p>
+        <p>{t('certifications.controls.backToMain')}</p>
       </div>
     </div>
   );

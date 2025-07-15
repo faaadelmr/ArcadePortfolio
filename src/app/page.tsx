@@ -9,6 +9,7 @@ import SettingsPage from '@/components/pixelplay/SettingsPage';
 import AboutMePage from '@/components/pixelplay/AboutMePage';
 import useArcadeSounds from '@/hooks/useArcadeSounds';
 import useBackgroundMusic from '@/hooks/useBackgroundMusic';
+import { useLocalization } from '@/hooks/useLocalization';
 import { cn } from '@/lib/utils';
 import { Gamepad2, Trophy, Settings as SettingsIcon, User } from 'lucide-react';
 import BootScreen from '@/components/pixelplay/BootScreen';
@@ -16,15 +17,6 @@ import LoadingScreen from '@/components/pixelplay/LoadingScreen';
 
 type Page = 'main' | 'games' | 'scores' | 'settings' | 'about';
 type GameState = 'loading' | 'booting' | 'active';
-
-const menuItems = [
-  { id: 'games', label: 'Project List', icon: Gamepad2, target: 'games' as Page },
-  { id: 'scores', label: 'Certified', icon: Trophy, target: 'scores' as Page },
-  { id: 'about', label: 'About Me', icon: User, target: 'about' as Page },
-  { id: 'settings', label: 'Settings', icon: SettingsIcon, target: 'settings' as Page },
-];
-
-const DRAG_THRESHOLD = 20; // pixels
 
 export default function PixelPlayHub() {
   const [gameState, setGameState] = useState<GameState>('loading');
@@ -35,6 +27,14 @@ export default function PixelPlayHub() {
   const [isDragging, setIsDragging] = useState(false);
   const [dragStartPos, setDragStartPos] = useState<number | null>(null);
   const [joystickTranslateY, setJoystickTranslateY] = useState(0);
+  const { t, isLocalizationReady } = useLocalization();
+
+  const menuItems = useMemo(() => [
+    { id: 'games', label: t('mainMenu.projectList'), icon: Gamepad2, target: 'games' as Page },
+    { id: 'scores', label: t('mainMenu.certified'), icon: Trophy, target: 'scores' as Page },
+    { id: 'about', label: t('mainMenu.aboutMe'), icon: User, target: 'about' as Page },
+    { id: 'settings', label: t('mainMenu.settings'), icon: SettingsIcon, target: 'settings' as Page },
+  ], [t]);
   
   const { isReady: musicReady, isMusicEnabled, playMusic, pauseMusic, volume } = useBackgroundMusic();
   const { isReady: soundsReady, playNavigate, playSelect, playBack, playStart } = useArcadeSounds({ volume: isMusicEnabled ? volume : 0 });
@@ -48,11 +48,13 @@ export default function PixelPlayHub() {
   }, [gameState, isMusicEnabled, playMusic, pauseMusic]);
 
   useEffect(() => {
-    if (gameState === 'loading' && soundsReady && musicReady) {
+    if (gameState === 'loading' && soundsReady && musicReady && isLocalizationReady) {
         setGameState('booting');
     }
-  }, [gameState, soundsReady, musicReady]);
+  }, [gameState, soundsReady, musicReady, isLocalizationReady]);
 
+
+  const DRAG_THRESHOLD = 20; // pixels
 
   const handleNavigation = useCallback((direction: 'up' | 'down') => {
     if (isTransitioning || gameState !== 'active') return;
@@ -83,7 +85,7 @@ export default function PixelPlayHub() {
       const selectEvent = new KeyboardEvent('keydown', { key: 'a', bubbles: true });
       window.dispatchEvent(selectEvent);
     }
-  }, [currentPage, isTransitioning, playSelect, selectedItem, gameState]);
+  }, [currentPage, isTransitioning, playSelect, selectedItem, gameState, menuItems]);
 
   const handleBack = useCallback(() => {
     if (isTransitioning || gameState !== 'active' || currentPage === 'main') return;
@@ -103,6 +105,7 @@ export default function PixelPlayHub() {
 
     if (gameState === 'booting') {
         setGameState('active');
+        playMusic();
     } else if (gameState === 'active') {
         if (currentPage === 'main') {
             handleSelect();
@@ -112,7 +115,7 @@ export default function PixelPlayHub() {
           window.dispatchEvent(startEvent);
         }
     }
-  }, [isTransitioning, gameState, currentPage, handleSelect, playStart]);
+  }, [isTransitioning, gameState, currentPage, handleSelect, playStart, playMusic]);
 
   const getClientY = (e: React.MouseEvent | React.TouchEvent) => {
     return 'touches' in e ? e.touches[0].clientY : e.clientY;
@@ -246,7 +249,7 @@ export default function PixelPlayHub() {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('backToMain', onBackFromComponent);
     };
-  }, [handleNavigation, handleSelect, handleBack, handleStartButton, currentPage, playNavigate, isTransitioning, gameState]);
+  }, [handleNavigation, handleSelect, handleBack, handleStartButton, currentPage, playNavigate, isTransitioning, gameState, menuItems.length]);
 
   useEffect(() => {
     if (activeButton) {
@@ -256,7 +259,7 @@ export default function PixelPlayHub() {
   }, [activeButton]);
 
   const CurrentPageComponent = useMemo(() => {
-    if (gameState === 'loading') {
+    if (gameState === 'loading' || !isLocalizationReady) {
       return <LoadingScreen />;
     }
     if (gameState === 'booting') {
@@ -276,7 +279,7 @@ export default function PixelPlayHub() {
       default:
         return <MainMenu menuItems={menuItems} selectedItem={selectedItem} />;
     }
-  }, [currentPage, selectedItem, gameState]);
+  }, [currentPage, selectedItem, gameState, menuItems, isLocalizationReady]);
 
   const handleButtonPress = (action: 'a' | 'b' | 'start') => {
     switch(action) {
@@ -336,8 +339,8 @@ export default function PixelPlayHub() {
                 </div>
               </div>
               <div className="font-headline text-center text-xs sm:text-sm text-gray-400">
-                <p>JOYSTICK</p>
-                <p>UP/DOWN</p>
+                <p>{t('controls.joystick')}</p>
+                <p>{t('controls.upDown')}</p>
               </div>
             </div>
             
@@ -351,7 +354,7 @@ export default function PixelPlayHub() {
                     activeButton === 'start' ? 'translate-y-1 border-b-0' : ''
                   )}
                 ></button>
-                <p className="mt-2 font-headline text-xs sm:text-sm text-gray-400">START</p>
+                <p className="mt-2 font-headline text-xs sm:text-sm text-gray-400">{t('controls.start')}</p>
               </div>
               <div className="text-center">
                 <button 
@@ -362,7 +365,7 @@ export default function PixelPlayHub() {
                     activeButton === 'b' ? 'translate-y-1 border-b-2' : ''
                   )}
                 ></button>
-                <p className="mt-2 font-headline text-xs sm:text-sm text-primary">B (Back)</p>
+                <p className="mt-2 font-headline text-xs sm:text-sm text-primary">{t('controls.bBack')}</p>
               </div>
               <div className="text-center">
                 <button 
@@ -373,13 +376,13 @@ export default function PixelPlayHub() {
                     activeButton === 'a' ? 'translate-y-1 border-b-2' : ''
                   )}
                 ></button>
-                <p className="mt-2 font-headline text-xs sm:text-sm text-accent">A (Select)</p>
+                <p className="mt-2 font-headline text-xs sm:text-sm text-accent">{t('controls.aSelect')}</p>
               </div>
             </div>
           </div>
   
           <div className="text-center pt-2 sm:pt-4">
-              <h1 className="text-lg sm:text-2xl md:text-3xl font-headline text-primary tracking-widest">Arcade Portfolio</h1>
+              <h1 className="text-lg sm:text-2xl md:text-3xl font-headline text-primary tracking-widest">{t('mainTitle')}</h1>
           </div>
         </div>
       </main>
