@@ -15,7 +15,7 @@ import BootScreen from '@/components/pixelplay/BootScreen';
 import LoadingScreen from '@/components/pixelplay/LoadingScreen';
 
 type Page = 'main' | 'games' | 'scores' | 'settings' | 'about';
-type GameState = 'booting' | 'loading' | 'active';
+type GameState = 'loading' | 'booting' | 'active';
 
 const menuItems = [
   { id: 'games', label: 'Project List', icon: Gamepad2, target: 'games' as Page },
@@ -27,7 +27,7 @@ const menuItems = [
 const DRAG_THRESHOLD = 20; // pixels
 
 export default function PixelPlayHub() {
-  const [gameState, setGameState] = useState<GameState>('booting');
+  const [gameState, setGameState] = useState<GameState>('loading');
   const [currentPage, setCurrentPage] = useState<Page>('main');
   const [selectedItem, setSelectedItem] = useState(0);
   const [activeButton, setActiveButton] = useState<string | null>(null);
@@ -40,7 +40,7 @@ export default function PixelPlayHub() {
   const { isReady: soundsReady, playNavigate, playSelect, playBack, playStart } = useArcadeSounds({ volume: isMusicEnabled ? volume : 0 });
 
   useEffect(() => {
-    if (gameState === 'active' && isMusicEnabled) {
+    if ((gameState === 'booting' || gameState === 'active') && isMusicEnabled) {
       playMusic();
     } else {
       pauseMusic();
@@ -49,7 +49,7 @@ export default function PixelPlayHub() {
 
   useEffect(() => {
     if (gameState === 'loading' && soundsReady && musicReady) {
-        setGameState('active');
+        setGameState('booting');
     }
   }, [gameState, soundsReady, musicReady]);
 
@@ -97,12 +97,12 @@ export default function PixelPlayHub() {
   }, [currentPage, isTransitioning, playBack, gameState]);
 
   const handleStartButton = useCallback(() => {
-    if (isTransitioning) return;
+    if (isTransitioning || gameState === 'loading') return;
     playStart();
     setActiveButton('start');
 
     if (gameState === 'booting') {
-        setGameState('loading');
+        setGameState('active');
     } else if (gameState === 'active') {
         if (currentPage === 'main') {
             handleSelect();
@@ -256,11 +256,11 @@ export default function PixelPlayHub() {
   }, [activeButton]);
 
   const CurrentPageComponent = useMemo(() => {
-    if (gameState === 'booting') {
-      return <BootScreen />;
-    }
     if (gameState === 'loading') {
       return <LoadingScreen />;
+    }
+    if (gameState === 'booting') {
+      return <BootScreen />;
     }
 
     switch (currentPage) {
@@ -302,7 +302,7 @@ export default function PixelPlayHub() {
               <span className="text-accent font-headline text-sm">P1</span>
               <div className={cn(
                 "w-3 h-3 rounded-full",
-                gameState === 'booting' || gameState === 'loading'
+                gameState === 'loading'
                   ? 'bg-red-600 shadow-[0_0_8px_red]'
                   : 'bg-green-600 shadow-[0_0_8px_green]'
               )}></div>
