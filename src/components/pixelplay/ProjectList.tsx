@@ -255,13 +255,13 @@ export default function ProjectList() {
               <p className="text-base sm:text-lg text-gray-300 mb-4">{project.description}</p>
               <p className="text-sm text-accent font-code mb-6">Created: {project.date}</p>
               <div className="flex flex-col gap-4 mt-auto">
-                <Button ref={el => detailItemRefs.current[2] = el} asChild className={cn("w-full bg-primary hover:bg-primary/90 text-primary-foreground font-headline text-sm sm:text-base", selectedDetailButton === 2 ? 'ring-2 ring-primary' : '')}>
+                <Button ref={el => detailItemRefs.current[2] = el} asChild className={cn("w-full bg-primary text-primary-foreground font-headline text-sm sm:text-base", selectedDetailButton === 2 ? 'ring-2 ring-white bg-primary/90' : '')}>
                   <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" tabIndex={-1} onClick={(e) => { e.preventDefault(); if(project.liveUrl !== '#') window.open(project.liveUrl, '_blank') }}>
                     <Globe className="mr-2 h-5 w-5" />
                     Visit Website
                   </a>
                 </Button>
-                <Button ref={el => detailItemRefs.current[3] = el} asChild variant="outline" className={cn("w-full font-headline border-accent text-accent hover:bg-accent hover:text-accent-foreground text-sm sm:text-base", selectedDetailButton === 3 ? 'ring-2 ring-accent' : '')}>
+                <Button ref={el => detailItemRefs.current[3] = el} asChild variant="outline" className={cn("w-full font-headline border-accent text-accent text-sm sm:text-base", selectedDetailButton === 3 ? 'ring-2 ring-accent bg-accent text-accent-foreground' : '')}>
                   <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" tabIndex={-1} onClick={(e) => { e.preventDefault(); if(project.githubUrl !== '#') window.open(project.githubUrl, '_blank') }}>
                     <Github className="mr-2 h-5 w-5" />
                     GitHub
