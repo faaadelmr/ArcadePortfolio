@@ -5,11 +5,11 @@ import { useEffect, useRef, useCallback, useState } from 'react';
 import type { Synth } from 'tone';
 
 interface UseArcadeSoundsProps {
-  volume: number;
+  volume?: number;
 }
 
 // This hook safely handles Tone.js which is a client-side library.
-export default function useArcadeSounds({ volume }: UseArcadeSoundsProps) {
+export default function useArcadeSounds({ volume = 0.5 }: UseArcadeSoundsProps) {
   const Tone = useRef<typeof import('tone') | null>(null);
   const synth = useRef<Synth | null>(null);
   const isSoundPlaying = useRef(false);

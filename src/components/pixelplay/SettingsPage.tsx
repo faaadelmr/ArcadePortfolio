@@ -14,8 +14,8 @@ const backToMainEvent = new Event('backToMain', { bubbles: true });
 
 export default function SettingsPage() {
   const [selectedItem, setSelectedItem] = useState(0);
-  const { playNavigate, playSelect, playBack } = useArcadeSounds();
   const { isMusicEnabled, toggleMusic, volume, setVolume, isInitialized } = useBackgroundMusic();
+  const { playNavigate, playSelect, playBack } = useArcadeSounds({ volume: isMusicEnabled ? volume : 0 });
 
   const settings = [
     { id: 'music', label: 'Music', onToggle: toggleMusic, isEnabled: isMusicEnabled, type: 'switch' },
