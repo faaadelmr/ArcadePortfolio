@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
@@ -6,25 +7,21 @@ import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 import useArcadeSounds from '@/hooks/useArcadeSounds';
 import useBackgroundMusic from '@/hooks/useBackgroundMusic';
+import { Slider } from '@/components/ui/slider';
+import { Volume1, Volume2, VolumeX } from 'lucide-react';
 
 const backToMainEvent = new Event('backToMain', { bubbles: true });
 
 export default function SettingsPage() {
   const [selectedItem, setSelectedItem] = useState(0);
   const { playNavigate, playSelect, playBack } = useArcadeSounds();
-  const { isMusicEnabled, toggleMusic } = useBackgroundMusic();
-  const [isMounted, setIsMounted] = useState(false);
-
-  // Avoid hydration mismatch by waiting for the client to mount
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
+  const { isMusicEnabled, toggleMusic, volume, setVolume, isInitialized } = useBackgroundMusic();
 
   const settings = [
-    { id: 'sound', label: 'Sound FX', onToggle: () => {}, isEnabled: true }, // Placeholder for sound FX
-    { id: 'music', label: 'Music', onToggle: toggleMusic, isEnabled: isMusicEnabled },
-    { id: 'scanlines', label: 'Scanline Effect', onToggle: () => {}, isEnabled: true },
-    { id: 'difficulty', label: 'Hard Mode', onToggle: () => {}, isEnabled: false },
+    { id: 'music', label: 'Music', onToggle: toggleMusic, isEnabled: isMusicEnabled, type: 'switch' },
+    { id: 'volume', label: 'Volume', type: 'slider', value: volume * 100, onValueChange: (newVolume: number) => setVolume(newVolume / 100) },
+    { id: 'sound', label: 'Sound FX', onToggle: () => {}, isEnabled: true, type: 'switch' }, // Placeholder for sound FX
+    { id: 'scanlines', label: 'Scanline Effect', onToggle: () => {}, isEnabled: true, type: 'switch' },
   ];
 
   const handleNavigation = useCallback((direction: 'up' | 'down') => {
@@ -37,8 +34,27 @@ export default function SettingsPage() {
 
   const handleToggle = useCallback(() => {
     playSelect();
-    settings[selectedItem].onToggle();
+    const currentSetting = settings[selectedItem];
+    if (currentSetting.type === 'switch' && currentSetting.onToggle) {
+        currentSetting.onToggle();
+    }
   }, [selectedItem, playSelect, settings]);
+
+  const handleSliderChange = useCallback((direction: 'left' | 'right') => {
+    const currentSetting = settings[selectedItem];
+    if (currentSetting.type !== 'slider') return;
+    
+    playNavigate();
+    const currentValue = currentSetting.value;
+    const step = 5;
+    const newValue = direction === 'left' 
+      ? Math.max(0, currentValue - step)
+      : Math.min(100, currentValue + step);
+    
+    if (currentSetting.onValueChange) {
+      currentSetting.onValueChange(newValue);
+    }
+  }, [selectedItem, settings, playNavigate]);
 
   const handleBack = useCallback(() => {
     playBack();
@@ -54,6 +70,12 @@ export default function SettingsPage() {
           break;
         case 'arrowdown':
           handleNavigation('down');
+          break;
+        case 'arrowleft':
+          handleSliderChange('left');
+          break;
+        case 'arrowright':
+          handleSliderChange('right');
           break;
         case 'a':
         case 'enter':
@@ -71,11 +93,16 @@ export default function SettingsPage() {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [handleNavigation, handleToggle, handleBack]);
+  }, [handleNavigation, handleToggle, handleBack, handleSliderChange]);
 
-  if (!isMounted) {
-    // Render nothing or a loading state until mounted to prevent hydration errors
-    return null;
+  const getVolumeIcon = () => {
+    if (volume === 0 || !isMusicEnabled) return <VolumeX className="w-6 h-6" />;
+    if (volume < 0.5) return <Volume1 className="w-6 h-6" />;
+    return <Volume2 className="w-6 h-6" />;
+  }
+
+  if (!isInitialized) {
+    return null; // Prevent hydration mismatch
   }
   
   return (
@@ -93,21 +120,36 @@ export default function SettingsPage() {
             <Label 
                 htmlFor={setting.id} 
                 className={cn(
-                    "text-2xl font-headline cursor-pointer",
+                    "text-2xl font-headline cursor-pointer flex items-center gap-4",
                     selectedItem === index ? 'text-accent' : 'text-white'
                 )}
             >
+                {setting.id === 'volume' && getVolumeIcon()}
                 {setting.label}
             </Label>
-            <Switch 
-              id={setting.id} 
-              checked={setting.isEnabled}
-              onCheckedChange={setting.onToggle}
-            />
+            {setting.type === 'switch' && (
+              <Switch 
+                id={setting.id} 
+                checked={setting.isEnabled}
+                onCheckedChange={setting.onToggle}
+              />
+            )}
+            {setting.type === 'slider' && (
+               <Slider
+                id={setting.id}
+                value={[setting.value]}
+                onValueChange={(value) => setting.onValueChange?.(value[0])}
+                max={100}
+                step={1}
+                className={cn('w-[50%]', selectedItem === index ? 'opacity-100' : 'opacity-70')}
+                disabled={!isMusicEnabled}
+              />
+            )}
           </li>
         ))}
       </ul>
       <div className="mt-8 text-center text-lg text-gray-400 font-code">
+        <p>[ARROW KEYS] to navigate/adjust. [A] to toggle.</p>
         <p>[B] or [ESC] to go back.</p>
       </div>
     </div>
