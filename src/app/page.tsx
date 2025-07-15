@@ -8,6 +8,7 @@ import Certified from '@/components/pixelplay/Certified';
 import SettingsPage from '@/components/pixelplay/SettingsPage';
 import AboutMePage from '@/components/pixelplay/AboutMePage';
 import useArcadeSounds from '@/hooks/useArcadeSounds';
+import useBackgroundMusic from '@/hooks/useBackgroundMusic';
 import { cn } from '@/lib/utils';
 import { Gamepad2, Trophy, Settings as SettingsIcon, User } from 'lucide-react';
 import BootScreen from '@/components/pixelplay/BootScreen';
@@ -36,6 +37,16 @@ export default function PixelPlayHub() {
   const [joystickTranslateY, setJoystickTranslateY] = useState(0);
 
   const { playNavigate, playSelect, playBack, playStart } = useArcadeSounds();
+  const { MusicPlayer, isMusicEnabled, playMusic, pauseMusic } = useBackgroundMusic();
+
+  useEffect(() => {
+    if (gameState === 'active' && isMusicEnabled) {
+      playMusic();
+    } else {
+      pauseMusic();
+    }
+  }, [gameState, isMusicEnabled, playMusic, pauseMusic]);
+
 
   const handleNavigation = useCallback((direction: 'up' | 'down') => {
     if (isTransitioning || gameState !== 'active') return;
@@ -280,6 +291,7 @@ export default function PixelPlayHub() {
 
   return (
     <div className="bg-background text-foreground h-screen flex items-center justify-center overflow-hidden p-2 sm:p-4">
+      <MusicPlayer />
       <main className="w-full max-w-lg h-full max-h-[1024px] aspect-[9/19.5] flex flex-col items-center justify-center">
         <div className="w-full h-full bg-[#1a1a1a] rounded-2xl shadow-2xl p-2 sm:p-4 flex flex-col border-4 border-yellow-600 shadow-[inset_0_0_20px_black]">
           

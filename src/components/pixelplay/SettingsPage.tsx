@@ -5,19 +5,27 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 import useArcadeSounds from '@/hooks/useArcadeSounds';
-
-const settings = [
-  { id: 'sound', label: 'Sound FX', defaultChecked: true },
-  { id: 'music', label: 'Music', defaultChecked: false },
-  { id: 'scanlines', label: 'Scanline Effect', defaultChecked: true },
-  { id: 'difficulty', label: 'Hard Mode', defaultChecked: false },
-];
+import useBackgroundMusic from '@/hooks/useBackgroundMusic';
 
 const backToMainEvent = new Event('backToMain', { bubbles: true });
 
 export default function SettingsPage() {
   const [selectedItem, setSelectedItem] = useState(0);
   const { playNavigate, playSelect, playBack } = useArcadeSounds();
+  const { isMusicEnabled, toggleMusic } = useBackgroundMusic();
+  const [isMounted, setIsMounted] = useState(false);
+
+  // Avoid hydration mismatch by waiting for the client to mount
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  const settings = [
+    { id: 'sound', label: 'Sound FX', onToggle: () => {}, isEnabled: true }, // Placeholder for sound FX
+    { id: 'music', label: 'Music', onToggle: toggleMusic, isEnabled: isMusicEnabled },
+    { id: 'scanlines', label: 'Scanline Effect', onToggle: () => {}, isEnabled: true },
+    { id: 'difficulty', label: 'Hard Mode', onToggle: () => {}, isEnabled: false },
+  ];
 
   const handleNavigation = useCallback((direction: 'up' | 'down') => {
     playNavigate();
@@ -25,14 +33,12 @@ export default function SettingsPage() {
       const newIndex = direction === 'up' ? prev - 1 : prev + 1;
       return (newIndex + settings.length) % settings.length;
     });
-  }, [playNavigate]);
+  }, [playNavigate, settings.length]);
 
   const handleToggle = useCallback(() => {
     playSelect();
-    const settingId = settings[selectedItem].id;
-    const switchElement = document.getElementById(settingId) as HTMLButtonElement | null;
-    switchElement?.click();
-  }, [selectedItem, playSelect]);
+    settings[selectedItem].onToggle();
+  }, [selectedItem, playSelect, settings]);
 
   const handleBack = useCallback(() => {
     playBack();
@@ -67,6 +73,11 @@ export default function SettingsPage() {
     };
   }, [handleNavigation, handleToggle, handleBack]);
 
+  if (!isMounted) {
+    // Render nothing or a loading state until mounted to prevent hydration errors
+    return null;
+  }
+  
   return (
     <div className="w-full h-full flex flex-col p-8 text-white">
       <h1 className="text-5xl font-headline text-primary mb-8 text-center">SETTINGS</h1>
@@ -88,7 +99,11 @@ export default function SettingsPage() {
             >
                 {setting.label}
             </Label>
-            <Switch id={setting.id} defaultChecked={setting.defaultChecked} />
+            <Switch 
+              id={setting.id} 
+              checked={setting.isEnabled}
+              onCheckedChange={setting.onToggle}
+            />
           </li>
         ))}
       </ul>
