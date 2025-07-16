@@ -80,5 +80,6 @@
   }
   body {
     @apply bg-background text-foreground;
+    background-image: url("/pacman-bg.svg");
   }
 }

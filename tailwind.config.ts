@@ -9,6 +9,9 @@ export default {
   ],
   theme: {
     extend: {
+      backgroundImage: {
+        'pacman-pattern': "url('/pacman-bg.svg')",
+      },
       fontFamily: {
         body: ['"Space Grotesk"', 'sans-serif'],
         headline: ['"Space Grotesk"', 'sans-serif'],
