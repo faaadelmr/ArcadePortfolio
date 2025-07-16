@@ -26,7 +26,7 @@ export default function MainMenu({ menuItems, selectedItem }: MainMenuProps) {
           <li
             key={item.id}
             className={cn(
-              'flex items-center gap-4 text-3xl font-headline transition-all duration-200',
+              'flex items-center gap-4 text-2xl font-headline transition-all duration-200',
               selectedItem === index ? 'text-accent scale-110' : 'text-gray-500'
             )}
           >
@@ -40,7 +40,7 @@ export default function MainMenu({ menuItems, selectedItem }: MainMenuProps) {
           </li>
         ))}
       </ul>
-      <div className="mt-16 text-center text-lg text-gray-400 font-code">
+      <div className="mt-16 text-center text-sm text-gray-400 font-code">
         <p>{t('mainMenu.controls.navigate')}</p>
         <p>{t('mainMenu.controls.select')}</p>
       </div>

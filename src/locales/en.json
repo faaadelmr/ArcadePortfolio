@@ -40,7 +40,7 @@
         "list": [
             {
                 "titleKey": "projects.tanma.title",
-                "date": "2024-05-01",
+                "date": "2025-05-01",
                 "descriptionKey": "projects.tanma.description",
                 "imageUrl": "/project/tanma.png",
                 "imageHint": "Daily Report Claim",
@@ -49,7 +49,7 @@
             },
             {
                 "titleKey": "projects.cewekalcer.title",
-                "date": "2024-06-09",
+                "date": "2025-06-09",
                 "descriptionKey": "projects.cewekalcer.description",
                 "imageUrl": "/project/cewekalcer.png",
                 "imageHint": "CewekKalcer",

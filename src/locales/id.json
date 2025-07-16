@@ -37,6 +37,34 @@
                 "back": "[B] atau [ESC] untuk kembali ke daftar."
             }
         },
+        "list": [
+            {
+                "titleKey": "projects.tanma.title",
+                "date": "2025-05-01",
+                "descriptionKey": "projects.tanma.description",
+                "imageUrl": "/project/tanma.png",
+                "imageHint": "Daily Report Claim",
+                "liveUrl": "https://mentanma.cyou",
+                "githubUrl": "https://github.com/faaadelmr/tanma"
+            },
+            {
+                "titleKey": "projects.cewekalcer.title",
+                "date": "2025-06-09",
+                "descriptionKey": "projects.cewekalcer.description",
+                "imageUrl": "/project/cewekalcer.png",
+                "imageHint": "CewekKalcer",
+                "liveUrl": "https://cewekalcer.pages.dev/"
+            },
+            {
+                "titleKey": "projects.bayargess.title",
+                "date": "2025-07-12",
+                "descriptionKey": "projects.bayargess.description",
+                "imageUrl": "/project/bayargess.png",
+                "imageHint": "splitbill sharing",
+                "liveUrl": "https://bayargess.vercel.app/",
+                "githubUrl": "https://github.com/faaadelmr/bayarGess.git"
+            }
+        ],
         "tanma": {
             "title": "Tanma",
             "description": "Aplikasi tentang laporan harian di tempat kerja saya (reliance insurance) untuk menyederhanakan pelaporan yang dapat diekspor dan menampilkan grafik untuk analisis jika diperlukan. ada alat tambahan untuk mendukung pekerjaan seperti notulen rapat, manajemen pengguna, ruang obrolan, alat PDF (penggabungan, pemilihan), dan pisahkan tagihan secara manual."
