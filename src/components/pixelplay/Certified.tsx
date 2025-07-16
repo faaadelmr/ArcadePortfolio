@@ -12,6 +12,13 @@ import { useLocalization } from '@/hooks/useLocalization';
 
 const backToMainEvent = new Event('backToMain', { bubbles: true });
 
+interface Certification {
+    title: string;
+    issuer: string;
+    date: string;
+    imageUrl: string;
+}
+
 export default function Certified() {
   const [selectedItem, setSelectedItem] = useState(0);
   const [viewingCertIndex, setViewingCertIndex] = useState<number | null>(null);
@@ -22,20 +29,22 @@ export default function Certified() {
   const [scrollingDirection, setScrollingDirection] = useState<'up' | 'down' | null>(null);
   const { t } = useLocalization();
   
-  // All certification data is now loaded from the localization file.
-  const certifications = useMemo(() => {
+  const certifications: Certification[] = useMemo(() => {
     const certsData = t('certifications.list');
-    // The translation key returns a string, so we parse it.
-    // A bit of a hack, but it centralizes data management in the JSON file.
+    let parsedCerts: Certification[] = [];
     try {
         if (typeof certsData === 'string' && certsData.startsWith('[')) {
-             return JSON.parse(certsData);
+             parsedCerts = JSON.parse(certsData);
+        } else if (Array.isArray(certsData)) {
+            parsedCerts = certsData;
         }
-        return Array.isArray(certsData) ? certsData : [];
     } catch(e) {
         console.error("Could not parse certifications data from localization file.", e);
         return [];
     }
+    
+    return parsedCerts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
   }, [t]);
 
   useEffect(() => {

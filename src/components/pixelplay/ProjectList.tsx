@@ -19,34 +19,37 @@ export default function ProjectList() {
   const { playNavigate, playSelect, playBack } = useArcadeSounds();
   const { t } = useLocalization();
 
-  const projects = useMemo(() => [
-    { 
-      titleKey: 'projects.tanma.title', 
-      date: '2024-05-01',
-      descriptionKey: 'projects.tanma.description',
-      imageUrl: '/project/tanma.png',
-      imageHint: 'Daily Report Claim',
-      liveUrl: 'https://mentanma.cyou',
-      githubUrl: 'https://github.com/faaadelmr/tanma'
-    },
-    { 
-      titleKey: 'projects.cewekalcer.title', 
-      date: '2024-06-09',
-      descriptionKey: 'projects.cewekalcer.description',
-      imageUrl: '/project/cewekalcer.png',
-      imageHint: 'CewekKalcer',
-      liveUrl: 'https://cewekalcer.pages.dev/',
-    },
-    { 
-      titleKey: 'projects.bayargess.title', 
-      date: '2025-07-12',
-      descriptionKey: 'projects.bayargess.description',
-      imageUrl: '/project/bayargess.png',
-      imageHint: 'splitbill sharing',
-      liveUrl: 'https://bayargess.vercel.app/',
-      githubUrl: 'https://github.com/faaadelmr/bayarGess.git'
-    },
-  ], []);
+  const projects = useMemo(() => {
+    const unsortedProjects = [
+      { 
+        titleKey: 'projects.tanma.title', 
+        date: '2024-05-01',
+        descriptionKey: 'projects.tanma.description',
+        imageUrl: '/project/tanma.png',
+        imageHint: 'Daily Report Claim',
+        liveUrl: 'https://mentanma.cyou',
+        githubUrl: 'https://github.com/faaadelmr/tanma'
+      },
+      { 
+        titleKey: 'projects.cewekalcer.title', 
+        date: '2024-06-09',
+        descriptionKey: 'projects.cewekalcer.description',
+        imageUrl: '/project/cewekalcer.png',
+        imageHint: 'CewekKalcer',
+        liveUrl: 'https://cewekalcer.pages.dev/',
+      },
+      { 
+        titleKey: 'projects.bayargess.title', 
+        date: '2025-07-12',
+        descriptionKey: 'projects.bayargess.description',
+        imageUrl: '/project/bayargess.png',
+        imageHint: 'splitbill sharing',
+        liveUrl: 'https://bayargess.vercel.app/',
+        githubUrl: 'https://github.com/faaadelmr/bayarGess.git'
+      },
+    ];
+    return unsortedProjects.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  }, []);
 
   const itemRefs = useRef<(HTMLLIElement | null)[]>([]);
   const detailItemRefs = useRef<(HTMLElement | null)[]>([]);
