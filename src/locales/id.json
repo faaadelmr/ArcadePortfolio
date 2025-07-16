@@ -1,2 +1,96 @@
 
-{}
+{
+    "loading": "MEMUAT...",
+    "mainTitle": "Portofolio Arkade",
+    "bootScreen": {
+        "pressStart": "TEKAN MULAI",
+        "rightsReserved": "SEMUA HAK CIPTA DILINDUNGI."
+    },
+    "mainMenu": {
+        "projectList": "Daftar Proyek",
+        "certified": "Sertifikasi",
+        "aboutMe": "Tentang Saya",
+        "settings": "Pengaturan",
+        "controls": {
+            "navigate": "Gunakan [TOMBOL PANAH] atau [D-PAD] untuk navigasi.",
+            "select": "[A] atau [ENTER] untuk memilih."
+        }
+    },
+    "controls": {
+        "dpad": "D-PAD",
+        "upDown": "ATAS/BAWAH",
+        "start": "MULAI",
+        "bBack": "B (Kembali)",
+        "aSelect": "A (Pilih)"
+    },
+    "projects": {
+        "title": "DAFTAR PROYEK",
+        "created": "Dibuat",
+        "visitWebsite": "Kunjungi Situs Web",
+        "controls": {
+            "list": {
+                "navigate": "Gunakan [TOMBOL PANAH] untuk navigasi. [A] atau [ENTER] untuk memilih.",
+                "back": "[B] atau [ESC] untuk kembali ke Menu Utama."
+            },
+            "detail": {
+                "navigate": "Gunakan [TOMBOL PANAH] untuk memilih. [A] atau [ENTER] untuk mengaktifkan.",
+                "back": "[B] atau [ESC] untuk kembali ke daftar."
+            }
+        },
+        "tanma": {
+            "title": "Tanma",
+            "description": "Aplikasi tentang laporan harian di tempat kerja saya (reliance insurance) untuk menyederhanakan pelaporan yang dapat diekspor dan menampilkan grafik untuk analisis jika diperlukan. ada alat tambahan untuk mendukung pekerjaan seperti notulen rapat, manajemen pengguna, ruang obrolan, alat PDF (penggabungan, pemilihan), dan pisahkan tagihan secara manual."
+        },
+        "cewekalcer": {
+            "title": "cewe(k)alcer",
+            "description": "aplikasi untuk memberikan tautan afiliasi dengan fitur utama QR Code dan dapat menambahkan 3 tautan (Shopee, TiktokShop, Tokopedia)."
+        },
+        "bayargess": {
+            "title": "bayarGess",
+            "description": "Aplikasi pisah tagihan yang menggunakan AI untuk membaca struk dan berbagi item. sempurna bagi Anda yang repot untuk berbagi biaya makan dengan teman-teman."
+        }
+    },
+    "certifications": {
+        "title": "SERTIFIKASI",
+        "alt": "Sertifikat untuk",
+        "controls": {
+            "navigate": "Gunakan [TOMBOL PANAH] atau [D-PAD] untuk navigasi. [A] untuk melihat.",
+            "backToMain": "[B] atau [ESC] untuk kembali ke Menu Utama.",
+            "scroll": "Tahan [D-PAD] atau [TOMBOL PANAH] untuk menggulir.",
+            "backToList": "[B] atau [ESC] untuk kembali ke daftar."
+        },
+        "list": "[{\"title\":\"GIT untuk Pemula\",\"issuer\":\"Codepolitan\",\"date\":\"2025-04-08\",\"imageUrl\":\"/certified/GIT untuk Pemula.webp\"},{\"title\":\"HTML dan CSS\",\"issuer\":\"Codepolitan\",\"date\":\"2022-04-15\",\"imageUrl\":\"/certified/HTML dan CSS.webp\"},{\"title\":\"JavaScript Dasar\",\"issuer\":\"Codepolitan\",\"date\":\"2025-04-15\",\"imageUrl\":\"/certified/JavaScript Dasar.webp\"},{\"title\":\"Konsep Dasar Pemrograman Berorientasi Objek di PHP\",\"issuer\":\"Codepolitan\",\"date\":\"2025-05-03\",\"imageUrl\":\"/certified/Konsep Dasar Pemrograman Berorientasi Objek di PHP.webp\"},{\"title\":\"Laravel 6 Intermediate\",\"issuer\":\"Codepolitan\",\"date\":\"2025-04-10\",\"imageUrl\":\"/certified/Laravel 6 Intermediate.webp\"},{\"title\":\"Laravel 8x Fundamental\",\"issuer\":\"Codepolitan\",\"date\":\"2025-04-10\",\"imageUrl\":\"/certified/Laravel 8x Fundamental.webp\"},{\"title\":\"Laravel Development\",\"issuer\":\"Codepolitan\",\"date\":\"2022-03-01\",\"imageUrl\":\"/certified/Laravel Development.webp\"},{\"title\":\"Mengenal Pemrograman Komputer\",\"issuer\":\"Codepolitan\",\"date\":\"2025-04-08\",\"imageUrl\":\"/certified/Mengenal Pemrograman Komputer.webp\"},{\"title\":\"Menggunakan Bootstrap Framework\",\"issuer\":\"Codepolitan\",\"date\":\"2025-04-15\",\"imageUrl\":\"/certified/Menggunakan Bootstrap Framework.webp\"},{\"title\":\"Oracle Database Design\",\"issuer\":\"Codepolitan\",\"date\":\"2023-06-07\",\"imageUrl\":\"/certified/Oracle Database Design.webp\"},{\"title\":\"ORACLE DATABASE PROGRAMMING WITH SQL\",\"issuer\":\"Codepolitan\",\"date\":\"2023-12-18\",\"imageUrl\":\"/certified/ORACLE DATABASE PROGRAMMING WITH SQL.webp\"},{\"title\":\"Pemrograman PHP\",\"issuer\":\"Codepolitan\",\"date\":\"2025-04-20\",\"imageUrl\":\"/certified/Pemrograman PHP.webp\"},{\"title\":\"Penggunaan Database MySQL pada Pemrograman PHP\",\"issuer\":\"Codepolitan\",\"date\":\"2025-04-08\",\"imageUrl\":\"/certified/Penggunaan Database MySQL pada Pemrograman PHP.webp\"},{\"title\":\"Python Essentials 1\",\"issuer\":\"Codepolitan\",\"date\":\"2023-06-10\",\"imageUrl\":\"/certified/Python Essentials 1.webp\"},{\"title\":\"Python Essentials 2\",\"issuer\":\"Codepolitan\",\"date\":\"2023-06-10\",\"imageUrl\":\"/certified/Python Essentials 2.webp\"}]"
+    },
+    "aboutMe": {
+        "title": "TENTANG SAYA",
+        "intro": "Halo! Saya Fadel Muhamad Rifai, seorang insinyur perangkat lunak yang bersemangat dengan kecintaan untuk menciptakan pengalaman digital yang inovatif dan menarik. Portofolio arkade retro ini adalah bukti dedikasi saya untuk memadukan desain kreatif dengan implementasi teknis yang kuat.",
+        "journey": "Perjalanan saya ke dunia pemrograman dimulai dengan ketertarikan pada video game dan berkembang menjadi minat yang mendalam pada pengembangan web, AI, dan arsitektur sistem. Saya berkembang dalam tantangan dan terus mengeksplorasi teknologi baru untuk mendorong batas-batas dari apa yang mungkin.",
+        "philosophyTitle": "Filosofi Saya",
+        "philosophy": "Saya percaya bahwa produk terbaik lahir dari kombinasi desain yang berpusat pada pengguna, kode yang bersih dan efisien, dan semangat kolaboratif. Saya berusaha untuk menulis kode yang tidak hanya fungsional tetapi juga dapat dipelihara dan diskalakan.",
+        "skillsTitle": "Keterampilan & Keahlian",
+        "skills": {
+            "frontend": "Frontend: React, Next.js, TypeScript, TailwindCSS",
+            "backend": "Backend: Node.js, Python, Go",
+            "databases": "Database: PostgreSQL, MongoDB, Firebase",
+            "ai": "AI/ML: Genkit, TensorFlow, PyTorch",
+            "devops": "DevOps: Docker, Kubernetes, CI/CD"
+        },
+        "thanks": "Terima kasih telah mengunjungi pusat arkade saya. Jangan ragu untuk menjelajahi proyek-proyek saya dan jangan ragu untuk menghubungi!",
+        "controls": {
+            "scroll": "Tahan [D-PAD] atau [TOMBOL PANAH] untuk menggulir.",
+            "back": "[B] atau [ESC] untuk kembali ke Menu Utama."
+        }
+    },
+    "settings": {
+        "title": "PENGATURAN",
+        "language": "Bahasa",
+        "music": "Musik",
+        "volume": "Volume",
+        "soundFx": "Efek Suara",
+        "scanlines": "Efek Scanline",
+        "controls": {
+            "navigate": "[ATAS/BAWAH] untuk navigasi/menyesuaikan. [A] untuk beralih/memilih.",
+            "back": "[B] atau [ESC] untuk kembali."
+        }
+    }
+}
