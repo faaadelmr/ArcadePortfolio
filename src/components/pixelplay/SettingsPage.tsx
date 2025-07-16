@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
@@ -10,6 +10,7 @@ import useBackgroundMusic from '@/hooks/useBackgroundMusic';
 import { Slider } from '@/components/ui/slider';
 import { Volume1, Volume2, VolumeX, Languages } from 'lucide-react';
 import { useLocalization } from '@/hooks/useLocalization';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 const backToMainEvent = new Event('backToMain', { bubbles: true });
 
@@ -18,7 +19,8 @@ export default function SettingsPage() {
   const [isVolumeEditing, setIsVolumeEditing] = useState(false);
   const { isMusicEnabled, toggleMusic, volume, setVolume, isInitialized } = useBackgroundMusic();
   const { playNavigate, playSelect, playBack } = useArcadeSounds({ volume: isMusicEnabled ? volume : 0 });
-  const { t, language, setLanguage } = useLocalization();
+  const { t, language, setLanguage, isLoading: isLangLoading } = useLocalization();
+  const itemRefs = useRef<(HTMLLIElement | null)[]>([]);
 
   const toggleLanguage = () => {
     const newLang = language === 'en' ? 'id' : 'en';
@@ -32,6 +34,19 @@ export default function SettingsPage() {
     { id: 'sound', label: t('settings.soundFx'), onToggle: () => {}, isEnabled: true, type: 'switch' }, // Placeholder for sound FX
     { id: 'scanlines', label: t('settings.scanlines'), onToggle: () => {}, isEnabled: true, type: 'switch' },
   ];
+
+  useEffect(() => {
+    itemRefs.current = itemRefs.current.slice(0, settings.length);
+  }, [settings.length]);
+
+  useEffect(() => {
+    if (itemRefs.current[selectedItem] && !isVolumeEditing) {
+      itemRefs.current[selectedItem]?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+      });
+    }
+  }, [selectedItem, isVolumeEditing]);
 
   const handleNavigation = useCallback((direction: 'up' | 'down') => {
     if (isVolumeEditing) return;
@@ -129,59 +144,68 @@ export default function SettingsPage() {
     return null; // Prevent hydration mismatch
   }
   
-  return (
+  const PageContent = () => (
     <div className="w-full h-full flex flex-col p-8 text-white">
-      <h1 className="text-5xl font-headline text-primary mb-8 text-center">{t('settings.title')}</h1>
-      <ul className="flex-grow space-y-6 text-2xl font-headline max-w-md mx-auto w-full">
-        {settings.map((setting, index) => (
-          <li 
-            key={setting.id} 
-            className={cn(
-                "flex justify-between items-center p-2 rounded-md transition-colors",
-                selectedItem === index && !isVolumeEditing ? 'bg-primary/20' : ''
-            )}
-          >
-            <Label 
-                htmlFor={setting.id} 
-                className={cn(
-                    "text-2xl font-headline cursor-pointer flex items-center gap-4",
-                    selectedItem === index ? 'text-accent' : 'text-white'
-                )}
+      <h1 className="text-5xl font-headline text-primary mb-8 text-center flex-shrink-0">{t('settings.title')}</h1>
+      <ScrollArea className="flex-grow pr-4 -mr-4">
+        <ul className="space-y-6 text-2xl font-headline max-w-md mx-auto w-full">
+          {settings.map((setting, index) => (
+            <li 
+              key={setting.id}
+              ref={el => { if(el) itemRefs.current[index] = el; }}
+              className={cn(
+                  "flex justify-between items-center p-2 rounded-md transition-colors",
+                  selectedItem === index && !isVolumeEditing ? 'bg-primary/20' : ''
+              )}
             >
-                {setting.id === 'volume' && getVolumeIcon()}
-                {setting.id === 'language' && <Languages className="w-6 h-6" />}
-                {setting.label}
-            </Label>
-            {setting.type === 'switch' && (
-              <Switch 
-                id={setting.id} 
-                checked={setting.isEnabled}
-                onCheckedChange={setting.onToggle}
-              />
-            )}
-            {setting.type === 'toggle' && (
-              <button onClick={setting.onToggle} className="text-2xl font-headline text-accent w-[50%] text-right">
-                {setting.value}
-              </button>
-            )}
-            {setting.type === 'slider' && (
-               <Slider
-                id={setting.id}
-                value={[setting.value]}
-                onValueChange={(value) => setting.onValueChange?.(value[0])}
-                max={100}
-                step={1}
-                className={cn('w-[50%]', (selectedItem === index && isVolumeEditing) ? 'ring-2 ring-primary rounded-lg' : '')}
-                disabled={!isMusicEnabled}
-              />
-            )}
-          </li>
-        ))}
-      </ul>
-      <div className="mt-8 text-center text-lg text-gray-400 font-code">
+              <Label 
+                  htmlFor={setting.id} 
+                  className={cn(
+                      "text-2xl font-headline cursor-pointer flex items-center gap-4",
+                      selectedItem === index ? 'text-accent' : 'text-white'
+                  )}
+              >
+                  {setting.id === 'volume' && getVolumeIcon()}
+                  {setting.id === 'language' && <Languages className="w-6 h-6" />}
+                  {setting.label}
+              </Label>
+              {setting.type === 'switch' && (
+                <Switch 
+                  id={setting.id} 
+                  checked={setting.isEnabled}
+                  onCheckedChange={setting.onToggle}
+                />
+              )}
+              {setting.type === 'toggle' && (
+                <button onClick={setting.onToggle} className="text-2xl font-headline text-accent w-[50%] text-right">
+                  {setting.value}
+                </button>
+              )}
+              {setting.type === 'slider' && (
+                 <Slider
+                  id={setting.id}
+                  value={[setting.value]}
+                  onValueChange={(value) => setting.onValueChange?.(value[0])}
+                  max={100}
+                  step={1}
+                  className={cn('w-[50%]', (selectedItem === index && isVolumeEditing) ? 'ring-2 ring-primary rounded-lg' : '')}
+                  disabled={!isMusicEnabled}
+                />
+              )}
+            </li>
+          ))}
+        </ul>
+      </ScrollArea>
+      <div className="mt-8 text-center text-lg text-gray-400 font-code flex-shrink-0">
         <p>{t('settings.controls.navigate')}</p>
         <p>{t('settings.controls.back')}</p>
       </div>
     </div>
   );
+
+  return isLangLoading ? (
+      <div className="w-full h-full flex flex-col items-center justify-center p-8 text-white animate-pixel-in">
+          <p className="text-3xl font-headline text-accent animate-pulse">{t('loading')}</p>
+      </div>
+  ) : <PageContent />;
 }
