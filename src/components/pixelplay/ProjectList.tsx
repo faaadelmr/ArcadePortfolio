@@ -201,16 +201,16 @@ export default function ProjectList() {
     return (
       <div className="w-full h-full flex flex-col p-4 sm:p-6 md:p-8 text-white animate-pixel-in">
         <div className="flex items-center mb-4 flex-shrink-0">
-           <Button ref={el => { if (el) detailItemRefs.current[0] = el; }} variant="ghost" size="icon" onClick={handleBackToList} className={cn("mr-4 text-accent hover:bg-accent/20 hover:text-accent", selectedDetailButton === 0 ? 'ring-2 ring-accent' : '')}>
+           <Button ref={el => { if (el) {detailItemRefs.current[0] = el;} }} variant="ghost" size="icon" className={cn("mr-4 text-accent hover:bg-accent/20 hover:text-accent pointer-events-none", selectedDetailButton === 0 ? 'ring-2 ring-accent' : '')}>
             <ArrowLeft/>
           </Button>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-headline text-primary truncate">{title}</h1>
         </div>
         <ScrollArea className="flex-grow pr-2">
           <div className="flex flex-col md:flex-row gap-6 md:gap-8">
-            <div className={cn("w-full md:w-1/2 flex-shrink-0 rounded-lg", selectedDetailButton === 1 ? 'ring-2 ring-primary' : '')}>
+            <div className={cn("w-full md:w-1/2 flex-shrink-0 rounded-lg pointer-events-none", selectedDetailButton === 1 ? 'ring-2 ring-primary' : '')}>
               <Image 
-                ref={el => { if (el) detailItemRefs.current[1] = el; }}
+                ref={el => { if (el) {detailItemRefs.current[1] = el;} }}
                 src={project.imageUrl}
                 alt={title}
                 width={600}
@@ -224,16 +224,16 @@ export default function ProjectList() {
               <p className="text-sm text-accent font-code mb-6">{t('projects.created')}: {project.date}</p>
               <div className="flex flex-col gap-4 mt-auto">
                 {project.liveUrl && (
-                  <Button ref={el => { if (el) detailItemRefs.current[buttonIndex++] = el; }} asChild className={cn("w-full bg-primary text-primary-foreground font-headline text-sm sm:text-base", selectedDetailButton === detailButtons.findIndex(b => b.id === 'live') ? 'ring-2 ring-white bg-primary/90' : '')}>
-                    <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" tabIndex={-1} onClick={(e) => { e.preventDefault(); if (project.liveUrl) window.open(project.liveUrl, '_blank') }}>
+                  <Button ref={el => { if (el) {detailItemRefs.current[buttonIndex++] = el;} }} asChild className={cn("w-full bg-primary text-primary-foreground font-headline text-sm sm:text-base pointer-events-none", selectedDetailButton === detailButtons.findIndex(b => b.id === 'live') ? 'ring-2 ring-white bg-primary/90' : '')}>
+                    <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" tabIndex={-1}>
                       <Globe className="mr-2 h-5 w-5" />
                       {t('projects.visitWebsite')}
                     </a>
                   </Button>
                 )}
                 {project.githubUrl && (
-                  <Button ref={el => { if (el) detailItemRefs.current[buttonIndex++] = el; }} asChild variant="outline" className={cn("w-full font-headline border-accent text-accent text-sm sm:text-base", selectedDetailButton === detailButtons.findIndex(b => b.id === 'github') ? 'ring-2 ring-accent bg-accent text-accent-foreground' : '')}>
-                    <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" tabIndex={-1} onClick={(e) => { e.preventDefault(); if (project.githubUrl) window.open(project.githubUrl, '_blank') }}>
+                  <Button ref={el => { if (el) {detailItemRefs.current[buttonIndex++] = el;} }} asChild variant="outline" className={cn("w-full font-headline border-accent text-accent text-sm sm:text-base pointer-events-none", selectedDetailButton === detailButtons.findIndex(b => b.id === 'github') ? 'ring-2 ring-accent bg-accent text-accent-foreground' : '')}>
+                    <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" tabIndex={-1}>
                       <Github className="mr-2 h-5 w-5" />
                       GitHub
                     </a>

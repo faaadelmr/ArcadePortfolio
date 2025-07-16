@@ -52,7 +52,7 @@ export default function SettingsPage() {
         block: 'nearest',
       });
     }
-  }, [selectedItem, isVolumeEditing]);
+  }, [selectedItem]);
 
   const handleNavigation = useCallback((direction: 'up' | 'down') => {
     if (isVolumeEditing) return;
@@ -167,7 +167,7 @@ export default function SettingsPage() {
               <Label 
                   htmlFor={setting.id} 
                   className={cn(
-                      "text-2xl font-headline cursor-pointer flex items-center gap-4",
+                      "text-2xl font-headline flex items-center gap-4 pointer-events-none",
                       selectedItem === index ? 'text-accent' : 'text-white'
                   )}
               >
@@ -179,21 +179,20 @@ export default function SettingsPage() {
                 <Switch 
                   id={setting.id} 
                   checked={setting.isEnabled}
-                  onCheckedChange={setting.onToggle}
+                  className="pointer-events-none"
                   disabled={(setting.id === 'sound' && !isSoundInitialized) || (setting.id === 'scanlines' && !isVisualInitialized)}
                 />
               )}
               {setting.type === 'toggle' && 'value' in setting && typeof setting.value === 'string' && (
-                <button onClick={setting.onToggle} className="text-2xl font-headline text-accent w-[50%] text-right">
+                <button className="text-2xl font-headline text-accent w-[50%] text-right pointer-events-none">
                   {setting.value}
                 </button>
               )}
               {setting.type === 'slider' && 'value' in setting && (
-                 <div className="flex items-center gap-4 w-[50%]">
+                 <div className="flex items-center gap-4 w-[50%] pointer-events-none">
                     <Slider
                       id={setting.id}
                       value={[typeof setting.value === 'number' ? setting.value : 0]}
-                      onValueChange={(value) => setting.onValueChange?.(value[0])}
                       max={100}
                       step={1}
                       className={cn('flex-grow', (selectedItem === index && isVolumeEditing) ? 'ring-2 ring-primary rounded-lg' : '')}
