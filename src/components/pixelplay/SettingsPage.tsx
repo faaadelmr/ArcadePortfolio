@@ -12,7 +12,7 @@ import { Volume1, Volume2, VolumeX, Languages } from 'lucide-react';
 import { useLocalization } from '@/hooks/useLocalization';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import useSoundSettings from '@/hooks/useSoundSettings';
-import { useVisualSettings } from '@/hooks/useVisualSettings';
+import { useVisualSettings } from '@/hooks/useVisualSettings.tsx';
 
 const backToMainEvent = new Event('backToMain', { bubbles: true });
 
@@ -180,7 +180,7 @@ export default function SettingsPage() {
                   id={setting.id} 
                   checked={setting.isEnabled}
                   onCheckedChange={setting.onToggle}
-                  disabled={setting.id === 'sound' && !isSoundInitialized}
+                  disabled={(setting.id === 'sound' && !isSoundInitialized) || (setting.id === 'scanlines' && !isVisualInitialized)}
                 />
               )}
               {setting.type === 'toggle' && (
