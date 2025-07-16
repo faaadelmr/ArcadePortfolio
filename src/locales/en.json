@@ -59,32 +59,44 @@
             "scroll": "Hold [D-PAD] or [ARROW KEYS] to scroll.",
             "backToList": "[B] or [ESC] to go back to list."
         },
-        "list": {
-            "cs50Intro": {
-                "title": "CS50’s Introduction to Computer Science",
-                "issuer": "Harvard University"
+        "list": [
+            {
+              "title": "CS50’s Introduction to Computer Science",
+              "issuer": "Harvard University",
+              "date": "2022-12-31",
+              "imageUrl": "/certified/cs50-intro.png"
             },
-            "cs50Web": {
-                "title": "CS50’s Web Programming with Python and JavaScript",
-                "issuer": "Harvard University"
+            {
+              "title": "CS50’s Web Programming with Python and JavaScript",
+              "issuer": "Harvard University",
+              "date": "2023-01-20",
+              "imageUrl": "/certified/cs50-web.png"
             },
-            "cs50AI": {
-                "title": "CS50’s Introduction to Artificial Intelligence with Python",
-                "issuer": "Harvard University"
+            {
+              "title": "CS50’s Introduction to Artificial Intelligence with Python",
+              "issuer": "Harvard University",
+              "date": "2023-01-20",
+              "imageUrl": "/certified/cs50-ai.png"
             },
-            "cs50Game": {
-                "title": "CS50’s Introduction to Game Development",
-                "issuer": "Harvard University"
+            {
+              "title": "CS50’s Introduction to Game Development",
+              "issuer": "Harvard University",
+              "date": "2023-01-20",
+              "imageUrl": "/certified/cs50-game.png"
             },
-            "cs50Python": {
-                "title": "CS50’s Introduction to Programming with Python",
-                "issuer": "Harvard University"
+            {
+              "title": "CS50’s Introduction to Programming with Python",
+              "issuer": "Harvard University",
+              "date": "2023-01-20",
+              "imageUrl": "/certified/cs50-python.png"
             },
-            "hacktiv8": {
-                "title": "Software Engineer",
-                "issuer": "Hacktiv8 Indonesia"
+            {
+              "title": "Software Engineer",
+              "issuer": "Hacktiv8 Indonesia",
+              "date": "2023-01-20",
+              "imageUrl": "/certified/hacktiv8.png"
             }
-        }
+        ]
     },
     "aboutMe": {
         "title": "ABOUT ME",

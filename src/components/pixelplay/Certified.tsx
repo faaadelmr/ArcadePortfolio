@@ -22,50 +22,21 @@ export default function Certified() {
   const [scrollingDirection, setScrollingDirection] = useState<'up' | 'down' | null>(null);
   const { t } = useLocalization();
   
-  const certifications = useMemo(() => [
-    {
-      titleKey: 'certifications.list.cs50Intro.title',
-      issuerKey: 'certifications.list.cs50Intro.issuer',
-      date: '2022-12-31',
-      imageUrl: 'https://placehold.co/800x600',
-      imageHint: 'certificate document',
-    },
-    {
-      titleKey: 'certifications.list.cs50Web.title',
-      issuerKey: 'certifications.list.cs50Web.issuer',
-      date: '2023-01-20',
-      imageUrl: 'https://placehold.co/800x600',
-      imageHint: 'certificate document',
-    },
-    {
-      titleKey: 'certifications.list.cs50AI.title',
-      issuerKey: 'certifications.list.cs50AI.issuer',
-      date: '2023-01-20',
-      imageUrl: 'https://placehold.co/800x600',
-      imageHint: 'certificate document',
-    },
-    {
-      titleKey: 'certifications.list.cs50Game.title',
-      issuerKey: 'certifications.list.cs50Game.issuer',
-      date: '2023-01-20',
-      imageUrl: 'https://placehold.co/800x600',
-      imageHint: 'certificate document',
-    },
-    {
-      titleKey: 'certifications.list.cs50Python.title',
-      issuerKey: 'certifications.list.cs50Python.issuer',
-      date: '2023-01-20',
-      imageUrl: 'https://placehold.co/800x600',
-      imageHint: 'certificate document',
-    },
-    {
-      titleKey: 'certifications.list.hacktiv8.title',
-      issuerKey: 'certifications.list.hacktiv8.issuer',
-      date: '2023-01-20',
-      imageUrl: 'https://placehold.co/800x600',
-      imageHint: 'certificate document',
-    },
-  ], []);
+  // All certification data is now loaded from the localization file.
+  const certifications = useMemo(() => {
+    const certsData = t('certifications.list');
+    // The translation key returns a string, so we parse it.
+    // A bit of a hack, but it centralizes data management in the JSON file.
+    try {
+        if (typeof certsData === 'string' && certsData.startsWith('[')) {
+             return JSON.parse(certsData);
+        }
+        return Array.isArray(certsData) ? certsData : [];
+    } catch(e) {
+        console.error("Could not parse certifications data from localization file.", e);
+        return [];
+    }
+  }, [t]);
 
   useEffect(() => {
     itemRefs.current = itemRefs.current.slice(0, certifications.length);
@@ -210,7 +181,7 @@ export default function Certified() {
   const cert = viewingCertIndex !== null ? certifications[viewingCertIndex] : null;
 
   if (cert) {
-    const title = t(cert.titleKey);
+    const title = cert.title;
     return (
       <div className="w-full h-full flex flex-col p-4 sm:p-6 text-white animate-pixel-in">
         <div className="flex items-center mb-4 flex-shrink-0">
@@ -219,7 +190,7 @@ export default function Certified() {
           </Button>
           <div className='truncate'>
             <h1 className="text-xl sm:text-2xl lg:text-3xl font-headline text-primary truncate">{title}</h1>
-            <p className="text-sm sm:text-base text-gray-300 truncate">{t(cert.issuerKey)}</p>
+            <p className="text-sm sm:text-base text-gray-300 truncate">{cert.issuer}</p>
           </div>
         </div>
         <ScrollArea viewportRef={scrollViewportRef} className="flex-grow pr-2">
@@ -229,7 +200,6 @@ export default function Certified() {
                 width={800}
                 height={600}
                 className="rounded-lg border-2 border-primary/50 object-contain w-full h-auto"
-                data-ai-hint={cert.imageHint}
             />
         </ScrollArea>
         <div className="mt-4 text-center text-sm sm:text-lg text-gray-400 font-code flex-shrink-0">
@@ -260,9 +230,9 @@ export default function Certified() {
                   "text-xl sm:text-2xl font-headline truncate",
                   selectedItem === index ? 'text-accent' : 'text-white'
               )}>
-                {t(cert.titleKey)}
+                {cert.title}
               </h2>
-              <p className="text-base sm:text-lg text-gray-300">{t(cert.issuerKey)}</p>
+              <p className="text-base sm:text-lg text-gray-300">{cert.issuer}</p>
               <p className="text-sm font-code text-primary/80 mt-1">{cert.date}</p>
             </li>
           ))}

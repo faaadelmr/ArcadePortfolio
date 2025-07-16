@@ -9,14 +9,15 @@ type Language = 'en' | 'id';
 interface LocalizationContextType {
   language: Language;
   setLanguage: (language: Language) => void;
-  t: (key: string) => string;
+  t: (key: string) => any; // Allow returning non-string types for object/array data
   isLocalizationReady: boolean;
   isLoading: boolean;
 }
 
 const LocalizationContext = createContext<LocalizationContextType | undefined>(undefined);
 
-const getNestedValue = (obj: any, key: string): string | undefined => {
+// Helper to get nested values from an object using a dot-notation key
+const getNestedValue = (obj: any, key: string): any | undefined => {
   return key.split('.').reduce((acc, part) => acc && acc[part], obj);
 };
 
@@ -65,11 +66,23 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({ 
   }, [translations.en, translations.id]);
 
 
-  const t = useCallback((key: string): string => {
+  const t = useCallback((key: string): any => {
     if (!isLocalizationReady) return '...';
 
     const source = translations[language] || translations.en;
+    if (!source) return key; // Return key if no source is available
+    
     const translation = getNestedValue(source, key);
+
+    // If the translation for an array is a string, try to parse it.
+    // This handles the case where the AI returns a stringified JSON array.
+    if (typeof translation === 'string' && translation.trim().startsWith('[')) {
+        try {
+            return JSON.parse(translation);
+        } catch {
+            // If parsing fails, return the string as is.
+        }
+    }
 
     return translation || key;
   }, [language, translations, isLocalizationReady]);
