@@ -14,7 +14,7 @@ import { cn } from '@/lib/utils';
 import { Gamepad2, Trophy, Settings as SettingsIcon, User, ArrowUp, ArrowDown } from 'lucide-react';
 import BootScreen from '@/components/pixelplay/BootScreen';
 import LoadingScreen from '@/components/pixelplay/LoadingScreen';
-import useVisualSettings from '@/hooks/useVisualSettings';
+import { useVisualSettings } from '@/hooks/useVisualSettings';
 import useSoundSettings from '@/hooks/useSoundSettings';
 
 type Page = 'main' | 'games' | 'scores' | 'settings' | 'about';

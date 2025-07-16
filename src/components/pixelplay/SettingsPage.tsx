@@ -12,7 +12,7 @@ import { Volume1, Volume2, VolumeX, Languages } from 'lucide-react';
 import { useLocalization } from '@/hooks/useLocalization';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import useSoundSettings from '@/hooks/useSoundSettings';
-import useVisualSettings from '@/hooks/useVisualSettings';
+import { useVisualSettings } from '@/hooks/useVisualSettings';
 
 const backToMainEvent = new Event('backToMain', { bubbles: true });
 
