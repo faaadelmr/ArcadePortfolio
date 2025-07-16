@@ -211,7 +211,7 @@ export default function SettingsPage() {
           ))}
         </ul>
       </ScrollArea>
-      <div className="mt-8 text-center text-lg text-gray-400 font-code flex-shrink-0">
+      <div className="mt-4 sm:mt-8 text-center text-sm sm:text-lg text-gray-400 font-code">
         <p>{t('settings.controls.navigate')}</p>
         <p>{t('settings.controls.back')}</p>
       </div>

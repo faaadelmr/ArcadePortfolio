@@ -40,7 +40,7 @@ export default function MainMenu({ menuItems, selectedItem }: MainMenuProps) {
           </li>
         ))}
       </ul>
-      <div className="mt-16 text-center text-sm text-gray-400 font-code">
+      <div className="mt-4 sm:mt-8 text-center text-sm sm:text-lg text-gray-400 font-code">
         <p>{t('mainMenu.controls.navigate')}</p>
         <p>{t('mainMenu.controls.select')}</p>
       </div>
