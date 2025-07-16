@@ -12,6 +12,16 @@ import { useLocalization } from '@/hooks/useLocalization';
 
 const backToMainEvent = new Event('backToMain', { bubbles: true });
 
+interface Project {
+  titleKey: string;
+  descriptionKey: string;
+  date: string;
+  imageUrl: string;
+  imageHint: string;
+  liveUrl?: string;
+  githubUrl?: string;
+}
+
 export default function ProjectList() {
   const [selectedItem, setSelectedItem] = useState(0);
   const [viewingProjectIndex, setViewingProjectIndex] = useState<number | null>(null);
@@ -19,37 +29,21 @@ export default function ProjectList() {
   const { playNavigate, playSelect, playBack } = useArcadeSounds();
   const { t } = useLocalization();
 
-  const projects = useMemo(() => {
-    const unsortedProjects = [
-      { 
-        titleKey: 'projects.tanma.title', 
-        date: '2024-05-01',
-        descriptionKey: 'projects.tanma.description',
-        imageUrl: '/project/tanma.png',
-        imageHint: 'Daily Report Claim',
-        liveUrl: 'https://mentanma.cyou',
-        githubUrl: 'https://github.com/faaadelmr/tanma'
-      },
-      { 
-        titleKey: 'projects.cewekalcer.title', 
-        date: '2024-06-09',
-        descriptionKey: 'projects.cewekalcer.description',
-        imageUrl: '/project/cewekalcer.png',
-        imageHint: 'CewekKalcer',
-        liveUrl: 'https://cewekalcer.pages.dev/',
-      },
-      { 
-        titleKey: 'projects.bayargess.title', 
-        date: '2025-07-12',
-        descriptionKey: 'projects.bayargess.description',
-        imageUrl: '/project/bayargess.png',
-        imageHint: 'splitbill sharing',
-        liveUrl: 'https://bayargess.vercel.app/',
-        githubUrl: 'https://github.com/faaadelmr/bayarGess.git'
-      },
-    ];
-    return unsortedProjects.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-  }, []);
+  const projects: Project[] = useMemo(() => {
+    const projectData = t('projects.list');
+    let parsedProjects: Project[] = [];
+    try {
+        if (typeof projectData === 'string' && projectData.startsWith('[')) {
+             parsedProjects = JSON.parse(projectData);
+        } else if (Array.isArray(projectData)) {
+            parsedProjects = projectData;
+        }
+    } catch(e) {
+        console.error("Could not parse projects data from localization file.", e);
+        return [];
+    }
+    return parsedProjects.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  }, [t]);
 
   const itemRefs = useRef<(HTMLLIElement | null)[]>([]);
   const detailItemRefs = useRef<(HTMLElement | null)[]>([]);

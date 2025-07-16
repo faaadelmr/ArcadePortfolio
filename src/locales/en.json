@@ -37,6 +37,34 @@
                 "back": "[B] or [ESC] to go back to list."
             }
         },
+        "list": [
+            {
+                "titleKey": "projects.tanma.title",
+                "date": "2024-05-01",
+                "descriptionKey": "projects.tanma.description",
+                "imageUrl": "/project/tanma.png",
+                "imageHint": "Daily Report Claim",
+                "liveUrl": "https://mentanma.cyou",
+                "githubUrl": "https://github.com/faaadelmr/tanma"
+            },
+            {
+                "titleKey": "projects.cewekalcer.title",
+                "date": "2024-06-09",
+                "descriptionKey": "projects.cewekalcer.description",
+                "imageUrl": "/project/cewekalcer.png",
+                "imageHint": "CewekKalcer",
+                "liveUrl": "https://cewekalcer.pages.dev/"
+            },
+            {
+                "titleKey": "projects.bayargess.title",
+                "date": "2025-07-12",
+                "descriptionKey": "projects.bayargess.description",
+                "imageUrl": "/project/bayargess.png",
+                "imageHint": "splitbill sharing",
+                "liveUrl": "https://bayargess.vercel.app/",
+                "githubUrl": "https://github.com/faaadelmr/bayarGess.git"
+            }
+        ],
         "tanma": {
             "title": "Tanma",
             "description": "An application about daily reports at my workplace (reliance insurance) to simplify reporting that can be exported and display graphs for an analysis if needed. there are additional tools to support work such as meeting minutes, user management, chat rooms, PDF tools (merging, selection), and separate bills manually."
