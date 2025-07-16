@@ -182,15 +182,23 @@ export default function SettingsPage() {
                 </button>
               )}
               {setting.type === 'slider' && (
-                 <Slider
-                  id={setting.id}
-                  value={[setting.value]}
-                  onValueChange={(value) => setting.onValueChange?.(value[0])}
-                  max={100}
-                  step={1}
-                  className={cn('w-[50%]', (selectedItem === index && isVolumeEditing) ? 'ring-2 ring-primary rounded-lg' : '')}
-                  disabled={!isMusicEnabled}
-                />
+                 <div className="flex items-center gap-4 w-[50%]">
+                    <Slider
+                      id={setting.id}
+                      value={[setting.value]}
+                      onValueChange={(value) => setting.onValueChange?.(value[0])}
+                      max={100}
+                      step={1}
+                      className={cn('flex-grow', (selectedItem === index && isVolumeEditing) ? 'ring-2 ring-primary rounded-lg' : '')}
+                      disabled={!isMusicEnabled}
+                    />
+                    <span className={cn(
+                      "text-xl text-right font-code w-10 transition-opacity",
+                      (selectedItem === index && isVolumeEditing) ? "opacity-100" : "opacity-0"
+                    )}>
+                      {Math.round(setting.value)}
+                    </span>
+                  </div>
               )}
             </li>
           ))}
