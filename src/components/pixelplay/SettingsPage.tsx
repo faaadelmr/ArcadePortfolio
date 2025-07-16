@@ -11,14 +11,20 @@ import { Slider } from '@/components/ui/slider';
 import { Volume1, Volume2, VolumeX, Languages } from 'lucide-react';
 import { useLocalization } from '@/hooks/useLocalization';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import useSoundSettings from '@/hooks/useSoundSettings';
+import useVisualSettings from '@/hooks/useVisualSettings';
 
 const backToMainEvent = new Event('backToMain', { bubbles: true });
 
 export default function SettingsPage() {
   const [selectedItem, setSelectedItem] = useState(0);
   const [isVolumeEditing, setIsVolumeEditing] = useState(false);
-  const { isMusicEnabled, toggleMusic, volume, setVolume, isInitialized } = useBackgroundMusic();
-  const { playNavigate, playSelect, playBack } = useArcadeSounds({ volume: isMusicEnabled ? volume : 0 });
+  
+  const { isMusicEnabled, toggleMusic, volume, setVolume, isInitialized: isMusicInitialized } = useBackgroundMusic();
+  const { isSoundEnabled, toggleSound, isInitialized: isSoundInitialized } = useSoundSettings();
+  const { isScanlinesEnabled, toggleScanlines, isInitialized: isVisualInitialized } = useVisualSettings();
+  
+  const { playNavigate, playSelect, playBack } = useArcadeSounds({ isSoundEnabled });
   const { t, language, setLanguage, isLoading: isLangLoading } = useLocalization();
   const itemRefs = useRef<(HTMLLIElement | null)[]>([]);
 
@@ -31,8 +37,8 @@ export default function SettingsPage() {
     { id: 'language', label: t('settings.language'), value: language.toUpperCase(), onToggle: toggleLanguage, type: 'toggle' },
     { id: 'music', label: t('settings.music'), onToggle: toggleMusic, isEnabled: isMusicEnabled, type: 'switch' },
     { id: 'volume', label: t('settings.volume'), type: 'slider', value: volume * 100, onValueChange: (newVolume: number) => setVolume(newVolume / 100) },
-    { id: 'sound', label: t('settings.soundFx'), onToggle: () => {}, isEnabled: true, type: 'switch' }, // Placeholder for sound FX
-    { id: 'scanlines', label: t('settings.scanlines'), onToggle: () => {}, isEnabled: true, type: 'switch' },
+    { id: 'sound', label: t('settings.soundFx'), onToggle: toggleSound, isEnabled: isSoundEnabled, type: 'switch' },
+    { id: 'scanlines', label: t('settings.scanlines'), onToggle: toggleScanlines, isEnabled: isScanlinesEnabled, type: 'switch' },
   ];
 
   useEffect(() => {
@@ -140,7 +146,7 @@ export default function SettingsPage() {
     return <Volume2 className="w-6 h-6" />;
   }
 
-  if (!isInitialized) {
+  if (!isMusicInitialized || !isSoundInitialized || !isVisualInitialized) {
     return null; // Prevent hydration mismatch
   }
   
@@ -174,6 +180,7 @@ export default function SettingsPage() {
                   id={setting.id} 
                   checked={setting.isEnabled}
                   onCheckedChange={setting.onToggle}
+                  disabled={setting.id === 'sound' && !isSoundInitialized}
                 />
               )}
               {setting.type === 'toggle' && (

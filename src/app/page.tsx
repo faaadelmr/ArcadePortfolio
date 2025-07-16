@@ -14,6 +14,8 @@ import { cn } from '@/lib/utils';
 import { Gamepad2, Trophy, Settings as SettingsIcon, User, ArrowUp, ArrowDown } from 'lucide-react';
 import BootScreen from '@/components/pixelplay/BootScreen';
 import LoadingScreen from '@/components/pixelplay/LoadingScreen';
+import useVisualSettings from '@/hooks/useVisualSettings';
+import useSoundSettings from '@/hooks/useSoundSettings';
 
 type Page = 'main' | 'games' | 'scores' | 'settings' | 'about';
 type GameState = 'loading' | 'booting' | 'active';
@@ -25,6 +27,8 @@ export default function PixelPlayHub() {
   const [activeButton, setActiveButton] = useState<string | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const { t, isLocalizationReady } = useLocalization();
+  const { isScanlinesEnabled } = useVisualSettings();
+  const { isSoundEnabled } = useSoundSettings();
 
   const menuItems = useMemo(() => [
     { id: 'games', label: t('mainMenu.projectList'), icon: Gamepad2, target: 'games' as Page },
@@ -34,13 +38,15 @@ export default function PixelPlayHub() {
   ], [t]);
   
   const { isReady: musicReady, isMusicEnabled, playMusic, pauseMusic, volume } = useBackgroundMusic();
-  const { isReady: soundsReady, playNavigate, playSelect, playBack, playStart } = useArcadeSounds({ volume: isMusicEnabled ? volume : 0 });
+  const { isReady: soundsReady, playNavigate, playSelect, playBack, playStart } = useArcadeSounds({ isSoundEnabled });
 
   useEffect(() => {
-    if ((gameState === 'booting' || gameState === 'active') && isMusicEnabled) {
-      playMusic();
-    } else {
-      pauseMusic();
+    if (gameState === 'booting' || gameState === 'active') {
+      if (isMusicEnabled) {
+        playMusic();
+      } else {
+        pauseMusic();
+      }
     }
   }, [gameState, isMusicEnabled, playMusic, pauseMusic]);
 
@@ -250,10 +256,12 @@ export default function PixelPlayHub() {
               {CurrentPageComponent}
             </div>
             
-            <div className="absolute inset-0 pointer-events-none" style={{
-              background: 'linear-gradient(rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.3) 50%)',
-              backgroundSize: '100% 4px',
-            }}></div>
+            {isScanlinesEnabled && (
+              <div className="absolute inset-0 pointer-events-none" style={{
+                background: 'linear-gradient(rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.3) 50%)',
+                backgroundSize: '100% 4px',
+              }}></div>
+            )}
           </div>
   
           <div className="flex-shrink-0 pt-4 px-2 sm:px-8 flex flex-wrap sm:flex-nowrap justify-around items-center gap-4 sm:gap-2">
