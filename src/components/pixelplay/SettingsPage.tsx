@@ -12,7 +12,7 @@ import { Volume1, Volume2, VolumeX, Languages } from 'lucide-react';
 import { useLocalization } from '@/hooks/useLocalization';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import useSoundSettings from '@/hooks/useSoundSettings';
-import { useVisualSettings } from '@/hooks/useVisualSettings.tsx';
+import { useVisualSettings } from '@/hooks/useVisualSettings';
 
 const backToMainEvent = new Event('backToMain', { bubbles: true });
 
@@ -82,7 +82,7 @@ export default function SettingsPage() {
     if (currentSetting.type !== 'slider' || !isVolumeEditing) return;
     
     playNavigate();
-    const currentValue = currentSetting.value;
+    const currentValue = typeof currentSetting.value === 'number' ? currentSetting.value : 0;
     const step = 5;
     const newValue = direction === 'down' 
       ? Math.max(0, currentValue - step)
@@ -175,7 +175,7 @@ export default function SettingsPage() {
                   {setting.id === 'language' && <Languages className="w-6 h-6" />}
                   {setting.label}
               </Label>
-              {setting.type === 'switch' && (
+              {setting.type === 'switch' && 'isEnabled' in setting && (
                 <Switch 
                   id={setting.id} 
                   checked={setting.isEnabled}
@@ -183,16 +183,16 @@ export default function SettingsPage() {
                   disabled={(setting.id === 'sound' && !isSoundInitialized) || (setting.id === 'scanlines' && !isVisualInitialized)}
                 />
               )}
-              {setting.type === 'toggle' && (
+              {setting.type === 'toggle' && 'value' in setting && typeof setting.value === 'string' && (
                 <button onClick={setting.onToggle} className="text-2xl font-headline text-accent w-[50%] text-right">
                   {setting.value}
                 </button>
               )}
-              {setting.type === 'slider' && (
+              {setting.type === 'slider' && 'value' in setting && (
                  <div className="flex items-center gap-4 w-[50%]">
                     <Slider
                       id={setting.id}
-                      value={[setting.value]}
+                      value={[typeof setting.value === 'number' ? setting.value : 0]}
                       onValueChange={(value) => setting.onValueChange?.(value[0])}
                       max={100}
                       step={1}
@@ -203,7 +203,7 @@ export default function SettingsPage() {
                       "text-xl text-right font-code w-10 transition-opacity",
                       (selectedItem === index && isVolumeEditing) ? "opacity-100" : "opacity-0"
                     )}>
-                      {Math.round(setting.value)}
+                      {Math.round(typeof setting.value === 'number' ? setting.value : 0)}
                     </span>
                   </div>
               )}
