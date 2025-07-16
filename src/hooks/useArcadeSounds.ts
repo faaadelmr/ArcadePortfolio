@@ -3,15 +3,17 @@
 
 import { useEffect, useRef, useCallback, useState } from 'react';
 import type { Synth } from 'tone';
+import useSoundSettings from './useSoundSettings';
 
 interface UseArcadeSoundsProps {
-  isSoundEnabled: boolean;
+  isSoundEnabled?: boolean;
 }
 
 let Tone: typeof import('tone') | null = null;
 let synth: Synth | null = null;
 
 const loadTone = async () => {
+  if (typeof window === 'undefined') return { Tone: null, synth: null };
   if (!Tone) {
     Tone = await import('tone');
     if (!synth) {
@@ -22,19 +24,17 @@ const loadTone = async () => {
 };
 
 // This hook safely handles Tone.js which is a client-side library.
-export default function useArcadeSounds({ isSoundEnabled }: UseArcadeSoundsProps) {
+export default function useArcadeSounds(props?: UseArcadeSoundsProps) {
   const isSoundPlaying = useRef(false);
   const [isReady, setIsReady] = useState(false);
+  const { isSoundEnabled: globalSoundEnabled } = useSoundSettings();
+
+  const isSoundEnabled = props?.isSoundEnabled ?? globalSoundEnabled;
 
   useEffect(() => {
     loadTone().then(() => {
       setIsReady(true);
     });
-
-    return () => {
-      // Synth is now shared, so we don't dispose it here.
-      // It can be disposed if the entire app is unmounted, but that's unlikely.
-    };
   }, []);
 
   const playSound = useCallback((note: string, duration: string) => {
@@ -49,7 +49,8 @@ export default function useArcadeSounds({ isSoundEnabled }: UseArcadeSoundsProps
     isSoundPlaying.current = true;
     
     try {
-        synth.triggerAttackRelease(note, duration, T.now());
+        // By not providing a time, we let Tone.js schedule it for "now" without conflicts.
+        synth.triggerAttackRelease(note, duration);
     } catch(e) {
         console.error("Failed to play sound", e);
     }
