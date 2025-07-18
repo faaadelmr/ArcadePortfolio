@@ -1,10 +1,10 @@
 
 {
-    "loading": "MEMUAT...",
     "mainTitle": "Portofolio Arkade",
     "bootScreen": {
         "pressStart": "TEKAN MULAI",
-        "rightsReserved": "SEMUA HAK CIPTA DILINDUNGI."
+        "rightsReserved": "Kalau bukan sekarang, kapan lagi?",
+        "title": "FADEL bukan PADEL🎾"
     },
     "mainMenu": {
         "projectList": "Daftar Proyek",
@@ -25,7 +25,7 @@
     },
     "projects": {
         "title": "DAFTAR PROYEK",
-        "created": "Dibuat",
+        "created": "Terakhir di Update",
         "visitWebsite": "Kunjungi Situs Web",
         "controls": {
             "list": {
@@ -91,18 +91,9 @@
     },
     "aboutMe": {
         "title": "TENTANG SAYA",
-        "intro": "Halo! Saya Fadel Muhamad Rifai, seorang insinyur perangkat lunak yang bersemangat dengan kecintaan untuk menciptakan pengalaman digital yang inovatif dan menarik. Portofolio arkade retro ini adalah bukti dedikasi saya untuk memadukan desain kreatif dengan implementasi teknis yang kuat.",
-        "journey": "Perjalanan saya ke dunia pemrograman dimulai dengan ketertarikan pada video game dan berkembang menjadi minat yang mendalam pada pengembangan web, AI, dan arsitektur sistem. Saya berkembang dalam tantangan dan terus mengeksplorasi teknologi baru untuk mendorong batas-batas dari apa yang mungkin.",
-        "philosophyTitle": "Filosofi Saya",
-        "philosophy": "Saya percaya bahwa produk terbaik lahir dari kombinasi desain yang berpusat pada pengguna, kode yang bersih dan efisien, dan semangat kolaboratif. Saya berusaha untuk menulis kode yang tidak hanya fungsional tetapi juga dapat dipelihara dan diskalakan.",
-        "skillsTitle": "Keterampilan & Keahlian",
-        "skills": {
-            "frontend": "Frontend: React, Next.js, TypeScript, TailwindCSS",
-            "backend": "Backend: Node.js, Python, Go",
-            "databases": "Database: PostgreSQL, MongoDB, Firebase",
-            "ai": "AI/ML: Genkit, TensorFlow, PyTorch",
-            "devops": "DevOps: Docker, Kubernetes, CI/CD"
-        },
+        "intro": "Aloo! Saya Fadel Muhamad Rifai, seorang prompter developer web yang lagi antusias nya dalam menciptakan hal-hal untuk memudahkan yang ribet, bisa anda coba dari beberapa proyek yang saya buat.",
+        "journey": "Perjalanan saya di dunia pemrograman berawal dari ketertarikan terhadap video game, yang kemudian berkembang menjadi minat dalam pengembangan web (terutama menggunakan Laravel) serta kecerdasan buatan. Saat ini, saya menjalankan pendidikan di Universitas Dian Nusantara dan telah memasuki semester ke-7, di mana saya terus memperdalam pemahaman saya tentang teknologi. Saya terus mengeksplorasi berbagai teknologi untuk memperluas wawasan dan kemampuan saya.",
+        "philosophy": "Kalau tidak sekarang, kapann lagi?.",
         "thanks": "Terima kasih telah mengunjungi pusat arkade saya. Jangan ragu untuk menjelajahi proyek-proyek saya dan jangan ragu untuk menghubungi!",
         "controls": {
             "scroll": "Tahan [D-PAD] atau [TOMBOL PANAH] untuk menggulir.",

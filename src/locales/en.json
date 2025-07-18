@@ -1,10 +1,10 @@
 
 {
-    "loading": "LOADING...",
     "mainTitle": "Arcade Portfolio",
     "bootScreen": {
         "pressStart": "PRESS START",
-        "rightsReserved": "ALL RIGHTS RESERVED."
+        "rightsReserved": "If not now, then when?",
+        "title": "FADEL not PADEL🎾"
     },
     "mainMenu": {
         "projectList": "Project List",
@@ -25,7 +25,7 @@
     },
     "projects": {
         "title": "PROJECT LIST",
-        "created": "Created",
+        "created": "Last Update",
         "visitWebsite": "Visit Website",
         "controls": {
             "list": {
@@ -182,18 +182,9 @@
     },
     "aboutMe": {
         "title": "ABOUT ME",
-        "intro": "Hello! I'm Fadel Muhamad Rifai, a passionate software engineer with a love for creating innovative and engaging digital experiences. This retro arcade portfolio is a testament to my dedication to blending creative design with robust technical implementation.",
-        "journey": "My journey into the world of programming started with a fascination for video games and evolved into a deep interest in web development, AI, and system architecture. I thrive on challenges and am constantly exploring new technologies to push the boundaries of what's possible.",
-        "philosophyTitle": "My Philosophy",
-        "philosophy": "I believe that the best products are born from a combination of user-centric design, clean and efficient code, and a collaborative spirit. I strive to write code that is not only functional but also maintainable and scalable.",
-        "skillsTitle": "Skills & Expertise",
-        "skills": {
-            "frontend": "Frontend: React, Next.js, TypeScript, TailwindCSS",
-            "backend": "Backend: Node.js, Python, Go",
-            "databases": "Databases: PostgreSQL, MongoDB, Firebase",
-            "ai": "AI/ML: Genkit, TensorFlow, PyTorch",
-            "devops": "DevOps: Docker, Kubernetes, CI/CD"
-        },
+        "intro": "Aloo! I'm Fadel Muhamad Rifai, a web developer prompter who is enthusiastic about creating things to make things easier, you can try from some of the projects I made.",
+        "journey": "My journey in the world of programming began with an interest in video games, which later developed into an interest in web development (especially using Laravel) and artificial intelligence. Currently, I am studying at Dian Nusantara University and have entered my 7th semester, where I continue to deepen my understanding of technology. I continue to explore various technologies to broaden my horizons and abilities.",
+        "philosophy": "I not now, then when?.",
         "thanks": "Thank you for visiting my arcade hub. Feel free to explore my projects and don't hesitate to reach out!",
         "controls": {
             "scroll": "Hold [D-PAD] or [ARROW KEYS] to scroll.",

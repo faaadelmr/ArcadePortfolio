@@ -106,18 +106,9 @@ export default function AboutMePage() {
             <p>
                 {t('aboutMe.journey')}
             </p>
-            <h2 className="text-2xl font-headline text-accent pt-4">{t('aboutMe.philosophyTitle')}</h2>
-            <p>
-                {t('aboutMe.philosophy')}
+            <p className='font-italic font-code'>
+                "{t('aboutMe.philosophy')}"
             </p>
-            <h2 className="text-2xl font-headline text-accent pt-4">{t('aboutMe.skillsTitle')}</h2>
-            <ul className="list-disc list-inside space-y-2 pl-2 font-code">
-                <li>{t('aboutMe.skills.frontend')}</li>
-                <li>{t('aboutMe.skills.backend')}</li>
-                <li>{t('aboutMe.skills.databases')}</li>
-                <li>{t('aboutMe.skills.ai')}</li>
-                <li>{t('aboutMe.skills.devops')}</li>
-            </ul>
              <p className="pt-4">
                 {t('aboutMe.thanks')}
             </p>
