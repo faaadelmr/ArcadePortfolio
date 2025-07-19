@@ -5,7 +5,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 
 const MUSIC_STORAGE_KEY = 'pixelplay-music-enabled';
 const VOLUME_STORAGE_KEY = 'pixelplay-music-volume';
-const MUSIC_SRC = '/Hyper Olympic (NES) Music.m4a'; // Path from public folder
+const MUSIC_SRC = '/HyperOlympic.mp3';
 
 let audioInstance: HTMLAudioElement | null = null;
 const getAudioInstance = () => {
