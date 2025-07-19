@@ -9,6 +9,7 @@ import useArcadeSounds from '@/hooks/useArcadeSounds';
 import { cn } from '@/lib/utils';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useLocalization } from '@/hooks/useLocalization';
+import { Badge } from '@/components/ui/badge';
 
 const backToMainEvent = new Event('backToMain', { bubbles: true });
 
@@ -20,6 +21,7 @@ interface Project {
   imageHint: string;
   liveUrl?: string;
   githubUrl?: string;
+  technologies: string[];
 }
 
 export default function ProjectList() {
@@ -221,6 +223,11 @@ export default function ProjectList() {
             </div>
             <div className="w-full md:w-1/2 flex flex-col">
               <p className="text-base sm:text-lg text-gray-300 mb-4">{t(project.descriptionKey)}</p>
+              <div className="flex flex-wrap gap-2 mb-4">
+                  {project.technologies.map(tech => (
+                      <Badge key={tech} variant="secondary">{tech}</Badge>
+                  ))}
+              </div>
               <p className="text-sm text-accent font-code mb-6">{t('projects.created')}: {project.date}</p>
               <div className="flex flex-col gap-4 mt-auto">
                 {project.liveUrl && (

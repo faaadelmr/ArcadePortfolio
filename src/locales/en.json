@@ -45,7 +45,8 @@
                 "imageUrl": "/project/tanma.png",
                 "imageHint": "Daily Report Claim",
                 "liveUrl": "https://mentanma.cyou",
-                "githubUrl": "https://github.com/faaadelmr/tanma"
+                "githubUrl": "https://github.com/faaadelmr/tanma",
+                "technologies": ["Laravel", "PHP", "MySQL", "JavaScript", "TailwindCSS"]
             },
             {
                 "titleKey": "projects.cewekalcer.title",
@@ -53,7 +54,8 @@
                 "descriptionKey": "projects.cewekalcer.description",
                 "imageUrl": "/project/cewekalcer.png",
                 "imageHint": "CewekKalcer",
-                "liveUrl": "https://cewekalcer.pages.dev/"
+                "liveUrl": "https://cewekalcer.pages.dev/",
+                "technologies": ["Next.js", "TypeScript", "TailwindCSS"]
             },
             {
                 "titleKey": "projects.bayargess.title",
@@ -62,7 +64,8 @@
                 "imageUrl": "/project/bayargess.png",
                 "imageHint": "splitbill sharing",
                 "liveUrl": "https://bayargess.vercel.app/",
-                "githubUrl": "https://github.com/faaadelmr/bayarGess.git"
+                "githubUrl": "https://github.com/faaadelmr/bayarGess.git",
+                "technologies": ["Next.js", "TypeScript", "TailwindCSS", "Genkit AI"]
             }
         ],
         "tanma": {
