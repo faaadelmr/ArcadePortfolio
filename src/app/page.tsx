@@ -123,13 +123,13 @@ export default function PixelPlayHub() {
       
       const targetElement = e.target as HTMLElement;
       if (targetElement && ['INPUT', 'TEXTAREA'].includes(targetElement.tagName)) {
-        if (e.key.toLowerCase() !== 'escape') {
+        if (e.key && e.key.toLowerCase() !== 'escape') {
           return;
         }
       }
 
       if (gameState === 'booting') {
-          if (e.key.toLowerCase() === 's' || e.key.toLowerCase() === 'enter') {
+          if (e.key && (e.key.toLowerCase() === 's' || e.key.toLowerCase() === 'enter')) {
               handleStartButton();
               keyHandled = true;
           }
@@ -140,7 +140,7 @@ export default function PixelPlayHub() {
       if (gameState !== 'active') return;
 
       if (currentPage === 'main') {
-        switch (e.key.toLowerCase()) {
+        switch (e.key?.toLowerCase()) {
           case 'arrowup':
             setSelectedItem(prev => (prev - 1 + menuItems.length) % menuItems.length);
             playNavigate();
@@ -163,7 +163,7 @@ export default function PixelPlayHub() {
         }
       } else {
          // Other pages handle their own key events, but we catch global back here
-         switch (e.key.toLowerCase()) {
+         switch (e.key?.toLowerCase()) {
             case 'b':
             case 'escape':
               handleBack();

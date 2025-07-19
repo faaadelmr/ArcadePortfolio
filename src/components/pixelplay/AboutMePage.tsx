@@ -32,6 +32,7 @@ export default function AboutMePage() {
         title: t('contact.toast.successTitle'),
         description: t('contact.toast.successDescription'),
       });
+      // formspree resets the form on its own
     }
   }, [state.succeeded, t, toast]);
   
@@ -51,6 +52,18 @@ export default function AboutMePage() {
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     playSelect();
     handleSubmit(e);
+    
+    // Manually clear the form for instant feedback
+    const form = e.target as HTMLFormElement;
+    if (form) {
+        const nameInput = form.elements.namedItem('name') as HTMLInputElement;
+        const emailInput = form.elements.namedItem('email') as HTMLInputElement;
+        const messageTextarea = form.elements.namedItem('message') as HTMLTextAreaElement;
+        
+        if (nameInput) nameInput.value = '';
+        if (emailInput) emailInput.value = '';
+        if (messageTextarea) messageTextarea.value = '';
+    }
   };
   
   useEffect(() => {
@@ -59,7 +72,7 @@ export default function AboutMePage() {
       // Only the 'escape' key should have a special function.
       const targetElement = e.target as HTMLElement;
       if (targetElement && ['INPUT', 'TEXTAREA'].includes(targetElement.tagName)) {
-        if (e.key.toLowerCase() === 'escape') {
+        if (e.key && e.key.toLowerCase() === 'escape') {
           targetElement.blur(); // Unfocus the element
           e.preventDefault();
         }
@@ -68,7 +81,7 @@ export default function AboutMePage() {
       }
 
       // Prevent default for navigation keys if not typing
-      switch (e.key.toLowerCase()) {
+      switch (e.key?.toLowerCase()) {
         case 's':
           e.preventDefault();
           handleBack();
