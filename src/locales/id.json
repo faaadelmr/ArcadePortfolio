@@ -98,9 +98,28 @@
         "journey": "Perjalanan saya di dunia pemrograman berawal dari ketertarikan terhadap video game, yang kemudian berkembang menjadi minat dalam pengembangan web (terutama menggunakan Laravel) serta kecerdasan buatan. Saat ini, saya menjalankan pendidikan di Universitas Dian Nusantara dan telah memasuki semester ke-7, di mana saya terus memperdalam pemahaman saya tentang teknologi. Saya terus mengeksplorasi berbagai teknologi untuk memperluas wawasan dan kemampuan saya.",
         "philosophy": "Coba aja dulu.",
         "thanks": "Terima kasih telah mengunjungi pusat arkade saya. Jangan ragu untuk menjelajahi proyek-proyek saya dan jangan ragu untuk menghubungi!",
+        "tabs": {
+            "bio": "Bio",
+            "contact": "Kontak"
+        },
         "controls": {
+            "navigateTabs": "Gunakan [START] untuk berganti tab.",
             "scroll": "Tahan [D-PAD] atau [TOMBOL PANAH] untuk menggulir.",
+            "form": "Gunakan [TAB] untuk navigasi formulir.",
             "back": "[B] atau [ESC] untuk kembali ke Menu Utama."
+        }
+    },
+    "contact": {
+        "title": "Hubungi Saya",
+        "description": "Punya pertanyaan atau ingin bekerja sama? Kirimkan saya pesan!",
+        "namePlaceholder": "Nama Anda",
+        "emailPlaceholder": "Email Anda",
+        "messagePlaceholder": "Pesan Anda",
+        "sendButton": "Kirim Pesan",
+        "sending": "Mengirim...",
+        "toast": {
+            "successTitle": "Pesan Terkirim!",
+            "successDescription": "Terima kasih telah menghubungi. Saya akan segera membalasnya."
         }
     },
     "settings": {

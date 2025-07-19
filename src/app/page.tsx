@@ -121,6 +121,8 @@ export default function PixelPlayHub() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       let keyHandled = false;
+      
+      if (!e.key) return; // Add guard clause to prevent crash
 
       if (gameState === 'booting') {
           if (e.key.toLowerCase() === 's' || e.key.toLowerCase() === 'enter') {
