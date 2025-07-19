@@ -37,8 +37,8 @@ export default function PixelPlayHub() {
     { id: 'settings', label: t('mainMenu.settings'), icon: SettingsIcon, target: 'settings' as Page },
   ], [t]);
   
-  const { isReady: musicReady, isMusicEnabled, playMusic, pauseMusic, volume } = useBackgroundMusic();
-  const { isReady: soundsReady, playNavigate, playSelect, playBack, playStart } = useArcadeSounds({ isSoundEnabled });
+  const { isMusicEnabled, playMusic, pauseMusic } = useBackgroundMusic();
+  const { playNavigate, playSelect, playBack, playStart } = useArcadeSounds();
 
   useEffect(() => {
     if (gameState === 'booting' || gameState === 'active') {
@@ -51,10 +51,12 @@ export default function PixelPlayHub() {
   }, [gameState, isMusicEnabled, playMusic, pauseMusic]);
 
   useEffect(() => {
-    if (gameState === 'loading' && soundsReady && musicReady && isLocalizationReady) {
+    // Make loading more resilient. Don't wait for audio.
+    // Audio will play when it's ready.
+    if (isLocalizationReady && gameState === 'loading') {
         setGameState('booting');
     }
-  }, [gameState, soundsReady, musicReady, isLocalizationReady]);
+  }, [isLocalizationReady, gameState]);
 
 
   const handleNavigation = useCallback((direction: 'up' | 'down') => {
@@ -73,9 +75,9 @@ export default function PixelPlayHub() {
   const handleSelect = useCallback(() => {
     if (isTransitioning || gameState !== 'active') return;
     
+    playSelect();
+    setActiveButton('a');
     if (currentPage === 'main') {
-      playSelect();
-      setActiveButton('a');
       setIsTransitioning(true);
       setTimeout(() => {
         setCurrentPage(menuItems[selectedItem].target);
@@ -90,8 +92,8 @@ export default function PixelPlayHub() {
 
   const handleBack = useCallback(() => {
     if (isTransitioning || gameState !== 'active' || currentPage === 'main') return;
-    playBack();
     
+    playBack();
     // Forward the back action to the current component instead of handling it here
     const backEvent = new KeyboardEvent('keydown', { key: 'b', bubbles: true });
     window.dispatchEvent(backEvent);
@@ -142,13 +144,13 @@ export default function PixelPlayHub() {
       if (currentPage === 'main') {
         switch (e.key?.toLowerCase()) {
           case 'arrowup':
-            setSelectedItem(prev => (prev - 1 + menuItems.length) % menuItems.length);
             playNavigate();
+            setSelectedItem(prev => (prev - 1 + menuItems.length) % menuItems.length);
             keyHandled = true;
             break;
           case 'arrowdown':
-            setSelectedItem(prev => (prev + 1) % menuItems.length);
             playNavigate();
+            setSelectedItem(prev => (prev + 1) % menuItems.length);
             keyHandled = true;
             break;
           case 'a':
