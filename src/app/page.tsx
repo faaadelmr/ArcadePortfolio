@@ -91,7 +91,6 @@ export default function PixelPlayHub() {
   const handleBack = useCallback(() => {
     if (isTransitioning || gameState !== 'active' || currentPage === 'main') return;
     playBack();
-    setActiveButton('b');
     
     // Forward the back action to the current component instead of handling it here
     const backEvent = new KeyboardEvent('keydown', { key: 'b', bubbles: true });
@@ -122,13 +121,19 @@ export default function PixelPlayHub() {
     const handleKeyDown = (e: KeyboardEvent) => {
       let keyHandled = false;
       
-      if (!e.key) return; // Add guard clause to prevent crash
+      const targetElement = e.target as HTMLElement;
+      if (targetElement && ['INPUT', 'TEXTAREA'].includes(targetElement.tagName)) {
+        if (e.key.toLowerCase() !== 'escape') {
+          return;
+        }
+      }
 
       if (gameState === 'booting') {
           if (e.key.toLowerCase() === 's' || e.key.toLowerCase() === 'enter') {
               handleStartButton();
               keyHandled = true;
           }
+          if(keyHandled) e.preventDefault();
           return;
       }
       
@@ -157,7 +162,7 @@ export default function PixelPlayHub() {
             break;
         }
       } else {
-         // Other pages handle their own key events
+         // Other pages handle their own key events, but we catch global back here
          switch (e.key.toLowerCase()) {
             case 'b':
             case 'escape':

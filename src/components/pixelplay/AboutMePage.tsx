@@ -1,204 +1,185 @@
 
 'use client';
 
-import React, { useEffect, useCallback, useRef, useState } from 'react';
+import React, { useEffect, useCallback, useRef } from 'react';
 import useArcadeSounds from '@/hooks/useArcadeSounds';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useLocalization } from '@/hooks/useLocalization';
 import { AthleteStarNesBackground } from './AthleteStarNesBackground';
-import ContactForm from './ContactForm';
 import { cn } from '@/lib/utils';
+import { Input } from '../ui/input';
+import { Textarea } from '../ui/textarea';
+import { Button } from '../ui/button';
+import { Mail, Send, Loader2 } from 'lucide-react';
+import { useForm } from '@formspree/react';
+import { useToast } from '@/hooks/use-toast';
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
+import Image from 'next/image';
 
 const backToMainEvent = new Event('backToMain', { bubbles: true });
-
-type AboutTab = 'bio' | 'contact';
 
 export default function AboutMePage() {
   const { playBack, playNavigate, playSelect, playStart } = useArcadeSounds();
   const { t } = useLocalization();
-  const [activeTab, setActiveTab] = useState<AboutTab>('bio');
-  const [selectedItem, setSelectedItem] = useState(0); // 0 for bio, 1 for contact
-  
+  const { toast } = useToast();
+  const [state, handleSubmit] = useForm('myzpzqbk');
+
   const scrollViewportRef = useRef<HTMLDivElement>(null);
-  const scrollIntervalRef = useRef<NodeJS.Timeout | null>(null);
-  const [scrollingDirection, setScrollingDirection] = useState<'up' | 'down' | null>(null);
-
-  const handleBack = useCallback(() => {
-    if (activeTab === 'bio') {
-      playBack();
-      window.dispatchEvent(backToMainEvent);
-    }
-    // If on contact tab, do nothing to allow backspace in form fields
-  }, [playBack, activeTab]);
-
-  const handleTabSwitch = useCallback(() => {
-      playStart();
-      setSelectedItem(prev => (prev + 1) % 2);
-      setActiveTab(prev => prev === 'bio' ? 'contact' : 'bio');
-  }, [playStart]);
-
-  const startScrolling = useCallback((direction: 'up' | 'down') => {
-    if (activeTab !== 'bio') return;
-    if (scrollIntervalRef.current) return;
-    playNavigate();
-
-    const scroll = () => {
-      if (scrollViewportRef.current) {
-        const scrollAmount = direction === 'up' ? -10 : 10;
-        scrollViewportRef.current.scrollBy({ top: scrollAmount, behavior: 'smooth' });
-      }
-    };
-    
-    scroll(); // a single scroll on press
-    scrollIntervalRef.current = setInterval(scroll, 50); // continuous scroll
-  }, [playNavigate, activeTab]);
-
-  const stopScrolling = useCallback(() => {
-    if (scrollIntervalRef.current) {
-      clearInterval(scrollIntervalRef.current);
-      scrollIntervalRef.current = null;
-    }
-  }, []);
 
   useEffect(() => {
+    if (state.succeeded) {
+      toast({
+        title: t('contact.toast.successTitle'),
+        description: t('contact.toast.successDescription'),
+      });
+    }
+  }, [state.succeeded, t, toast]);
+  
+  const handleBack = useCallback(() => {
+    playStart();
+    window.dispatchEvent(backToMainEvent);
+  }, [playStart]);
+
+  const handleScroll = useCallback((direction: 'up' | 'down') => {
+    if (scrollViewportRef.current) {
+        playNavigate();
+        const scrollAmount = direction === 'up' ? -50 : 50;
+        scrollViewportRef.current.scrollBy({ top: scrollAmount, behavior: 'smooth' });
+    }
+  }, [playNavigate]);
+
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    playSelect();
+    handleSubmit(e);
+  };
+  
+  useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (activeTab === 'contact' && ['input', 'textarea'].includes((e.target as HTMLElement).tagName.toLowerCase())) {
+      // If we are focused on an input/textarea, let the user type.
+      // Only the 'escape' key should have a special function.
+      const targetElement = e.target as HTMLElement;
+      if (targetElement && ['INPUT', 'TEXTAREA'].includes(targetElement.tagName)) {
+        if (e.key.toLowerCase() === 'escape') {
+          targetElement.blur(); // Unfocus the element
+          e.preventDefault();
+        }
+        // Do not process other keys like 'b', 's', arrows etc.
         return;
       }
-      if (e.repeat) return;
-      
+
+      // Prevent default for navigation keys if not typing
       switch (e.key.toLowerCase()) {
-        case 'b':
-        case 'backspace':
-        case 'escape':
-          if (activeTab === 'bio') {
-            e.preventDefault();
-            handleBack();
-          }
+        case 's':
+          e.preventDefault();
+          handleBack();
           break;
         case 'arrowup':
-           if (activeTab === 'bio') {
-             e.preventDefault();
-             setScrollingDirection('up');
-             startScrolling('up');
-           }
-           break;
-        case 'arrowdown':
-           if (activeTab === 'bio') {
-             e.preventDefault();
-             setScrollingDirection('down');
-             startScrolling('down');
-           }
-           break;
-        case 's':
-        case 'enter': // Also allow enter to switch tabs
-            e.preventDefault();
-            handleTabSwitch();
-            break;
-        case 'a':
-          if (activeTab === 'bio') {
-             playSelect();
-             // Maybe do something on select in bio later?
-          }
+          e.preventDefault();
+          handleScroll('up');
           break;
-      }
-    };
-    
-    const handleKeyUp = (e: KeyboardEvent) => {
-      if (activeTab === 'bio') {
-        switch (e.key.toLowerCase()) {
-          case 'arrowup':
-            if (scrollingDirection === 'up') {
-              e.preventDefault();
-              stopScrolling();
-              setScrollingDirection(null);
+        case 'arrowdown':
+          e.preventDefault();
+          handleScroll('down');
+          break;
+        case 'a':
+        case 'enter':
+            const focusedElement = document.activeElement;
+            if (focusedElement && 'click' in focusedElement && typeof focusedElement.click === 'function') {
+                (focusedElement as HTMLElement).click();
+                e.preventDefault();
             }
+          break;
+        case 'b': //Explicitly handle 'b' if needed, but we want it to do nothing
+        case 'escape':
+            // 'b' is now handled by the global handler, which checks the target.
+            // But we can also add a local prevent default if needed.
+            // For now, we let it bubble to the parent.
             break;
-          case 'arrowdown':
-            if (scrollingDirection === 'down') {
-              e.preventDefault();
-              stopScrolling();
-              setScrollingDirection(null);
-            }
-            break;
-        }
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('keyup', handleKeyUp);
-    
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('keyup', handleKeyUp);
-      stopScrolling();
     };
-  }, [handleBack, startScrolling, stopScrolling, scrollingDirection, activeTab, handleTabSwitch, playSelect]);
-
-  const tabs = [
-    { id: 'bio', label: t('aboutMe.tabs.bio') },
-    { id: 'contact', label: t('aboutMe.tabs.contact') }
-  ];
+  }, [handleBack, playNavigate, playSelect, playBack, handleScroll]);
 
   return (
-    <div className="w-full h-full flex flex-col p-4 sm:p-8 text-white animate-pixel-in relative">
+    <div className="w-full h-full flex flex-col p-4 sm:p-6 text-white animate-pixel-in relative">
       <div className="absolute inset-0 z-0 opacity-20">
         <AthleteStarNesBackground />
       </div>
       <div className="relative z-10 flex flex-col h-full">
-        <h1 className="text-3xl sm:text-5xl font-headline text-primary mb-4 text-center">{t('aboutMe.title')}</h1>
+        <h1 className="text-3xl sm:text-4xl font-headline text-primary mb-4 text-center">{t('aboutMe.title')}</h1>
         
-        <div className="flex justify-center mb-4 border-b-2 border-primary/30">
-          {tabs.map((tab, index) => (
-            <button
-              key={tab.id}
-              onClick={() => {
-                playNavigate();
-                setSelectedItem(index);
-                setActiveTab(tab.id as AboutTab);
-              }}
-              className={cn(
-                "px-4 py-2 font-headline text-lg transition-colors",
-                selectedItem === index ? "text-accent border-b-2 border-accent" : "text-gray-500"
-              )}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </div>
+        <ScrollArea viewportRef={scrollViewportRef} className="flex-grow pr-4 -mr-4">
+            <div className="max-w-3xl mx-auto space-y-6">
+                    <CardHeader>
+                        <div className="flex items-center gap-4">
+                            <Image 
+                                src="https://placehold.co/80x80.png" 
+                                data-ai-hint="pixelated avatar" 
+                                alt="Fadel Muhamad Rifai" 
+                                width={80} 
+                                height={80} 
+                                className="rounded-full border-2 border-primary"
+                            />
+                            <div>
+                            <CardTitle className="text-2xl font-headline text-primary">Fadel Muhamad Rifai</CardTitle>
+                            <p className="text-accent font-code">Web Developer</p>
+                            </div>
+                        </div>
+                    </CardHeader>
+                    <CardContent className="text-base text-gray-300 space-y-3 pr-4">
+                        <p>{t('aboutMe.intro')}</p>
+                        <p>{t('aboutMe.journey')}</p>
+                        <p className='italic font-code'>"{t('aboutMe.philosophy')}"</p>
+                    </CardContent>
 
-        <div className="flex-grow overflow-hidden">
-          {activeTab === 'bio' && (
-             <ScrollArea viewportRef={scrollViewportRef} className="h-full pr-4">
-              <div className="space-y-4 text-base sm:text-lg text-gray-300">
-                  <p>
-                      {t('aboutMe.intro')}
-                  </p>
-                  <p>
-                      {t('aboutMe.journey')}
-                  </p>
-                  <p className='font-italic font-code'>
-                      "{t('aboutMe.philosophy')}"
-                  </p>
-                  <p className="pt-4">
-                      {t('aboutMe.thanks')}
-                  </p>
-              </div>
-            </ScrollArea>
-          )}
-          {activeTab === 'contact' && (
-            <ContactForm />
-          )}
-        </div>
+                <Card className="bg-black/30 p-4 rounded-lg border border-primary/30">
+                    <div className="flex items-center gap-4 mb-2">
+                        <Mail className="w-6 h-6 text-primary"/>
+                        <h2 className="text-xl font-headline text-primary">{t('contact.title')}</h2>
+                    </div>
+                    <form onSubmit={handleFormSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4 items-end">
+                        <Input
+                            id="name"
+                            name="name"
+                            placeholder={t('contact.namePlaceholder')}
+                            className={cn("bg-gray-900 border-gray-700 text-white focus:ring-2 focus:ring-accent")}
+                            aria-invalid={state.errors?.fieldErrors.name ? 'true' : 'false'}
+                        />
+                        <Input
+                            id="email"
+                            type="email"
+                            name="email"
+                            placeholder={t('contact.emailPlaceholder')}
+                            className={cn("bg-gray-900 border-gray-700 text-white focus:ring-2 focus:ring-accent")}
+                            aria-invalid={state.errors?.fieldErrors.email ? 'true' : 'false'}
+                        />
+                        <Textarea
+                            id="message"
+                            name="message"
+                            placeholder={t('contact.messagePlaceholder')}
+                            className={cn("bg-gray-900 border-gray-700 text-white min-h-[42px] md:col-span-2 focus:ring-2 focus:ring-accent")}
+                            aria-invalid={state.errors?.fieldErrors.message ? 'true' : 'false'}
+                            rows={2}
+                        />
+                        <Button 
+                            type="submit" 
+                            disabled={state.submitting} 
+                            className={cn("w-full font-headline text-lg bg-accent hover:bg-accent/90 text-accent-foreground md:col-span-2 focus:ring-2 focus:ring-accent")}
+                        >
+                            {state.submitting ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
+                            <span>{state.submitting ? t('contact.sending') : t('contact.sendButton')}</span>
+                        </Button>
+                    </form>
+                </Card>
+            </div>
+        </ScrollArea>
         
-        <div className="mt-4 sm:mt-6 text-center text-sm sm:text-base text-gray-400 font-code">
-          <p>{t('aboutMe.controls.navigateTabs')}</p>
-          {activeTab === 'bio' ? (
-              <p>{t('aboutMe.controls.scroll')}</p>
-          ) : (
-             <p>{t('aboutMe.controls.form')}</p>
-          )}
-          <p>{t('aboutMe.controls.back')}</p>
+        <div className="mt-4 text-center text-sm text-gray-400 font-code flex-shrink-0">
+          <p>{t('aboutMe.controls.navigate')}</p>
         </div>
       </div>
     </div>
