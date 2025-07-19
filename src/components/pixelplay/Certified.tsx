@@ -9,6 +9,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 import useArcadeSounds from '@/hooks/useArcadeSounds';
 import { useLocalization } from '@/hooks/useLocalization';
+import { TrophyRoomNesBackground } from './TrophyRoomNesBackground';
 
 const backToMainEvent = new Event('backToMain', { bubbles: true });
 
@@ -192,65 +193,75 @@ export default function Certified() {
   if (cert) {
     const title = cert.title;
     return (
-      <div className="w-full h-full flex flex-col p-4 sm:p-6 text-white animate-pixel-in">
-        <div className="flex items-center mb-4 flex-shrink-0">
-          <Button variant="ghost" size="icon" className="mr-4 text-accent ring-2 ring-accent bg-accent/20" onClick={handleBackToList}>
-            <ArrowLeft />
-          </Button>
-          <div className='truncate'>
-            <h1 className="text-xl sm:text-2xl lg:text-3xl font-headline text-primary truncate">{title}</h1>
-            <p className="text-sm sm:text-base text-gray-300 truncate">{cert.issuer}</p>
-          </div>
+      <div className="w-full h-full flex flex-col p-4 sm:p-6 text-white animate-pixel-in relative">
+        <div className="absolute inset-0 z-0 opacity-20">
+            <TrophyRoomNesBackground />
         </div>
-        <ScrollArea viewportRef={scrollViewportRef} className="flex-grow pr-2">
-            <Image 
-                src={cert.imageUrl}
-                alt={`${t('certifications.alt')} ${title}`}
-                width={800}
-                height={600}
-                className="rounded-lg border-2 border-primary/50 object-contain w-full h-auto"
-            />
-        </ScrollArea>
-        <div className="mt-4 text-center text-sm sm:text-lg text-gray-400 font-code flex-shrink-0">
-          <p>{t('certifications.controls.scroll')}</p>
-          <p>{t('certifications.controls.backToList')}</p>
+        <div className="relative z-10 flex flex-col h-full">
+            <div className="flex items-center mb-4 flex-shrink-0">
+            <Button variant="ghost" size="icon" className="mr-4 text-accent ring-2 ring-accent bg-accent/20" onClick={handleBackToList}>
+                <ArrowLeft />
+            </Button>
+            <div className='truncate'>
+                <h1 className="text-xl sm:text-2xl lg:text-3xl font-headline text-primary truncate">{title}</h1>
+                <p className="text-sm sm:text-base text-gray-300 truncate">{cert.issuer}</p>
+            </div>
+            </div>
+            <ScrollArea viewportRef={scrollViewportRef} className="flex-grow pr-2">
+                <Image 
+                    src={cert.imageUrl}
+                    alt={`${t('certifications.alt')} ${title}`}
+                    width={800}
+                    height={600}
+                    className="rounded-lg border-2 border-primary/50 object-contain w-full h-auto"
+                />
+            </ScrollArea>
+            <div className="mt-4 text-center text-sm sm:text-lg text-gray-400 font-code flex-shrink-0">
+            <p>{t('certifications.controls.scroll')}</p>
+            <p>{t('certifications.controls.backToList')}</p>
+            </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="w-full h-full flex flex-col p-4 sm:p-8 text-white">
-      <h1 className="text-3xl sm:text-5xl font-headline text-primary mb-4 sm:mb-8 text-center">{t('certifications.title')}</h1>
-      <ScrollArea className="flex-grow pr-4">
-        <ul className="space-y-4">
-          {certifications.map((cert, index) => (
-            <li 
-              key={index}
-              ref={el => { if(el) itemRefs.current[index] = el; }}
-              className={cn(
-                "p-4 border-l-4 rounded-r-lg transition-all duration-200",
-                selectedItem === index 
-                  ? "border-accent bg-primary/20" 
-                  : "border-gray-700"
-              )}
-            >
-              <h2 className={cn(
-                  "text-xl sm:text-2xl font-headline truncate",
-                  selectedItem === index ? 'text-accent' : 'text-white'
-              )}>
-                {cert.title}
-              </h2>
-              <p className="text-base sm:text-lg text-gray-300">{cert.issuer}</p>
-              <p className="text-sm font-code text-primary/80 mt-1">{cert.date}</p>
-            </li>
-          ))}
-        </ul>
-      </ScrollArea>
-      <div className="mt-4 sm:mt-8 text-center text-sm sm:text-lg text-gray-400 font-code">
-        <p>{t('certifications.controls.navigate')}</p>
-        <p>{t('certifications.controls.backToMain')}</p>
-      </div>
+    <div className="w-full h-full flex flex-col p-4 sm:p-8 text-white relative">
+        <div className="absolute inset-0 z-0 opacity-20">
+            <TrophyRoomNesBackground />
+        </div>
+        <div className="relative z-10 flex flex-col h-full">
+            <h1 className="text-3xl sm:text-5xl font-headline text-primary mb-4 sm:mb-8 text-center">{t('certifications.title')}</h1>
+            <ScrollArea className="flex-grow pr-4">
+                <ul className="space-y-4">
+                {certifications.map((cert, index) => (
+                    <li 
+                    key={index}
+                    ref={el => { if(el) itemRefs.current[index] = el; }}
+                    className={cn(
+                        "p-4 border-l-4 rounded-r-lg transition-all duration-200",
+                        selectedItem === index 
+                        ? "border-accent bg-primary/20" 
+                        : "border-gray-700"
+                    )}
+                    >
+                    <h2 className={cn(
+                        "text-xl sm:text-2xl font-headline truncate",
+                        selectedItem === index ? 'text-accent' : 'text-white'
+                    )}>
+                        {cert.title}
+                    </h2>
+                    <p className="text-base sm:text-lg text-gray-300">{cert.issuer}</p>
+                    <p className="text-sm font-code text-primary/80 mt-1">{cert.date}</p>
+                    </li>
+                ))}
+                </ul>
+            </ScrollArea>
+            <div className="mt-4 sm:mt-8 text-center text-sm sm:text-lg text-gray-400 font-code">
+                <p>{t('certifications.controls.navigate')}</p>
+                <p>{t('certifications.controls.backToMain')}</p>
+            </div>
+        </div>
     </div>
   );
 }
