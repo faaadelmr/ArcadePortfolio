@@ -10,6 +10,7 @@ import { cn } from '@/lib/utils';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useLocalization } from '@/hooks/useLocalization';
 import { Badge } from '@/components/ui/badge';
+import { AgendaNesBackground } from './AgendaNesBackground';
 
 const backToMainEvent = new Event('backToMain', { bubbles: true });
 
@@ -201,87 +202,97 @@ export default function ProjectList() {
     let buttonIndex = 2; // Start after back and image
     const title = t(project.titleKey);
     return (
-      <div className="w-full h-full flex flex-col p-4 sm:p-6 md:p-8 text-white animate-pixel-in">
-        <div className="flex items-center mb-4 flex-shrink-0">
-           <Button ref={el => { if (el) {detailItemRefs.current[0] = el;} }} variant="ghost" size="icon" className={cn("mr-4 text-accent hover:bg-accent/20 hover:text-accent pointer-events-none", selectedDetailButton === 0 ? 'ring-2 ring-accent' : '')}>
-            <ArrowLeft/>
-          </Button>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-headline text-primary truncate">{title}</h1>
+      <div className="w-full h-full flex flex-col p-4 sm:p-6 md:p-8 text-white animate-pixel-in relative">
+        <div className="absolute inset-0 z-0 opacity-20">
+            <AgendaNesBackground />
         </div>
-        <ScrollArea className="flex-grow pr-2">
-          <div className="flex flex-col md:flex-row gap-6 md:gap-8">
-            <div className={cn("w-full md:w-1/2 flex-shrink-0 rounded-lg pointer-events-none", selectedDetailButton === 1 ? 'ring-2 ring-primary' : '')}>
-              <Image 
-                ref={el => { if (el) {detailItemRefs.current[1] = el;} }}
-                src={project.imageUrl}
-                alt={title}
-                width={600}
-                height={400}
-                className="rounded-lg border-2 border-primary/50 object-cover w-full h-auto"
-                data-ai-hint={project.imageHint}
-              />
+        <div className='relative z-10 flex flex-col h-full'>
+            <div className="flex items-center mb-4 flex-shrink-0">
+            <Button ref={el => { if (el) {detailItemRefs.current[0] = el;} }} variant="ghost" size="icon" className={cn("mr-4 text-accent hover:bg-accent/20 hover:text-accent pointer-events-none", selectedDetailButton === 0 ? 'ring-2 ring-accent' : '')}>
+                <ArrowLeft/>
+            </Button>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-headline text-primary truncate">{title}</h1>
             </div>
-            <div className="w-full md:w-1/2 flex flex-col">
-              <p className="text-base sm:text-lg text-gray-300 mb-4">{t(project.descriptionKey)}</p>
-              <div className="flex flex-wrap gap-2 mb-4">
-                  {project.technologies.map(tech => (
-                      <Badge key={tech} variant="secondary">{tech}</Badge>
-                  ))}
-              </div>
-              <p className="text-sm text-accent font-code mb-6">{t('projects.created')}: {project.date}</p>
-              <div className="flex flex-col gap-4 mt-auto">
-                {project.liveUrl && (
-                  <Button ref={el => { if (el) {detailItemRefs.current[buttonIndex++] = el;} }} asChild className={cn("w-full bg-primary text-primary-foreground font-headline text-sm sm:text-base pointer-events-none", selectedDetailButton === detailButtons.findIndex(b => b.id === 'live') ? 'ring-2 ring-white bg-primary/90' : '')}>
-                    <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" tabIndex={-1}>
-                      <Globe className="mr-2 h-5 w-5" />
-                      {t('projects.visitWebsite')}
-                    </a>
-                  </Button>
-                )}
-                {project.githubUrl && (
-                  <Button ref={el => { if (el) {detailItemRefs.current[buttonIndex++] = el;} }} asChild variant="outline" className={cn("w-full font-headline border-accent text-accent text-sm sm:text-base pointer-events-none", selectedDetailButton === detailButtons.findIndex(b => b.id === 'github') ? 'ring-2 ring-accent bg-accent text-accent-foreground' : '')}>
-                    <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" tabIndex={-1}>
-                      <Github className="mr-2 h-5 w-5" />
-                      GitHub
-                    </a>
-                  </Button>
-                )}
-              </div>
+            <ScrollArea className="flex-grow pr-2">
+            <div className="flex flex-col md:flex-row gap-6 md:gap-8">
+                <div className={cn("w-full md:w-1/2 flex-shrink-0 rounded-lg pointer-events-none", selectedDetailButton === 1 ? 'ring-2 ring-primary' : '')}>
+                <Image 
+                    ref={el => { if (el) {detailItemRefs.current[1] = el;} }}
+                    src={project.imageUrl}
+                    alt={title}
+                    width={600}
+                    height={400}
+                    className="rounded-lg border-2 border-primary/50 object-cover w-full h-auto"
+                    data-ai-hint={project.imageHint}
+                />
+                </div>
+                <div className="w-full md:w-1/2 flex flex-col">
+                <p className="text-base sm:text-lg text-gray-300 mb-4">{t(project.descriptionKey)}</p>
+                <div className="flex flex-wrap gap-2 mb-4">
+                    {project.technologies.map(tech => (
+                        <Badge key={tech} variant="secondary">{tech}</Badge>
+                    ))}
+                </div>
+                <p className="text-sm text-accent font-code mb-6">{t('projects.created')}: {project.date}</p>
+                <div className="flex flex-col gap-4 mt-auto">
+                    {project.liveUrl && (
+                    <Button ref={el => { if (el) {detailItemRefs.current[buttonIndex++] = el;} }} asChild className={cn("w-full bg-primary text-primary-foreground font-headline text-sm sm:text-base pointer-events-none", selectedDetailButton === detailButtons.findIndex(b => b.id === 'live') ? 'ring-2 ring-white bg-primary/90' : '')}>
+                        <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" tabIndex={-1}>
+                        <Globe className="mr-2 h-5 w-5" />
+                        {t('projects.visitWebsite')}
+                        </a>
+                    </Button>
+                    )}
+                    {project.githubUrl && (
+                    <Button ref={el => { if (el) {detailItemRefs.current[buttonIndex++] = el;} }} asChild variant="outline" className={cn("w-full font-headline border-accent text-accent text-sm sm:text-base pointer-events-none", selectedDetailButton === detailButtons.findIndex(b => b.id === 'github') ? 'ring-2 ring-accent bg-accent text-accent-foreground' : '')}>
+                        <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" tabIndex={-1}>
+                        <Github className="mr-2 h-5 w-5" />
+                        GitHub
+                        </a>
+                    </Button>
+                    )}
+                </div>
+                </div>
             </div>
-          </div>
-        </ScrollArea>
-        <div className="mt-4 sm:mt-8 text-center text-sm sm:text-lg text-gray-400 font-code flex-shrink-0">
-          <p>{t('projects.controls.detail.navigate')}</p>
-          <p>{t('projects.controls.detail.back')}</p>
+            </ScrollArea>
+            <div className="mt-4 sm:mt-8 text-center text-sm sm:text-lg text-gray-400 font-code flex-shrink-0">
+            <p>{t('projects.controls.detail.navigate')}</p>
+            <p>{t('projects.controls.detail.back')}</p>
+            </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="w-full h-full flex flex-col p-4 sm:p-8 text-white">
-      <h1 className="text-3xl sm:text-5xl font-headline text-primary mb-4 sm:mb-8 text-center">{t('projects.title')}</h1>
-      <ScrollArea className="flex-grow">
-        <ul className="space-y-2 text-xl sm:text-2xl font-headline pr-4">
-          {projects.map((proj, index) => (
-            <li 
-              key={proj.titleKey}
-              ref={el => {if(el) itemRefs.current[index] = el}}
-              className={cn(
-                "flex justify-between items-center p-2 border-b-2 border-dashed border-gray-700 transition-all duration-200 rounded-md",
-                selectedItem === index ? "bg-primary/20 text-accent" : ""
-              )}
-            >
-              <span className="truncate pr-4">{t(proj.titleKey)}</span>
-              <span className="font-code text-accent text-opacity-80 text-base sm:text-xl flex-shrink-0">{proj.date}</span>
-            </li>
-          ))}
-        </ul>
-      </ScrollArea>
-      <div className="mt-4 sm:mt-8 text-center text-sm sm:text-lg text-gray-400 font-code">
-        <p>{t('projects.controls.list.navigate')}</p>
-        <p>{t('projects.controls.list.back')}</p>
-      </div>
+    <div className="w-full h-full flex flex-col p-4 sm:p-8 text-white relative">
+        <div className="absolute inset-0 z-0 opacity-20">
+            <AgendaNesBackground />
+        </div>
+        <div className="relative z-10 flex flex-col h-full">
+            <h1 className="text-3xl sm:text-5xl font-headline text-primary mb-4 sm:mb-8 text-center">{t('projects.title')}</h1>
+            <ScrollArea className="flex-grow">
+                <ul className="space-y-2 text-xl sm:text-2xl font-headline pr-4">
+                {projects.map((proj, index) => (
+                    <li 
+                    key={proj.titleKey}
+                    ref={el => {if(el) itemRefs.current[index] = el}}
+                    className={cn(
+                        "flex justify-between items-center p-2 border-b-2 border-dashed border-gray-700 transition-all duration-200 rounded-md",
+                        selectedItem === index ? "bg-primary/20 text-accent" : ""
+                    )}
+                    >
+                    <span className="truncate pr-4">{t(proj.titleKey)}</span>
+                    <span className="font-code text-accent text-opacity-80 text-base sm:text-xl flex-shrink-0">{proj.date}</span>
+                    </li>
+                ))}
+                </ul>
+            </ScrollArea>
+            <div className="mt-4 sm:mt-8 text-center text-sm sm:text-lg text-gray-400 font-code">
+                <p>{t('projects.controls.list.navigate')}</p>
+                <p>{t('projects.controls.list.back')}</p>
+            </div>
+        </div>
     </div>
   );
 }
