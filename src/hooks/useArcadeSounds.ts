@@ -26,6 +26,7 @@ const loadTone = async () => {
 // This hook safely handles Tone.js which is a client-side library.
 export default function useArcadeSounds(props?: UseArcadeSoundsProps) {
   const isSoundPlaying = useRef(false);
+  const soundTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [isReady, setIsReady] = useState(false);
   const { isSoundEnabled: globalSoundEnabled } = useSoundSettings();
 
@@ -35,6 +36,12 @@ export default function useArcadeSounds(props?: UseArcadeSoundsProps) {
     loadTone().then(() => {
       setIsReady(true);
     });
+    // Cleanup timeout on unmount
+    return () => {
+      if (soundTimeoutRef.current) {
+        clearTimeout(soundTimeoutRef.current);
+      }
+    };
   }, []);
 
   const playSound = useCallback((note: string, duration: string) => {
@@ -44,6 +51,7 @@ export default function useArcadeSounds(props?: UseArcadeSoundsProps) {
     
     if (T.context.state !== 'running') {
       T.context.resume().catch(e => console.error("Could not resume audio context", e));
+      return; // Resume and try on the next user interaction
     }
     
     isSoundPlaying.current = true;
@@ -57,9 +65,11 @@ export default function useArcadeSounds(props?: UseArcadeSoundsProps) {
         console.error("Failed to play sound", e);
     }
     
-    setTimeout(() => {
+    // Use a numeric duration for the timeout
+    const durationMs = T.Time(duration).toMilliseconds();
+    soundTimeoutRef.current = setTimeout(() => {
         isSoundPlaying.current = false;
-    }, 50);
+    }, durationMs);
   }, [isReady, isSoundEnabled]);
 
   const playNavigate = useCallback(() => playSound('C3', '16n'), [playSound]);
