@@ -109,91 +109,91 @@
                 "title": "GIT untuk Pemula",
                 "issuer": "Codepolitan",
                 "date": "2025-04-08",
-                "imageUrl": "/certified/GIT untuk Pemula.webp"
+                "imageUrl": "/certified/GITuntukPemula.jpg"
               },
               {
                 "title": "HTML dan CSS",
                 "issuer": "Codepolitan",
                 "date": "2022-04-15",
-                "imageUrl": "/certified/HTML dan CSS.webp"
+                "imageUrl": "/certified/HTMLdanCSS.jpg"
               },
               {
                 "title": "JavaScript Dasar",
                 "issuer": "Codepolitan",
                 "date": "2025-04-15",
-                "imageUrl": "/certified/JavaScript Dasar.webp"
+                "imageUrl": "/certified/JavaScriptDasar.jpg"
               },
               {
                 "title": "Konsep Dasar Pemrograman Berorientasi Objek di PHP",
                 "issuer": "Codepolitan",
                 "date": "2025-05-03",
-                "imageUrl": "/certified/OOP PHP.webp"
+                "imageUrl": "/certified/OOPPHP.jpg"
               },
               {
                 "title": "Laravel 6 Intermediate",
                 "issuer": "Codepolitan",
                 "date": "2025-04-10",
-                "imageUrl": "/certified/Laravel 6 Intermediate.webp"
+                "imageUrl": "/certified/Laravel6Intermediate.jpg"
               },
               {
                 "title": "Laravel 8x Fundamental",
                 "issuer": "Codepolitan",
                 "date": "2025-04-10",
-                "imageUrl": "/certified/Laravel 8x Fundamental.webp"
+                "imageUrl": "/certified/Laravel8xFundamental.jpg"
               },
               {
                 "title": "Laravel Development",
                 "issuer": "Codepolitan",
                 "date": "2022-03-01",
-                "imageUrl": "/certified/Laravel Development.webp"
+                "imageUrl": "/certified/LaravelDevelopment.jpg"
               },
               {
                 "title": "Mengenal Pemrograman Komputer",
                 "issuer": "Codepolitan",
                 "date": "2025-04-08",
-                "imageUrl": "/certified/Mengenal Pemrograman Komputer.webp"
+                "imageUrl": "/certified/MengenalPemrogramanKomputer.jpg"
               },
               {
                 "title": "Menggunakan Bootstrap Framework",
                 "issuer": "Codepolitan",
                 "date": "2025-04-15",
-                "imageUrl": "/certified/Menggunakan Bootstrap Framework.webp"
+                "imageUrl": "/certified/MenggunakanBootstrapFramework.jpg"
               },
               {
                 "title": "Oracle Database Design",
                 "issuer": "Codepolitan",
                 "date": "2023-06-07",
-                "imageUrl": "/certified/Oracle Database Design.webp"
+                "imageUrl": "/certified/OracleDatabaseDesign.jpg"
               },
               {
                 "title": "ORACLE DATABASE PROGRAMMING WITH SQL",
                 "issuer": "Codepolitan",
                 "date": "2023-12-18",
-                "imageUrl": "/certified/ORACLE DATABASE PROGRAMMING WITH SQL.webp"
+                "imageUrl": "/certified/ORACLEDATABASEPROGRAMMINGWITHSQL.jpg"
               },
               {
                 "title": "Pemrograman PHP",
                 "issuer": "Codepolitan",
                 "date": "2025-04-20",
-                "imageUrl": "/certified/Pemrograman PHP.webp"
+                "imageUrl": "/certified/PemrogramanPHP.jpg"
               },
               {
                 "title": "Penggunaan Database MySQL pada Pemrograman PHP",
                 "issuer": "Codepolitan",
                 "date": "2025-04-08",
-                "imageUrl": "/certified/Penggunaan Database MySQL pada Pemrograman PHP.webp"
+                "imageUrl": "/certified/PenggunaanDatabaseMySQLpadaPemrogramanPHP.jpg"
               },
               {
                 "title": "Python Essentials 1",
                 "issuer": "Codepolitan",
                 "date": "2023-06-10",
-                "imageUrl": "/certified/Python Essentials 1.webp"
+                "imageUrl": "/certified/PythonEssentials1.jpg"
               },
               {
                 "title": "Python Essentials 2",
                 "issuer": "Codepolitan",
                 "date": "2023-06-10",
-                "imageUrl": "/certified/Python Essentials 2.webp"
+                "imageUrl": "/certified/PythonEssentials2.jpg"
               }      
         ]
     },

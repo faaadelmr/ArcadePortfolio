@@ -130,7 +130,7 @@ export default function AboutMePage() {
                     <CardHeader>
                         <div className="flex items-center gap-4">
                             <Image 
-                                src="https://placehold.co/80x80.png" 
+                                src="/picture.jpg" 
                                 data-ai-hint="pixelated avatar" 
                                 alt="Fadel Muhamad Rifai" 
                                 width={80} 
