@@ -1,9 +1,9 @@
 
 {
-    "mainTitle": "Portofolio Arkade",
+    "mainTitle": "Portfolio Arcade",
     "bootScreen": {
-        "pressStart": "TEKAN MULAI",
-        "rightsReserved": "Kalau bukan sekarang, kapan lagi?",
+        "pressStart": "TEKAN Mulai",
+        "rightsReserved": "Coba aja dulu.",
         "title": "FADEL bukan PADEL🎾"
     },
     "mainMenu": {
@@ -12,7 +12,7 @@
         "aboutMe": "Tentang Saya",
         "settings": "Pengaturan",
         "controls": {
-            "navigate": "Gunakan [TOMBOL PANAH] atau [D-PAD] untuk navigasi.",
+            "navigate": "Gunakan [TOMBOL ARAH] atau [D-PAD] untuk navigasi.",
             "select": "[A] atau [ENTER] untuk memilih."
         }
     },
@@ -25,15 +25,15 @@
     },
     "projects": {
         "title": "DAFTAR PROYEK",
-        "created": "Terakhir di Update",
-        "visitWebsite": "Kunjungi Situs Web",
+        "created": "Terakhir Diperbarui",
+        "visitWebsite": "Kunjungi Website",
         "controls": {
             "list": {
-                "navigate": "Gunakan [TOMBOL PANAH] untuk navigasi. [A] atau [ENTER] untuk memilih.",
+                "navigate": "Gunakan [TOMBOL ARAH] untuk navigasi. [A] atau [ENTER] untuk memilih.",
                 "back": "[B] atau [ESC] untuk kembali ke Menu Utama."
             },
             "detail": {
-                "navigate": "Gunakan [TOMBOL PANAH] untuk memilih. [A] atau [ENTER] untuk mengaktifkan.",
+                "navigate": "Gunakan [TOMBOL ARAH] untuk memilih. [A] atau [ENTER] untuk mengaktifkan.",
                 "back": "[B] atau [ESC] untuk kembali ke daftar."
             }
         },
@@ -43,7 +43,7 @@
                 "date": "2025-05-01",
                 "descriptionKey": "projects.tanma.description",
                 "imageUrl": "/project/tanma.png",
-                "imageHint": "Daily Report Claim",
+                "imageHint": "Laporan Klaim Harian",
                 "liveUrl": "https://mentanma.cyou",
                 "githubUrl": "https://github.com/faaadelmr/tanma",
                 "technologies": ["Laravel", "PHP", "MySQL", "JavaScript", "TailwindCSS"]
@@ -62,48 +62,153 @@
                 "date": "2025-07-12",
                 "descriptionKey": "projects.bayargess.description",
                 "imageUrl": "/project/bayargess.png",
-                "imageHint": "splitbill sharing",
+                "imageHint": "berbagi tagihan",
                 "liveUrl": "https://bayargess.vercel.app/",
                 "githubUrl": "https://github.com/faaadelmr/bayarGess.git",
                 "technologies": ["Next.js", "TypeScript", "TailwindCSS", "Genkit AI"]
-            }
+            },
+            {
+              "titleKey": "projects.PDF-adel.title",
+              "date": "2025-07-19",
+              "descriptionKey": "projects.bayargess.description",
+              "imageUrl": "/project/PDF-adel.png",
+              "imageHint": "Alat PDF yang lebih cepat",
+              "liveUrl": "https://pdf-adel.pages.dev/",
+              "githubUrl": "https://github.com/faaadelmr/pdf-adel.git",
+              "technologies": ["Next.js", "JavaScript", "TailwindCSS"]
+          }
         ],
         "tanma": {
             "title": "Tanma",
-            "description": "Aplikasi tentang laporan harian di tempat kerja saya (reliance insurance) untuk menyederhanakan pelaporan yang dapat diekspor dan menampilkan grafik untuk analisis jika diperlukan. ada alat tambahan untuk mendukung pekerjaan seperti notulen rapat, manajemen pengguna, ruang obrolan, alat PDF (penggabungan, pemilihan), dan pisahkan tagihan secara manual."
+            "description": "Sebuah aplikasi laporan harian di tempat kerja saya (asuransi reliance) untuk menyederhanakan pelaporan yang dapat diekspor dan menampilkan grafik untuk analisis jika diperlukan. ada alat tambahan untuk mendukung pekerjaan seperti notulen rapat, manajemen pengguna, ruang obrolan, alat PDF (menggabungkan, memilih), dan pisah tagihan secara manual."
         },
         "cewekalcer": {
             "title": "cewe(k)alcer",
-            "description": "aplikasi untuk memberikan tautan afiliasi dengan fitur utama QR Code dan dapat menambahkan 3 tautan (Shopee, TiktokShop, Tokopedia)."
+            "description": "aplikasi untuk menyediakan link afiliasi dengan fitur utama QR Code dan bisa menambahkan 3 link (Shopee, TiktokShop, Tokopedia)."
         },
         "bayargess": {
             "title": "bayarGess",
-            "description": "Aplikasi pisah tagihan yang menggunakan AI untuk membaca struk dan berbagi item. sempurna bagi Anda yang repot untuk berbagi biaya makan dengan teman-teman."
+            "description": "Aplikasi pisah tagihan yang menggunakan AI untuk pembacaan struk dan berbagi barang. cocok buat kamu yang ribet bagi uang makan bareng teman."
+        },
+        "PDF-adel": {
+            "title": "PDF-adel",
+            "description": "Web Manipulasi PDF yang aman. tidak perlu upload, semua proses di browser lokal Anda."
         }
     },
     "certifications": {
         "title": "SERTIFIKASI",
         "alt": "Sertifikat untuk",
         "controls": {
-            "navigate": "Gunakan [TOMBOL PANAH] atau [D-PAD] untuk navigasi. [A] untuk melihat.",
+            "navigate": "Gunakan [TOMBOL ARAH] atau [D-PAD] untuk navigasi. [A] untuk melihat.",
             "backToMain": "[B] atau [ESC] untuk kembali ke Menu Utama.",
-            "scroll": "Tahan [D-PAD] atau [TOMBOL PANAH] untuk menggulir.",
+            "scroll": "Tahan [D-PAD] atau [TOMBOL ARAH] untuk menggulir.",
             "backToList": "[B] atau [ESC] untuk kembali ke daftar."
         },
-        "list": "[{\"title\":\"GIT untuk Pemula\",\"issuer\":\"Codepolitan\",\"date\":\"2025-04-08\",\"imageUrl\":\"/certified/GIT untuk Pemula.webp\"},{\"title\":\"HTML dan CSS\",\"issuer\":\"Codepolitan\",\"date\":\"2022-04-15\",\"imageUrl\":\"/certified/HTML dan CSS.webp\"},{\"title\":\"JavaScript Dasar\",\"issuer\":\"Codepolitan\",\"date\":\"2025-04-15\",\"imageUrl\":\"/certified/JavaScript Dasar.webp\"},{\"title\":\"Konsep Dasar Pemrograman Berorientasi Objek di PHP\",\"issuer\":\"Codepolitan\",\"date\":\"2025-05-03\",\"imageUrl\":\"/certified/OOP PHP.webp\"},{\"title\":\"Laravel 6 Intermediate\",\"issuer\":\"Codepolitan\",\"date\":\"2025-04-10\",\"imageUrl\":\"/certified/Laravel 6 Intermediate.webp\"},{\"title\":\"Laravel 8x Fundamental\",\"issuer\":\"Codepolitan\",\"date\":\"2025-04-10\",\"imageUrl\":\"/certified/Laravel 8x Fundamental.webp\"},{\"title\":\"Laravel Development\",\"issuer\":\"Codepolitan\",\"date\":\"2022-03-01\",\"imageUrl\":\"/certified/Laravel Development.webp\"},{\"title\":\"Mengenal Pemrograman Komputer\",\"issuer\":\"Codepolitan\",\"date\":\"2025-04-08\",\"imageUrl\":\"/certified/Mengenal Pemrograman Komputer.webp\"},{\"title\":\"Menggunakan Bootstrap Framework\",\"issuer\":\"Codepolitan\",\"date\":\"2025-04-15\",\"imageUrl\":\"/certified/Menggunakan Bootstrap Framework.webp\"},{\"title\":\"Oracle Database Design\",\"issuer\":\"Codepolitan\",\"date\":\"2023-06-07\",\"imageUrl\":\"/certified/Oracle Database Design.webp\"},{\"title\":\"ORACLE DATABASE PROGRAMMING WITH SQL\",\"issuer\":\"Codepolitan\",\"date\":\"2023-12-18\",\"imageUrl\":\"/certified/ORACLE DATABASE PROGRAMMING WITH SQL.webp\"},{\"title\":\"Pemrograman PHP\",\"issuer\":\"Codepolitan\",\"date\":\"2025-04-20\",\"imageUrl\":\"/certified/Pemrograman PHP.webp\"},{\"title\":\"Penggunaan Database MySQL pada Pemrograman PHP\",\"issuer\":\"Codepolitan\",\"date\":\"2025-04-08\",\"imageUrl\":\"/certified/Penggunaan Database MySQL pada Pemrograman PHP.webp\"},{\"title\":\"Python Essentials 1\",\"issuer\":\"Codepolitan\",\"date\":\"2023-06-10\",\"imageUrl\":\"/certified/Python Essentials 1.webp\"},{\"title\":\"Python Essentials 2\",\"issuer\":\"Codepolitan\",\"date\":\"2023-06-10\",\"imageUrl\":\"/certified/Python Essentials 2.webp\"}]"
+        "list": [
+            {
+                "title": "GIT untuk Pemula",
+                "issuer": "Codepolitan",
+                "date": "2025-04-08",
+                "imageUrl": "/certified/GIT untuk Pemula.webp"
+              },
+              {
+                "title": "HTML dan CSS",
+                "issuer": "Codepolitan",
+                "date": "2022-04-15",
+                "imageUrl": "/certified/HTML dan CSS.webp"
+              },
+              {
+                "title": "JavaScript Dasar",
+                "issuer": "Codepolitan",
+                "date": "2025-04-15",
+                "imageUrl": "/certified/JavaScript Dasar.webp"
+              },
+              {
+                "title": "Konsep Dasar Pemrograman Berorientasi Objek di PHP",
+                "issuer": "Codepolitan",
+                "date": "2025-05-03",
+                "imageUrl": "/certified/OOP PHP.webp"
+              },
+              {
+                "title": "Laravel 6 Intermediate",
+                "issuer": "Codepolitan",
+                "date": "2025-04-10",
+                "imageUrl": "/certified/Laravel 6 Intermediate.webp"
+              },
+              {
+                "title": "Laravel 8x Fundamental",
+                "issuer": "Codepolitan",
+                "date": "2025-04-10",
+                "imageUrl": "/certified/Laravel 8x Fundamental.webp"
+              },
+              {
+                "title": "Laravel Development",
+                "issuer": "Codepolitan",
+                "date": "2022-03-01",
+                "imageUrl": "/certified/Laravel Development.webp"
+              },
+              {
+                "title": "Mengenal Pemrograman Komputer",
+                "issuer": "Codepolitan",
+                "date": "2025-04-08",
+                "imageUrl": "/certified/Mengenal Pemrograman Komputer.webp"
+              },
+              {
+                "title": "Menggunakan Bootstrap Framework",
+                "issuer": "Codepolitan",
+                "date": "2025-04-15",
+                "imageUrl": "/certified/Menggunakan Bootstrap Framework.webp"
+              },
+              {
+                "title": "Oracle Database Design",
+                "issuer": "Codepolitan",
+                "date": "2023-06-07",
+                "imageUrl": "/certified/Oracle Database Design.webp"
+              },
+              {
+                "title": "ORACLE DATABASE PROGRAMMING WITH SQL",
+                "issuer": "Codepolitan",
+                "date": "2023-12-18",
+                "imageUrl": "/certified/ORACLE DATABASE PROGRAMMING WITH SQL.webp"
+              },
+              {
+                "title": "Pemrograman PHP",
+                "issuer": "Codepolitan",
+                "date": "2025-04-20",
+                "imageUrl": "/certified/Pemrograman PHP.webp"
+              },
+              {
+                "title": "Penggunaan Database MySQL pada Pemrograman PHP",
+                "issuer": "Codepolitan",
+                "date": "2025-04-08",
+                "imageUrl": "/certified/Penggunaan Database MySQL pada Pemrograman PHP.webp"
+              },
+              {
+                "title": "Python Essentials 1",
+                "issuer": "Codepolitan",
+                "date": "2023-06-10",
+                "imageUrl": "/certified/Python Essentials 1.webp"
+              },
+              {
+                "title": "Python Essentials 2",
+                "issuer": "Codepolitan",
+                "date": "2023-06-10",
+                "imageUrl": "/certified/Python Essentials 2.webp"
+              }      
+        ]
     },
     "aboutMe": {
         "title": "PROFIL PEMAIN",
-        "intro": "Aloo! Saya Fadel Muhamad Rifai, seorang prompter developer web yang lagi antusias nya dalam menciptakan hal-hal untuk memudahkan yang ribet, bisa anda coba dari beberapa proyek yang saya buat.",
-        "journey": "Perjalanan saya di dunia pemrograman berawal dari ketertarikan terhadap video game, yang kemudian berkembang menjadi minat dalam pengembangan web (terutama menggunakan Laravel) serta kecerdasan buatan. Saat ini, saya menjalankan pendidikan di Universitas Dian Nusantara dan telah memasuki semester ke-7, di mana saya terus memperdalam pemahaman saya tentang teknologi. Saya terus mengeksplorasi berbagai teknologi untuk memperluas wawasan dan kemampuan saya.",
-        "philosophy": "Coba aja dulu.",
+        "intro": "Aloo! Saya Fadel Muhamad Rifai, seorang prompter web developer yang antusias membuat sesuatu untuk memudahkan, Anda bisa coba dari beberapa project yang saya buat.",
+        "journey": "Perjalanan saya di dunia pemrograman dimulai dari minat pada video game, yang kemudian berkembang menjadi minat pada pengembangan web (terutama menggunakan Laravel) dan kecerdasan buatan. Saat ini, saya menempuh pendidikan di Universitas Dian Nusantara dan telah memasuki semester 7, di mana saya terus memperdalam pemahaman saya tentang teknologi. Saya terus mengeksplorasi berbagai teknologi untuk memperluas wawasan dan kemampuan saya.",
+        "philosophy": "ayo coba.",
         "controls": {
-            "navigate": "[PANAH] atau [D-PAD] untuk gulir. [START] untuk keluar."
+            "navigate": "[PANAH] atau [D-PAD] untuk menggulir. [MULAI] untuk keluar."
         }
     },
     "contact": {
         "title": "Hubungi Saya",
-        "description": "Punya pertanyaan atau ingin bekerja sama? Kirimkan saya pesan!",
+        "description": "Punya pertanyaan atau ingin bekerja sama? Kirim pesan kepada saya!",
         "namePlaceholder": "Nama Anda",
         "emailPlaceholder": "Email Anda",
         "messagePlaceholder": "Pesan Anda",
@@ -111,7 +216,7 @@
         "sending": "Mengirim...",
         "toast": {
             "successTitle": "Pesan Terkirim!",
-            "successDescription": "Terima kasih telah menghubungi. Saya akan segera membalasnya."
+            "successDescription": "Terima kasih telah menghubungi. Saya akan segera membalas."
         }
     },
     "settings": {
@@ -120,9 +225,9 @@
         "music": "Musik",
         "volume": "Volume",
         "soundFx": "Efek Suara",
-        "scanlines": "Efek Scanline",
+        "scanlines": "Efek Garis Pindai",
         "controls": {
-            "navigate": "[ATAS/BAWAH] untuk navigasi/menyesuaikan. [A] untuk beralih/memilih.",
+            "navigate": "[ATAS/BAWAH] untuk navigasi/menyesuaikan. [A] untuk mengaktifkan/memilih.",
             "back": "[B] atau [ESC] untuk kembali."
         }
     }

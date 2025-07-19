@@ -3,7 +3,7 @@
     "mainTitle": "Arcade Portfolio",
     "bootScreen": {
         "pressStart": "PRESS START",
-        "rightsReserved": "If not now, then when?",
+        "rightsReserved": "lets try",
         "title": "FADEL not PADEL🎾"
     },
     "mainMenu": {
@@ -66,7 +66,17 @@
                 "liveUrl": "https://bayargess.vercel.app/",
                 "githubUrl": "https://github.com/faaadelmr/bayarGess.git",
                 "technologies": ["Next.js", "TypeScript", "TailwindCSS", "Genkit AI"]
-            }
+            },
+            {
+              "titleKey": "projects.PDF-adel.title",
+              "date": "2025-07-19",
+              "descriptionKey": "projects.bayargess.description",
+              "imageUrl": "/project/PDF-adel.png",
+              "imageHint": "PDF tools less process",
+              "liveUrl": "https://pdf-adel.pages.dev/",
+              "githubUrl": "https://github.com/faaadelmr/pdf-adel.git",
+              "technologies": ["Next.js", "JavaScript", "TailwindCSS"]
+          }
         ],
         "tanma": {
             "title": "Tanma",
@@ -79,6 +89,10 @@
         "bayargess": {
             "title": "bayarGess",
             "description": "A separate billing app that uses AI for receipt reading and item sharing. perfect for those of you who are bothered to share the cost of food with friends."
+        },
+        "PDF-adel": {
+            "title": "PDF-adel",
+            "description": "A Secure PDF manipulation. no need upload, all process on your browser localy."
         }
     },
     "certifications": {

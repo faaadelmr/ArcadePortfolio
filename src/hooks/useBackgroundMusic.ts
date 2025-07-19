@@ -26,15 +26,15 @@ export default function useBackgroundMusic() {
   useEffect(() => {
     audioRef.current = getAudioInstance();
     
-    const handleCanPlayThrough = () => {
+    const handleCanPlay = () => {
         setIsReady(true);
     };
 
     if (audioRef.current) {
-        if (audioRef.current.readyState >= 4) { // HAVE_ENOUGH_DATA
-            handleCanPlayThrough();
+        if (audioRef.current.readyState >= 2) { // HAVE_CURRENT_DATA or more
+            handleCanPlay();
         } else {
-            audioRef.current.addEventListener('canplaythrough', handleCanPlayThrough);
+            audioRef.current.addEventListener('canplay', handleCanPlay);
             // Set src only if it's not set, to avoid re-triggering load
             if (audioRef.current.src !== window.location.origin + MUSIC_SRC) {
                  audioRef.current.src = MUSIC_SRC;
@@ -60,7 +60,7 @@ export default function useBackgroundMusic() {
     
     return () => {
         if (audioRef.current) {
-            audioRef.current.removeEventListener('canplaythrough', handleCanPlayThrough);
+            audioRef.current.removeEventListener('canplay', handleCanPlay);
         }
     };
   }, []);
