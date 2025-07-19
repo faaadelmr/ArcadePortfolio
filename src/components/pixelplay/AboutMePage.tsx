@@ -5,6 +5,7 @@ import React, { useEffect, useCallback, useRef, useState } from 'react';
 import useArcadeSounds from '@/hooks/useArcadeSounds';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useLocalization } from '@/hooks/useLocalization';
+import { AthleteStarNesBackground } from './AthleteStarNesBackground';
 
 const backToMainEvent = new Event('backToMain', { bubbles: true });
 
@@ -96,27 +97,32 @@ export default function AboutMePage() {
   }, [handleBack, startScrolling, stopScrolling, scrollingDirection]);
 
   return (
-    <div className="w-full h-full flex flex-col p-4 sm:p-8 text-white animate-pixel-in">
-      <h1 className="text-3xl sm:text-5xl font-headline text-primary mb-4 sm:mb-8 text-center">{t('aboutMe.title')}</h1>
-      <ScrollArea viewportRef={scrollViewportRef} className="flex-grow pr-4">
-        <div className="space-y-4 text-base sm:text-lg text-gray-300">
-            <p>
-                {t('aboutMe.intro')}
-            </p>
-            <p>
-                {t('aboutMe.journey')}
-            </p>
-            <p className='font-italic font-code'>
-                "{t('aboutMe.philosophy')}"
-            </p>
-             <p className="pt-4">
-                {t('aboutMe.thanks')}
-            </p>
+    <div className="w-full h-full flex flex-col p-4 sm:p-8 text-white animate-pixel-in relative">
+      <div className="absolute inset-0 z-0 opacity-20">
+        <AthleteStarNesBackground />
+      </div>
+      <div className="relative z-10 flex flex-col h-full">
+        <h1 className="text-3xl sm:text-5xl font-headline text-primary mb-4 sm:mb-8 text-center">{t('aboutMe.title')}</h1>
+        <ScrollArea viewportRef={scrollViewportRef} className="flex-grow pr-4">
+          <div className="space-y-4 text-base sm:text-lg text-gray-300">
+              <p>
+                  {t('aboutMe.intro')}
+              </p>
+              <p>
+                  {t('aboutMe.journey')}
+              </p>
+              <p className='font-italic font-code'>
+                  "{t('aboutMe.philosophy')}"
+              </p>
+              <p className="pt-4">
+                  {t('aboutMe.thanks')}
+              </p>
+          </div>
+        </ScrollArea>
+        <div className="mt-4 sm:mt-8 text-center text-sm sm:text-lg text-gray-400 font-code">
+          <p>{t('aboutMe.controls.scroll')}</p>
+          <p>{t('aboutMe.controls.back')}</p>
         </div>
-      </ScrollArea>
-      <div className="mt-4 sm:mt-8 text-center text-sm sm:text-lg text-gray-400 font-code">
-        <p>{t('aboutMe.controls.scroll')}</p>
-        <p>{t('aboutMe.controls.back')}</p>
       </div>
     </div>
   );
