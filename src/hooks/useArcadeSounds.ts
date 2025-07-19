@@ -49,6 +49,8 @@ export default function useArcadeSounds(props?: UseArcadeSoundsProps) {
     isSoundPlaying.current = true;
     
     try {
+        // Stop any previous sound to prevent timing conflicts
+        synth.triggerRelease();
         // By not providing a time, we let Tone.js schedule it for "now" without conflicts.
         synth.triggerAttackRelease(note, duration);
     } catch(e) {
