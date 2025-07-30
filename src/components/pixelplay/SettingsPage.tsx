@@ -219,7 +219,7 @@ export default function SettingsPage() {
 
   return isLangLoading ? (
       <div className="w-full h-full flex flex-col items-center justify-center p-8 text-white animate-pixel-in">
-          <p className="text-3xl font-headline text-accent animate-pulse">{t('loading')}</p>
+          <p className="text-3xl font-headline text-accent animate-blink">{t('loading')}</p>
       </div>
   ) : <PageContent />;
 }

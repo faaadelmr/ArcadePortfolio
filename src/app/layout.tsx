@@ -2,11 +2,11 @@ import type {Metadata} from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import { LocalizationProvider } from '@/hooks/useLocalization';
-import { VisualSettingsProvider } from '@/hooks/useVisualSettings.tsx';
+import { VisualSettingsProvider } from '@/hooks/useVisualSettings';
 
 export const metadata: Metadata = {
-  title: 'Fadel bukan Padel',
-  description: 'A retro arcade portfolio hub.',
+  title: 'Portofolio ARCADE by Fadel Muhamad Rifai',
+  description: 'Dengan tema arcade, disini kalian bisa #CobaAjaDulu untuk melihat proyek apa saja yang telah saya kerjakan.',
 };
 
 export default function RootLayout({

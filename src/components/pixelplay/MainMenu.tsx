@@ -37,7 +37,7 @@ export default function MainMenu({ menuItems, selectedItem }: MainMenuProps) {
             >
               <div className={cn(
                 "transition-opacity duration-200 w-8",
-                selectedItem === index ? 'opacity-100 animate-pulse' : 'opacity-0'
+                selectedItem === index ? 'opacity-100 animate-blink' : 'opacity-0'
               )}>
                 <item.icon className="w-8 h-8" />
               </div>
