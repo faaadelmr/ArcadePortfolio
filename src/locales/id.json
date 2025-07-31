@@ -4,7 +4,7 @@
     "bootScreen": {
         "pressStart": "TEKAN Mulai",
         "rightsReserved": "Coba aja dulu.",
-        "title": "FADEL bukan PADEL🎾"
+        "title": "FADEL, bukan PADEL🎾"
     },
     "mainMenu": {
         "projectList": "Daftar Proyek",
@@ -25,7 +25,7 @@
     },
     "projects": {
         "title": "DAFTAR PROYEK",
-        "created": "Terakhir Diperbarui",
+        "created": "Dibuat",
         "visitWebsite": "Kunjungi Website",
         "controls": {
             "list": {
@@ -40,7 +40,7 @@
         "list": [
             {
                 "titleKey": "projects.tanma.title",
-                "date": "2025-05-01",
+                "date": "2024-12-08",
                 "descriptionKey": "projects.tanma.description",
                 "imageUrl": "/project/tanma.png",
                 "imageHint": "Laporan Klaim Harian",
@@ -50,7 +50,7 @@
             },
             {
                 "titleKey": "projects.cewekalcer.title",
-                "date": "2025-06-09",
+                "date": "2025-05-18",
                 "descriptionKey": "projects.cewekalcer.description",
                 "imageUrl": "/project/cewekalcer.png",
                 "imageHint": "CewekKalcer",
@@ -59,7 +59,7 @@
             },
             {
                 "titleKey": "projects.bayargess.title",
-                "date": "2025-07-12",
+                "date": "2025-07-09",
                 "descriptionKey": "projects.bayargess.description",
                 "imageUrl": "/project/bayargess.png",
                 "imageHint": "berbagi tagihan",
@@ -69,7 +69,7 @@
             },
             {
               "titleKey": "projects.PDF-adel.title",
-              "date": "2025-07-19",
+              "date": "2025-07-09",
               "descriptionKey": "projects.bayargess.description",
               "imageUrl": "/project/PDF-adel.png",
               "imageHint": "Alat PDF yang lebih cepat",
@@ -201,7 +201,7 @@
         "title": "PROFIL PEMAIN",
         "intro": "Aloo! Saya Fadel Muhamad Rifai, seorang prompter web developer yang antusias membuat sesuatu untuk memudahkan, Anda bisa coba dari beberapa project yang saya buat.",
         "journey": "Perjalanan saya di dunia pemrograman dimulai dari minat pada video game, yang kemudian berkembang menjadi minat pada pengembangan web (terutama menggunakan Laravel) dan kecerdasan buatan. Saat ini, saya menempuh pendidikan di Universitas Dian Nusantara dan telah memasuki semester 7, di mana saya terus memperdalam pemahaman saya tentang teknologi. Saya terus mengeksplorasi berbagai teknologi untuk memperluas wawasan dan kemampuan saya.",
-        "philosophy": "ayo coba.",
+        "philosophy": "#CobaAjaDulu",
         "controls": {
             "navigate": "[PANAH] atau [D-PAD] untuk menggulir. [MULAI] untuk keluar."
         }

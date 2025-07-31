@@ -4,7 +4,7 @@
     "bootScreen": {
         "pressStart": "PRESS START",
         "rightsReserved": "lets try",
-        "title": "FADEL not PADEL🎾"
+        "title": "FADEL, not PADEL🎾"
     },
     "mainMenu": {
         "projectList": "Project List",
@@ -25,7 +25,7 @@
     },
     "projects": {
         "title": "PROJECT LIST",
-        "created": "Last Update",
+        "created": "Created",
         "visitWebsite": "Visit Website",
         "controls": {
             "list": {
@@ -40,7 +40,7 @@
         "list": [
             {
                 "titleKey": "projects.tanma.title",
-                "date": "2025-05-01",
+                "date": "2024-12-08",
                 "descriptionKey": "projects.tanma.description",
                 "imageUrl": "/project/tanma.png",
                 "imageHint": "Daily Report Claim",
@@ -50,7 +50,7 @@
             },
             {
                 "titleKey": "projects.cewekalcer.title",
-                "date": "2025-06-09",
+                "date": "2025-05-18",
                 "descriptionKey": "projects.cewekalcer.description",
                 "imageUrl": "/project/cewekalcer.png",
                 "imageHint": "CewekKalcer",
@@ -59,7 +59,7 @@
             },
             {
                 "titleKey": "projects.bayargess.title",
-                "date": "2025-07-12",
+                "date": "2025-07-09",
                 "descriptionKey": "projects.bayargess.description",
                 "imageUrl": "/project/bayargess.png",
                 "imageHint": "splitbill sharing",
@@ -69,7 +69,7 @@
             },
             {
               "titleKey": "projects.PDF-adel.title",
-              "date": "2025-07-19",
+              "date": "2025-07-09",
               "descriptionKey": "projects.bayargess.description",
               "imageUrl": "/project/PDF-adel.png",
               "imageHint": "PDF tools less process",
@@ -201,7 +201,7 @@
         "title": "PLAYER PROFILE",
         "intro": "Aloo! I'm Fadel Muhamad Rifai, a web developer prompter who is enthusiastic about creating things to make things easier, you can try from some of the projects I made.",
         "journey": "My journey in the world of programming began with an interest in video games, which later developed into an interest in web development (especially using Laravel) and artificial intelligence. Currently, I am studying at Dian Nusantara University and have entered my 7th semester, where I continue to deepen my understanding of technology. I continue to explore various technologies to broaden my horizons and abilities.",
-        "philosophy": "lets try.",
+        "philosophy": "#CobaAjaDulu",
         "controls": {
             "navigate": "[ARROWS] or [D-PAD] to scroll. [START] to exit."
         }
