@@ -76,7 +76,17 @@
               "liveUrl": "https://pdf-adel.pages.dev/",
               "githubUrl": "https://github.com/faaadelmr/pdf-adel.git",
               "technologies": ["Next.js", "JavaScript", "TailwindCSS"]
-          }
+            },
+            {
+              "titleKey": "projects.battleParty.title",
+              "date": "2025-08-01",
+              "descriptionKey": "projects.battleParty.description",
+              "imageUrl": "/project/battleParty.png",
+              "imageHint": "Komparasi HP dan Laptop",
+              "liveUrl": "https://battleparty.vercel.app/",
+              "githubUrl": "https://github.com/faaadelmr/KaumMendangMending.git",
+              "technologies": ["Next.js", "Genkit AI", "TailwindCSS"]
+            }
         ],
         "tanma": {
             "title": "Tanma",
@@ -93,6 +103,10 @@
         "PDF-adel": {
             "title": "PDF-adel",
             "description": "Web Manipulasi PDF yang aman. tidak perlu upload, semua proses di browser lokal Anda."
+        },
+        "battleParty": {
+            "title": "Battle Party",
+            "description": "Untuk Kaum Mendang Mending yang suka menimbang, membandingkan, dan mencari suatu nilai terbaik dari teknologi yang belum tentu kalian beli!."
         }
     },
     "certifications": {

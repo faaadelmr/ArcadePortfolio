@@ -76,6 +76,16 @@
               "liveUrl": "https://pdf-adel.pages.dev/",
               "githubUrl": "https://github.com/faaadelmr/pdf-adel.git",
               "technologies": ["Next.js", "JavaScript", "TailwindCSS"]
+          },
+          {
+              "titleKey": "projects.battleParty.title",
+              "date": "2025-08-01",
+              "descriptionKey": "projects.battleParty.description",
+              "imageUrl": "/project/battleParty.png",
+              "imageHint": "HP and Laptop Comparison",
+              "liveUrl": "https://battleparty.vercel.app/",
+              "githubUrl": "https://github.com/faaadelmr/KaumMendangMending.git",
+              "technologies": ["Next.js", "Genkit AI", "TailwindCSS"]
           }
         ],
         "tanma": {
@@ -93,6 +103,10 @@
         "PDF-adel": {
             "title": "PDF-adel",
             "description": "A Secure PDF manipulation. no need upload, all process on your browser localy."
+        },
+        "battleParty": {
+            "title": "Battle Party",
+            "description": "For those who are indecisive and like to weigh, compare, and find the best value from technology that you might not even buy!."
         }
     },
     "certifications": {
