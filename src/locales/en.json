@@ -2,7 +2,7 @@
 {
     "mainTitle": "Arcade Portfolio",
     "bootScreen": {
-        "pressStart": "PRESS START",
+ "pressStart": "PRESS START",
         "rightsReserved": "lets try",
         "title": "FADEL, not PADEL🎾"
     },
@@ -39,9 +39,9 @@
         },
         "list": [
             {
-                "titleKey": "projects.tanma.title",
+                "title": "Tanma",
                 "date": "2024-12-08",
-                "descriptionKey": "projects.tanma.description",
+                "description": "An application about daily reports at my workplace (reliance insurance) to simplify reporting that can be exported and display graphs for an analysis if needed. there are additional tools to support work such as meeting minutes, user management, chat rooms, PDF tools (merging, selection), and separate bills manually.",
                 "imageUrl": "/project/tanma.png",
                 "imageHint": "Daily Report Claim",
                 "liveUrl": "https://mentanma.cyou",
@@ -49,18 +49,18 @@
                 "technologies": ["Laravel", "PHP", "MySQL", "JavaScript", "TailwindCSS"]
             },
             {
-                "titleKey": "projects.cewekalcer.title",
+                "title": "cewe(k)alcer",
                 "date": "2025-05-18",
-                "descriptionKey": "projects.cewekalcer.description",
+                "description": "application to provide affiliate links with the main feature of QR Code and can add 3 links (Shopee, TiktokShop, Tokopedia).",
                 "imageUrl": "/project/cewekalcer.png",
                 "imageHint": "CewekKalcer",
                 "liveUrl": "https://cewekalcer.pages.dev/",
                 "technologies": ["Next.js", "TypeScript", "TailwindCSS"]
             },
             {
-                "titleKey": "projects.bayargess.title",
+                "title": "bayarGess",
                 "date": "2025-07-09",
-                "descriptionKey": "projects.bayargess.description",
+                "description": "A separate billing app that uses AI for receipt reading and item sharing. perfect for those of you who are bothered to share the cost of food with friends.",
                 "imageUrl": "/project/bayargess.png",
                 "imageHint": "splitbill sharing",
                 "liveUrl": "https://bayargess.vercel.app/",
@@ -68,46 +68,36 @@
                 "technologies": ["Next.js", "TypeScript", "TailwindCSS", "Genkit AI"]
             },
             {
-              "titleKey": "projects.PDF-adel.title",
-              "date": "2025-07-09",
-              "descriptionKey": "projects.bayargess.description",
-              "imageUrl": "/project/PDF-adel.png",
-              "imageHint": "PDF tools less process",
-              "liveUrl": "https://pdf-adel.pages.dev/",
-              "githubUrl": "https://github.com/faaadelmr/pdf-adel.git",
-              "technologies": ["Next.js", "JavaScript", "TailwindCSS"]
-          },
-          {
-              "titleKey": "projects.battleParty.title",
-              "date": "2025-08-01",
-              "descriptionKey": "projects.battleParty.description",
-              "imageUrl": "/project/battleParty.png",
-              "imageHint": "HP and Laptop Comparison",
-              "liveUrl": "https://battleparty.vercel.app/",
-              "githubUrl": "https://github.com/faaadelmr/KaumMendangMending.git",
-              "technologies": ["Next.js", "Genkit AI", "TailwindCSS"]
-          }
-        ],
-        "tanma": {
-            "title": "Tanma",
-            "description": "An application about daily reports at my workplace (reliance insurance) to simplify reporting that can be exported and display graphs for an analysis if needed. there are additional tools to support work such as meeting minutes, user management, chat rooms, PDF tools (merging, selection), and separate bills manually."
-        },
-        "cewekalcer": {
-            "title": "cewe(k)alcer",
-            "description": "application to provide affiliate links with the main feature of QR Code and can add 3 links (Shopee, TiktokShop, Tokopedia)."
-        },
-        "bayargess": {
-            "title": "bayarGess",
-            "description": "A separate billing app that uses AI for receipt reading and item sharing. perfect for those of you who are bothered to share the cost of food with friends."
-        },
-        "PDF-adel": {
-            "title": "PDF-adel",
-            "description": "A Secure PDF manipulation. no need upload, all process on your browser localy."
-        },
-        "battleParty": {
-            "title": "Battle Party",
-            "description": "For those who are indecisive and like to weigh, compare, and find the best value from technology that you might not even buy!."
-        }
+                "title": "PDF-adel",
+                "date": "2025-07-09",
+                "description": "A Secure PDF manipulation. no need upload, all process on your browser localy.",
+                "imageUrl": "/project/PDF-adel.png",
+                "imageHint": "PDF tools less process",
+                "liveUrl": "https://pdf-adel.pages.dev/",
+                "githubUrl": "https://github.com/faaadelmr/pdf-adel.git",
+                "technologies": ["Next.js", "JavaScript", "TailwindCSS"]
+            },
+            {
+                "title": "Battle Party",
+                "date": "2025-08-01",
+                "description": "For those who are indecisive and like to weigh, compare, and find the best value from technology that you might not even buy!.",
+                "imageUrl": "/project/battleParty.png",
+                "imageHint": "HP and Laptop Comparison",
+                "liveUrl": "https://battleparty.vercel.app/",
+                "githubUrl": "https://github.com/faaadelmr/KaumMendangMending.git",
+                "technologies": ["Next.js", "Genkit AI", "TailwindCSS"]
+            },
+            {
+                "title": "GridStation",
+                "date": "2025-08-13",
+                "description": "For those who are indecisive and like to weigh, compare, and find the best value from technology that you might not even buy!.",
+                "imageUrl": "/project/gridstation.png",
+                "imageHint": "Image Cutting, Grid",
+                "liveUrl": "https://gridstation.pages.dev/",
+                "githubUrl": "https://github.com/faaadelmr/gridstation.git",
+                "technologies": [ "Next.js", "React", "TailwindCSS" ]
+            }
+        ]
     },
     "certifications": {
         "title": "CERTIFICATIONS",
@@ -121,68 +111,68 @@
         "list": [
             {
                 "title": "GIT untuk Pemula",
-                "issuer": "Codepolitan",
-                "date": "2025-04-08",
+ "issuer": "Codepolitan",
+ "date": "2025-04-08",
                 "imageUrl": "/certified/GITuntukPemula.jpg"
-              },
-              {
+ },
+ {
                 "title": "HTML dan CSS",
-                "issuer": "Codepolitan",
-                "date": "2022-04-15",
+ "issuer": "Codepolitan",
+ "date": "2022-04-15",
                 "imageUrl": "/certified/HTMLdanCSS.jpg"
-              },
-              {
+ },
+ {
                 "title": "JavaScript Dasar",
-                "issuer": "Codepolitan",
-                "date": "2025-04-15",
+ "issuer": "Codepolitan",
+ "date": "2025-04-15",
                 "imageUrl": "/certified/JavaScriptDasar.jpg"
-              },
-              {
+ },
+ {
                 "title": "Konsep Dasar Pemrograman Berorientasi Objek di PHP",
-                "issuer": "Codepolitan",
-                "date": "2025-05-03",
+ "issuer": "Codepolitan",
+ "date": "2025-05-03",
                 "imageUrl": "/certified/OOPPHP.jpg"
-              },
-              {
+ },
+ {
                 "title": "Laravel 6 Intermediate",
-                "issuer": "Codepolitan",
-                "date": "2025-04-10",
+ "issuer": "Codepolitan",
+ "date": "2025-04-10",
                 "imageUrl": "/certified/Laravel6Intermediate.jpg"
-              },
-              {
+ },
+ {
                 "title": "Laravel 8x Fundamental",
-                "issuer": "Codepolitan",
-                "date": "2025-04-10",
+ "issuer": "Codepolitan",
+ "date": "2025-04-10",
                 "imageUrl": "/certified/Laravel8xFundamental.jpg"
-              },
-              {
+ },
+ {
                 "title": "Laravel Development",
-                "issuer": "Codepolitan",
-                "date": "2022-03-01",
+ "issuer": "Codepolitan",
+ "date": "2022-03-01",
                 "imageUrl": "/certified/LaravelDevelopment.jpg"
-              },
-              {
+ },
+ {
                 "title": "Mengenal Pemrograman Komputer",
-                "issuer": "Codepolitan",
-                "date": "2025-04-08",
+ "issuer": "Codepolitan",
+ "date": "2025-04-08",
                 "imageUrl": "/certified/MengenalPemrogramanKomputer.jpg"
-              },
-              {
+ },
+ {
                 "title": "Menggunakan Bootstrap Framework",
-                "issuer": "Codepolitan",
-                "date": "2025-04-15",
+ "issuer": "Codepolitan",
+ "date": "2025-04-15",
                 "imageUrl": "/certified/MenggunakanBootstrapFramework.jpg"
-              },
-              {
+ },
+ {
                 "title": "Oracle Database Design",
-                "issuer": "Codepolitan",
-                "date": "2023-06-07",
+ "issuer": "Codepolitan",
+ "date": "2023-06-07",
                 "imageUrl": "/certified/OracleDatabaseDesign.jpg"
-              },
-              {
+ },
+ {
                 "title": "ORACLE DATABASE PROGRAMMING WITH SQL",
-                "issuer": "Codepolitan",
-                "date": "2023-12-18",
+ "issuer": "Codepolitan",
+ "date": "2023-12-18",
                 "imageUrl": "/certified/ORACLEDATABASEPROGRAMMINGWITHSQL.jpg"
               },
               {
@@ -190,17 +180,17 @@
                 "issuer": "Codepolitan",
                 "date": "2025-04-20",
                 "imageUrl": "/certified/PemrogramanPHP.jpg"
-              },
-              {
+ },
+ {
                 "title": "Penggunaan Database MySQL pada Pemrograman PHP",
                 "issuer": "Codepolitan",
                 "date": "2025-04-08",
                 "imageUrl": "/certified/PenggunaanDatabaseMySQLpadaPemrogramanPHP.jpg"
-              },
-              {
+ },
+ {
                 "title": "Python Essentials 1",
-                "issuer": "Codepolitan",
-                "date": "2023-06-10",
+ "issuer": "Codepolitan",
+ "date": "2023-06-10",
                 "imageUrl": "/certified/PythonEssentials1.jpg"
               },
               {
@@ -208,7 +198,7 @@
                 "issuer": "Codepolitan",
                 "date": "2023-06-10",
                 "imageUrl": "/certified/PythonEssentials2.jpg"
-              }      
+ }
         ]
     },
     "aboutMe": {

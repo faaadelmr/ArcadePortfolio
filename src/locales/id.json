@@ -39,9 +39,9 @@
         },
         "list": [
             {
-                "titleKey": "projects.tanma.title",
+                "title": "Tanma",
                 "date": "2024-12-08",
-                "descriptionKey": "projects.tanma.description",
+                "description": "Sebuah aplikasi laporan harian di tempat kerja saya (asuransi reliance) untuk menyederhanakan pelaporan yang dapat diekspor dan menampilkan grafik untuk analisis jika diperlukan. ada alat tambahan untuk mendukung pekerjaan seperti notulen rapat, manajemen pengguna, ruang obrolan, alat PDF (menggabungkan, memilih), dan pisah tagihan secara manual.",
                 "imageUrl": "/project/tanma.png",
                 "imageHint": "Laporan Klaim Harian",
                 "liveUrl": "https://mentanma.cyou",
@@ -49,65 +49,55 @@
                 "technologies": ["Laravel", "PHP", "MySQL", "JavaScript", "TailwindCSS"]
             },
             {
-                "titleKey": "projects.cewekalcer.title",
+                "title": "cewe(k)alcer",
                 "date": "2025-05-18",
-                "descriptionKey": "projects.cewekalcer.description",
+                "description": "aplikasi untuk menyediakan link afiliasi dengan fitur utama QR Code dan bisa menambahkan 3 link (Shopee, TiktokShop, Tokopedia).",
                 "imageUrl": "/project/cewekalcer.png",
                 "imageHint": "CewekKalcer",
                 "liveUrl": "https://cewekalcer.pages.dev/",
                 "technologies": ["Next.js", "TypeScript", "TailwindCSS"]
             },
             {
-                "titleKey": "projects.bayargess.title",
+                "title": "bayarGess",
                 "date": "2025-07-09",
-                "descriptionKey": "projects.bayargess.description",
+                "description": "Aplikasi pisah tagihan yang menggunakan AI untuk pembacaan struk dan berbagi barang. cocok buat kamu yang ribet bagi uang makan bareng teman.",
                 "imageUrl": "/project/bayargess.png",
                 "imageHint": "berbagi tagihan",
                 "liveUrl": "https://bayargess.vercel.app/",
                 "githubUrl": "https://github.com/faaadelmr/bayarGess.git",
-                "technologies": ["Next.js", "TypeScript", "TailwindCSS", "Genkit AI"]
+                "technologies": ["Next.js", "TypeScript", "React", "TailwindCSS", "Genkit AI"]
             },
             {
-              "titleKey": "projects.PDF-adel.title",
-              "date": "2025-07-09",
-              "descriptionKey": "projects.bayargess.description",
-              "imageUrl": "/project/PDF-adel.png",
-              "imageHint": "Alat PDF yang lebih cepat",
-              "liveUrl": "https://pdf-adel.pages.dev/",
-              "githubUrl": "https://github.com/faaadelmr/pdf-adel.git",
-              "technologies": ["Next.js", "JavaScript", "TailwindCSS"]
+                "title": "PDF-adel",
+                "date": "2025-07-09",
+                "description": "Web Manipulasi PDF yang aman. tidak perlu upload, semua proses di browser lokal Anda.",
+                "imageUrl": "/project/PDF-adel.png",
+                "imageHint": "Alat PDF yang lebih cepat",
+                "liveUrl": "https://pdf-adel.pages.dev/",
+                "githubUrl": "https://github.com/faaadelmr/pdf-adel.git",
+                "technologies": ["Next.js", "JavaScript", "React", "TailwindCSS"]
             },
             {
-              "titleKey": "projects.battleParty.title",
-              "date": "2025-08-01",
-              "descriptionKey": "projects.battleParty.description",
-              "imageUrl": "/project/battleParty.png",
-              "imageHint": "Komparasi HP dan Laptop",
-              "liveUrl": "https://battleparty.vercel.app/",
-              "githubUrl": "https://github.com/faaadelmr/KaumMendangMending.git",
-              "technologies": ["Next.js", "Genkit AI", "TailwindCSS"]
+                "title": "Battle Party",
+                "date": "2025-08-01",
+                "description": "Untuk Kaum Mendang Mending yang suka menimbang, membandingkan, dan mencari suatu nilai terbaik dari teknologi yang belum tentu kalian beli!.",
+                "imageUrl": "/project/battleParty.png",
+                "imageHint": "Komparasi HP dan Laptop",
+                "liveUrl": "https://battleparty.vercel.app/",
+                "githubUrl": "https://github.com/faaadelmr/KaumMendangMending.git",
+                "technologies": ["Next.js", "Genkit AI", "React", "TailwindCSS"]
+            },
+            {
+                "title": "GridStation",
+                "date": "2025-08-13",
+                "description": "Grid online yang menampilkan preview dan fleksibilitas dalam memotong ukuran gambar.",
+                "imageUrl": "/project/gridstation.png",
+                "imageHint": "Pemotongan Gambar, Grid",
+                "liveUrl": "https://gridstation.pages.dev/",
+                "githubUrl": "https://github.com/faaadelmr/gridstation.git",
+                "technologies": ["Next.js", "React", "TailwindCSS"]
             }
-        ],
-        "tanma": {
-            "title": "Tanma",
-            "description": "Sebuah aplikasi laporan harian di tempat kerja saya (asuransi reliance) untuk menyederhanakan pelaporan yang dapat diekspor dan menampilkan grafik untuk analisis jika diperlukan. ada alat tambahan untuk mendukung pekerjaan seperti notulen rapat, manajemen pengguna, ruang obrolan, alat PDF (menggabungkan, memilih), dan pisah tagihan secara manual."
-        },
-        "cewekalcer": {
-            "title": "cewe(k)alcer",
-            "description": "aplikasi untuk menyediakan link afiliasi dengan fitur utama QR Code dan bisa menambahkan 3 link (Shopee, TiktokShop, Tokopedia)."
-        },
-        "bayargess": {
-            "title": "bayarGess",
-            "description": "Aplikasi pisah tagihan yang menggunakan AI untuk pembacaan struk dan berbagi barang. cocok buat kamu yang ribet bagi uang makan bareng teman."
-        },
-        "PDF-adel": {
-            "title": "PDF-adel",
-            "description": "Web Manipulasi PDF yang aman. tidak perlu upload, semua proses di browser lokal Anda."
-        },
-        "battleParty": {
-            "title": "Battle Party",
-            "description": "Untuk Kaum Mendang Mending yang suka menimbang, membandingkan, dan mencari suatu nilai terbaik dari teknologi yang belum tentu kalian beli!."
-        }
+        ]
     },
     "certifications": {
         "title": "SERTIFIKASI",

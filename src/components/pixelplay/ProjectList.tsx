@@ -15,8 +15,8 @@ import { AgendaNesBackground } from './AgendaNesBackground';
 const backToMainEvent = new Event('backToMain', { bubbles: true });
 
 interface Project {
-  titleKey: string;
-  descriptionKey: string;
+  title: string;
+  description: string;
   date: string;
   imageUrl: string;
   imageHint: string;
@@ -200,7 +200,7 @@ export default function ProjectList() {
 
   if (project) {
     let buttonIndex = 2; // Start after back and image
-    const title = t(project.titleKey);
+    const title = project.title;
     return (
       <div className="w-full h-full flex flex-col p-4 sm:p-6 md:p-8 text-white animate-pixel-in relative">
         <div className="absolute inset-0 z-0 opacity-20">
@@ -227,7 +227,7 @@ export default function ProjectList() {
                 />
                 </div>
                 <div className="w-full md:w-1/2 flex flex-col">
-                <p className="text-base sm:text-lg text-gray-300 mb-4">{t(project.descriptionKey)}</p>
+                <p className="text-base sm:text-lg text-gray-300 mb-4">{project.description}</p>
                 <div className="flex flex-wrap gap-2 mb-4">
                     {project.technologies.map(tech => (
                         <Badge key={tech} variant="secondary">{tech}</Badge>
@@ -275,14 +275,14 @@ export default function ProjectList() {
                 <ul className="space-y-2 text-xl sm:text-2xl font-headline pr-4">
                 {projects.map((proj, index) => (
                     <li 
-                    key={proj.titleKey}
+                    key={proj.title}
                     ref={el => {if(el) itemRefs.current[index] = el}}
                     className={cn(
                         "flex justify-between items-center p-2 border-b-2 border-dashed border-gray-700 transition-all duration-200 rounded-md",
                         selectedItem === index ? "bg-primary/20 text-accent" : ""
                     )}
                     >
-                    <span className="truncate pr-4">{t(proj.titleKey)}</span>
+                    <span className="truncate pr-4">{proj.title}</span>
                     <span className="font-code text-accent text-opacity-80 text-base sm:text-xl flex-shrink-0">{proj.date}</span>
                     </li>
                 ))}
