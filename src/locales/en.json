@@ -89,13 +89,23 @@
             },
             {
                 "title": "GridStation",
-                "date": "2025-08-13",
+                "date": "2025-08-06",
                 "description": "For those who are indecisive and like to weigh, compare, and find the best value from technology that you might not even buy!.",
                 "imageUrl": "/project/gridstation.png",
                 "imageHint": "Image Cutting, Grid",
                 "liveUrl": "https://gridstation.pages.dev/",
                 "githubUrl": "https://github.com/faaadelmr/gridstation.git",
                 "technologies": [ "Next.js", "React", "TailwindCSS" ]
+            },
+            {
+                "title": "CV-lization",
+                "date": "2025-08-20",
+                "description": "Online CV creation without the hassle, no registration, and lots of customization.",
+                "imageUrl": "/project/cvlization.png",
+                "imageHint": "CV Builder",
+                "liveUrl": "https://cv-lization.vercel.app/",
+                "githubUrl": "https://github.com/faaadelmr/CVlization.git",
+                "technologies": ["Next.js", "React", "TailwindCSS", "Genkit AI"]
             }
         ]
     },

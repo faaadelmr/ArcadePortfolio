@@ -96,7 +96,17 @@
                 "liveUrl": "https://gridstation.pages.dev/",
                 "githubUrl": "https://github.com/faaadelmr/gridstation.git",
                 "technologies": ["Next.js", "React", "TailwindCSS"]
-            }
+            },
+            {
+              "title": "CV-lization",
+              "date": "2025-08-20",
+              "description": "Pembuatan CV online tanpa ribet, tanpa regis, dan banyak kostumisasi.",
+              "imageUrl": "/project/cvlization.png",
+              "imageHint": "CV Builder",
+              "liveUrl": "https://cv-lization.vercel.app/",
+              "githubUrl": "https://github.com/faaadelmr/CVlization.git",
+              "technologies": ["Next.js", "React", "TailwindCSS", "Genkit AI"]
+          }
         ]
     },
     "certifications": {
