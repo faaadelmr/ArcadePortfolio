@@ -20,32 +20,42 @@ export default function MainMenu({ menuItems, selectedItem }: MainMenuProps) {
   const { t } = useLocalization();
 
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center p-8 relative overflow-hidden">
+    <div className="w-full h-full flex flex-col items-center justify-center p-2 sm:p-4 md:p-6 relative overflow-hidden">
        <div className="absolute inset-0 z-0 opacity-20">
         <LockerRoomNesBackground />
       </div>
-      <div className="relative z-10 flex flex-col items-center justify-center text-center">
-        <h1 className="text-4xl font-headline text-primary mb-12" style={{textShadow: '0 0 10px hsl(var(--primary))'}}>FADEL MUHAMAD RIFAI</h1>
-        <ul className="space-y-6">
+      <div className="relative z-10 flex flex-col items-center justify-center text-center w-full h-full">
+        <h1 
+          className="text-2xl sm:text-3xl md:text-4xl font-headline text-primary mb-4 sm:mb-6 md:mb-8" 
+          style={{textShadow: '0 0 10px hsl(var(--primary))'}}
+          tabIndex={-1}
+          aria-label="Fadel Muhamad Rifai Portfolio"
+        >
+          FADEL MUHAMAD RIFAI
+        </h1>
+        <ul className="space-y-2 sm:space-y-3 md:space-y-4 w-full max-w-xs sm:max-w-sm md:max-w-md">
           {menuItems.map((item, index) => (
             <li
               key={item.id}
               className={cn(
-                'flex items-center gap-4 text-2xl font-headline transition-all duration-200',
-                selectedItem === index ? 'text-accent scale-110' : 'text-gray-500'
+                'flex items-center gap-2 sm:gap-3 md:gap-4 text-base sm:text-xl md:text-2xl font-headline transition-all duration-200 py-1 px-2 sm:py-2 sm:px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent',
+                selectedItem === index ? 'text-accent scale-105 bg-primary/10' : 'text-gray-300 hover:text-accent'
               )}
+              role="menuitem"
+              aria-selected={selectedItem === index}
+              tabIndex={-1}
             >
               <div className={cn(
-                "transition-opacity duration-200 w-8",
-                selectedItem === index ? 'opacity-100 animate-blink' : 'opacity-0'
+                "transition-opacity duration-200 w-5 sm:w-6 md:w-8 flex-shrink-0",
+                selectedItem === index ? 'opacity-100 animate-blink' : 'opacity-50'
               )}>
-                <item.icon className="w-8 h-8" />
+                <item.icon className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8" />
               </div>
-              <span>{item.label}</span>
+              <span className="truncate">{item.label}</span>
             </li>
           ))}
         </ul>
-        <div className="mt-4 sm:mt-8 text-center text-sm sm:text-lg text-gray-400 font-code">
+        <div className="mt-2 sm:mt-4 md:mt-6 text-center text-xs sm:text-sm md:text-base text-gray-400 font-code">
           <p>{t('mainMenu.controls.navigate')}</p>
           <p>{t('mainMenu.controls.select')}</p>
         </div>

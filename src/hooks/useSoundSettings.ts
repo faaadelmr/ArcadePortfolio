@@ -12,7 +12,7 @@ export default function useSoundSettings() {
   useEffect(() => {
     try {
       const storedPref = localStorage.getItem(SOUND_STORAGE_KEY);
-      const initialSoundState = storedPref ? JSON.parse(storedPref) : true;
+      const initialSoundState = storedPref !== null ? JSON.parse(storedPref) : true;
       setIsSoundEnabled(initialSoundState);
     } catch (error) {
       console.error('Failed to read sound settings from localStorage', error);
@@ -24,10 +24,10 @@ export default function useSoundSettings() {
   const toggleSound = useCallback(() => {
     if (!isInitialized) return;
     
-    const newState = !isSoundEnabled;
-    setIsSoundEnabled(newState);
-
     try {
+      const newState = !isSoundEnabled;
+      setIsSoundEnabled(newState);
+
       localStorage.setItem(SOUND_STORAGE_KEY, JSON.stringify(newState));
     } catch (error) {
       console.error('Failed to save sound settings to localStorage', error);

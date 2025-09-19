@@ -151,28 +151,31 @@ export default function SettingsPage() {
   }
   
   const PageContent = () => (
-    <div className="w-full h-full flex flex-col p-8 text-white">
-      <h1 className="text-5xl font-headline text-primary mb-8 text-center flex-shrink-0">{t('settings.title')}</h1>
-      <ScrollArea className="flex-grow pr-4 -mr-4">
-        <ul className="space-y-6 text-2xl font-headline max-w-md mx-auto w-full">
+    <div className="w-full h-full flex flex-col p-1 sm:p-2 md:p-3 text-white">
+      <h1 className="text-lg sm:text-xl md:text-2xl font-headline text-primary mb-1 sm:mb-2 md:mb-3 text-center flex-shrink-0">{t('settings.title')}</h1>
+      <ScrollArea className="flex-grow pr-1 sm:pr-2">
+        <ul className="space-y-1 sm:space-y-2 text-xs sm:text-sm md:text-base font-headline max-w-xs sm:max-w-sm md:max-w-md mx-auto w-full">
           {settings.map((setting, index) => (
             <li 
               key={setting.id}
               ref={el => { if(el) itemRefs.current[index] = el; }}
               className={cn(
-                  "flex justify-between items-center p-2 rounded-md transition-colors",
+                  "flex justify-between items-center p-1 rounded transition-colors focus:outline-none focus:ring-2 focus:ring-accent",
                   selectedItem === index && !isVolumeEditing ? 'bg-primary/20' : ''
               )}
+              role="option"
+              aria-selected={selectedItem === index}
+              tabIndex={-1}
             >
               <Label 
                   htmlFor={setting.id} 
                   className={cn(
-                      "text-2xl font-headline flex items-center gap-4 pointer-events-none",
+                      "text-xs sm:text-sm md:text-base font-headline flex items-center gap-1 sm:gap-2 pointer-events-none",
                       selectedItem === index ? 'text-accent' : 'text-white'
                   )}
               >
                   {setting.id === 'volume' && getVolumeIcon()}
-                  {setting.id === 'language' && <Languages className="w-6 h-6" />}
+                  {setting.id === 'language' && <Languages className="w-3 h-3 sm:w-4 sm:h-4" />}
                   {setting.label}
               </Label>
               {setting.type === 'switch' && 'isEnabled' in setting && (
@@ -181,25 +184,27 @@ export default function SettingsPage() {
                   checked={setting.isEnabled}
                   className="pointer-events-none"
                   disabled={(setting.id === 'sound' && !isSoundInitialized) || (setting.id === 'scanlines' && !isVisualInitialized)}
+                  aria-label={`${setting.label} ${setting.isEnabled ? 'on' : 'off'}`}
                 />
               )}
               {setting.type === 'toggle' && 'value' in setting && typeof setting.value === 'string' && (
-                <button className="text-2xl font-headline text-accent w-[50%] text-right pointer-events-none">
+                <button className="text-xs sm:text-sm md:text-base font-headline text-accent w-[40%] text-right pointer-events-none">
                   {setting.value}
                 </button>
               )}
               {setting.type === 'slider' && 'value' in setting && (
-                 <div className="flex items-center gap-4 w-[50%] pointer-events-none">
+                 <div className="flex items-center gap-1 sm:gap-2 w-[40%] pointer-events-none">
                     <Slider
                       id={setting.id}
                       value={[typeof setting.value === 'number' ? setting.value : 0]}
                       max={100}
                       step={1}
-                      className={cn('flex-grow', (selectedItem === index && isVolumeEditing) ? 'ring-2 ring-primary rounded-lg' : '')}
+                      className={cn('flex-grow', (selectedItem === index && isVolumeEditing) ? 'ring-2 ring-primary rounded' : '')}
                       disabled={!isMusicEnabled}
+                      aria-label={setting.label}
                     />
                     <span className={cn(
-                      "text-xl text-right font-code w-10 transition-opacity",
+                      "text-xs text-right font-code w-6 sm:w-8 transition-opacity",
                       (selectedItem === index && isVolumeEditing) ? "opacity-100" : "opacity-0"
                     )}>
                       {Math.round(typeof setting.value === 'number' ? setting.value : 0)}
@@ -210,7 +215,7 @@ export default function SettingsPage() {
           ))}
         </ul>
       </ScrollArea>
-      <div className="mt-4 sm:mt-8 text-center text-sm sm:text-lg text-gray-400 font-code">
+      <div className="mt-1 sm:mt-2 text-center text-xs text-gray-400 font-code">
         <p>{t('settings.controls.navigate')}</p>
         <p>{t('settings.controls.back')}</p>
       </div>

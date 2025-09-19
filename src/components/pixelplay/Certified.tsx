@@ -193,30 +193,40 @@ export default function Certified() {
   if (cert) {
     const title = cert.title;
     return (
-      <div className="w-full h-full flex flex-col p-4 sm:p-6 text-white animate-pixel-in relative">
+      <div className="w-full h-full flex flex-col p-1 sm:p-2 md:p-3 text-white animate-pixel-in relative">
         <div className="absolute inset-0 z-0 opacity-20">
             <TrophyRoomNesBackground />
         </div>
         <div className="relative z-10 flex flex-col h-full">
-            <div className="flex items-center mb-4 flex-shrink-0">
-            <Button variant="ghost" size="icon" className="mr-4 text-accent ring-2 ring-accent bg-accent/20" onClick={handleBackToList}>
-                <ArrowLeft />
+            <div className="flex items-center mb-1 sm:mb-2 md:mb-3 flex-shrink-0">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="mr-1 sm:mr-2 md:mr-3 text-accent ring-2 ring-accent bg-accent/20 focus:outline-none focus:ring-2 focus:ring-accent" 
+              onClick={handleBackToList}
+              aria-label={t('controls.bBack')}
+            >
+                <ArrowLeft className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5" />
             </Button>
             <div className='truncate'>
-                <h1 className="text-xl sm:text-2xl lg:text-3xl font-headline text-primary truncate">{title}</h1>
-                <p className="text-sm sm:text-base text-gray-300 truncate">{cert.issuer}</p>
+                <h1 className="text-base sm:text-lg md:text-xl font-headline text-primary truncate">{title}</h1>
+                <p className="text-xs sm:text-sm text-gray-300 truncate">{cert.issuer}</p>
             </div>
             </div>
-            <ScrollArea viewportRef={scrollViewportRef} className="flex-grow pr-2">
+            <ScrollArea viewportRef={scrollViewportRef} className="flex-grow pr-1 sm:pr-2">
                 <Image 
                     src={cert.imageUrl}
                     alt={`${t('certifications.alt')} ${title}`}
                     width={800}
                     height={600}
-                    className="rounded-lg border-2 border-primary/50 object-contain w-full h-auto"
+                    className="rounded-md border border-primary/50 object-contain w-full h-auto"
+                    loading="lazy"
+                    quality={85}
+                    placeholder="blur"
+                    blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIwIiBoZWlnaHQ9IjMyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2ZXJzaW9uPSIxLjEiLz4="
                 />
             </ScrollArea>
-            <div className="mt-4 text-center text-sm sm:text-lg text-gray-400 font-code flex-shrink-0">
+            <div className="mt-1 sm:mt-2 text-center text-xs text-gray-400 font-code flex-shrink-0">
             <p>{t('certifications.controls.scroll')}</p>
             <p>{t('certifications.controls.backToList')}</p>
             </div>
@@ -226,38 +236,41 @@ export default function Certified() {
   }
 
   return (
-    <div className="w-full h-full flex flex-col p-4 sm:p-8 text-white relative">
+    <div className="w-full h-full flex flex-col p-1 sm:p-2 md:p-3 text-white relative">
         <div className="absolute inset-0 z-0 opacity-20">
             <TrophyRoomNesBackground />
         </div>
         <div className="relative z-10 flex flex-col h-full">
-            <h1 className="text-3xl sm:text-5xl font-headline text-primary mb-4 sm:mb-8 text-center">{t('certifications.title')}</h1>
-            <ScrollArea className="flex-grow pr-4">
-                <ul className="space-y-4">
+            <h1 className="text-lg sm:text-xl md:text-2xl font-headline text-primary mb-1 sm:mb-2 md:mb-3 text-center">{t('certifications.title')}</h1>
+            <ScrollArea className="flex-grow pr-1 sm:pr-2">
+                <ul className="space-y-1 sm:space-y-2">
                 {certifications.map((cert, index) => (
                     <li 
                     key={index}
                     ref={el => { if(el) itemRefs.current[index] = el; }}
                     className={cn(
-                        "p-4 border-l-4 rounded-r-lg transition-all duration-200",
+                        "p-1 sm:p-2 border-l-2 rounded-r transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent",
                         selectedItem === index 
                         ? "border-accent bg-primary/20" 
                         : "border-gray-700"
                     )}
+                    role="option"
+                    aria-selected={selectedItem === index}
+                    tabIndex={-1}
                     >
                     <h2 className={cn(
-                        "text-xl sm:text-2xl font-headline truncate",
+                        "text-xs sm:text-sm md:text-base font-headline truncate",
                         selectedItem === index ? 'text-accent' : 'text-white'
                     )}>
                         {cert.title}
                     </h2>
-                    <p className="text-base sm:text-lg text-gray-300">{cert.issuer}</p>
-                    <p className="text-sm font-code text-primary/80 mt-1">{cert.date}</p>
+                    <p className="text-xs text-gray-300">{cert.issuer}</p>
+                    <p className="text-xs font-code text-primary/80 mt-1">{cert.date}</p>
                     </li>
                 ))}
                 </ul>
             </ScrollArea>
-            <div className="mt-4 sm:mt-8 text-center text-sm sm:text-lg text-gray-400 font-code">
+            <div className="mt-1 sm:mt-2 text-center text-xs text-gray-400 font-code">
                 <p>{t('certifications.controls.navigate')}</p>
                 <p>{t('certifications.controls.backToMain')}</p>
             </div>

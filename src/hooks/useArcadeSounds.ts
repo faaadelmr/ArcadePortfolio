@@ -15,9 +15,14 @@ let synth: Synth | null = null;
 const loadTone = async () => {
   if (typeof window === 'undefined') return { Tone: null, synth: null };
   if (!Tone) {
-    Tone = await import('tone');
-    if (!synth) {
-      synth = new Tone.Synth().toDestination();
+    try {
+      Tone = await import('tone');
+      if (!synth) {
+        synth = new Tone.Synth().toDestination();
+      }
+    } catch (error) {
+      console.error("Failed to load Tone.js:", error);
+      return { Tone: null, synth: null };
     }
   }
   return { Tone, synth };
@@ -63,13 +68,23 @@ export default function useArcadeSounds(props?: UseArcadeSoundsProps) {
         synth.triggerAttackRelease(note, duration);
     } catch(e) {
         console.error("Failed to play sound", e);
+        isSoundPlaying.current = false; // Reset the flag on error
+        return;
     }
     
     // Use a numeric duration for the timeout
-    const durationMs = T.Time(duration).toMilliseconds();
-    soundTimeoutRef.current = setTimeout(() => {
-        isSoundPlaying.current = false;
-    }, durationMs);
+    try {
+      const durationMs = T.Time(duration).toMilliseconds();
+      if (soundTimeoutRef.current) {
+        clearTimeout(soundTimeoutRef.current);
+      }
+      soundTimeoutRef.current = setTimeout(() => {
+          isSoundPlaying.current = false;
+      }, durationMs);
+    } catch (e) {
+      console.error("Failed to set sound timeout", e);
+      isSoundPlaying.current = false; // Reset the flag on error
+    }
   }, [isReady, isSoundEnabled]);
 
   const playNavigate = useCallback(() => playSound('C3', '16n'), [playSound]);

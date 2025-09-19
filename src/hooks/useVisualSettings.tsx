@@ -33,15 +33,19 @@ export const VisualSettingsProvider: React.FC<{ children: React.ReactNode }> = (
   const toggleScanlines = useCallback(() => {
     if (!isInitialized) return;
     
-    setIsScanlinesEnabled(prevState => {
-        const newState = !prevState;
-        try {
-          localStorage.setItem(SCANLINES_STORAGE_KEY, JSON.stringify(newState));
-        } catch (error) {
-          console.error('Failed to save scanline settings to localStorage', error);
-        }
-        return newState;
-    });
+    try {
+      setIsScanlinesEnabled(prevState => {
+          const newState = !prevState;
+          try {
+            localStorage.setItem(SCANLINES_STORAGE_KEY, JSON.stringify(newState));
+          } catch (error) {
+            console.error('Failed to save scanline settings to localStorage', error);
+          }
+          return newState;
+      });
+    } catch (error) {
+      console.error('Failed to toggle scanlines', error);
+    }
 
   }, [isInitialized]);
 
@@ -58,7 +62,7 @@ export const VisualSettingsProvider: React.FC<{ children: React.ReactNode }> = (
   );
 };
 
-export const useVisualSettings = (): VisualSettingsContextType => {
+export const useVisualSettings = () => {
   const context = useContext(VisualSettingsContext);
   if (context === undefined) {
     throw new Error('useVisualSettings must be used within a VisualSettingsProvider');

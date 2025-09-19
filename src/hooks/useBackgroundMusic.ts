@@ -30,21 +30,29 @@ export default function useBackgroundMusic() {
         setIsReady(true);
     };
 
+    const handleError = (e: ErrorEvent) => {
+        console.error("Audio loading error:", e);
+        setIsReady(false);
+    };
+
     if (audioRef.current) {
+        audioRef.current.addEventListener('canplay', handleCanPlay);
+        audioRef.current.addEventListener('error', handleError);
+        
+        // Set src only if it's not set, to avoid re-triggering load
+        if (audioRef.current.src !== window.location.origin + MUSIC_SRC) {
+             audioRef.current.src = MUSIC_SRC;
+             audioRef.current.load();
+        }
+        
+        // Check if already ready
         if (audioRef.current.readyState >= 2) { // HAVE_CURRENT_DATA or more
             handleCanPlay();
-        } else {
-            audioRef.current.addEventListener('canplay', handleCanPlay);
-            // Set src only if it's not set, to avoid re-triggering load
-            if (audioRef.current.src !== window.location.origin + MUSIC_SRC) {
-                 audioRef.current.src = MUSIC_SRC;
-                 audioRef.current.load();
-            }
         }
     }
 
     const storedMusicPref = localStorage.getItem(MUSIC_STORAGE_KEY);
-    const initialMusicState = storedMusicPref ? JSON.parse(storedMusicPref) : true;
+    const initialMusicState = storedMusicPref !== null ? JSON.parse(storedMusicPref) : true;
     setIsMusicEnabled(initialMusicState);
 
     const storedVolume = localStorage.getItem(VOLUME_STORAGE_KEY);
@@ -61,6 +69,7 @@ export default function useBackgroundMusic() {
     return () => {
         if (audioRef.current) {
             audioRef.current.removeEventListener('canplay', handleCanPlay);
+            audioRef.current.removeEventListener('error', handleError);
         }
     };
   }, []);
@@ -69,33 +78,54 @@ export default function useBackgroundMusic() {
     if (isReady && audioRef.current && audioRef.current.paused && isMusicEnabled) {
       audioRef.current.play().catch(error => {
         console.error("Music autoplay was prevented:", error);
+        // Try to load and play again
+        if (audioRef.current) {
+          audioRef.current.load();
+          setTimeout(() => {
+            if (audioRef.current && isMusicEnabled) {
+              audioRef.current.play().catch(e => console.error("Retry failed:", e));
+            }
+          }, 100);
+        }
       });
     }
   }, [isMusicEnabled, isReady]);
 
   const pauseMusic = useCallback(() => {
     if (audioRef.current && !audioRef.current.paused) {
-      audioRef.current.pause();
+      try {
+        audioRef.current.pause();
+      } catch (error) {
+        console.error("Error pausing music:", error);
+      }
     }
   }, []);
 
   const setVolume = useCallback((newVolume: number) => {
     if (!isInitialized || !audioRef.current) return;
-    const clampedVolume = Math.max(0, Math.min(1, newVolume));
-    setVolumeState(clampedVolume);
-    audioRef.current.volume = clampedVolume;
-    localStorage.setItem(VOLUME_STORAGE_KEY, clampedVolume.toString());
+    try {
+      const clampedVolume = Math.max(0, Math.min(1, newVolume));
+      setVolumeState(clampedVolume);
+      audioRef.current.volume = clampedVolume;
+      localStorage.setItem(VOLUME_STORAGE_KEY, clampedVolume.toString());
+    } catch (error) {
+      console.error("Error setting volume:", error);
+    }
   }, [isInitialized]);
   
   const toggleMusic = useCallback(() => {
     if (!isInitialized) return;
-    const newState = !isMusicEnabled;
-    setIsMusicEnabled(newState);
-    localStorage.setItem(MUSIC_STORAGE_KEY, JSON.stringify(newState));
-    if (newState) {
-      playMusic();
-    } else {
-      pauseMusic();
+    try {
+      const newState = !isMusicEnabled;
+      setIsMusicEnabled(newState);
+      localStorage.setItem(MUSIC_STORAGE_KEY, JSON.stringify(newState));
+      if (newState) {
+        playMusic();
+      } else {
+        pauseMusic();
+      }
+    } catch (error) {
+      console.error("Error toggling music:", error);
     }
   }, [isMusicEnabled, isInitialized, playMusic, pauseMusic]);
   

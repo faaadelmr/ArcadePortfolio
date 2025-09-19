@@ -47,16 +47,16 @@ export default function BootScreen() {
   }, []);
 
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center p-8 text-white animate-pixel-in relative overflow-hidden">
+    <div className="w-full h-full flex flex-col items-center justify-center p-2 sm:p-4 text-white animate-pixel-in relative overflow-hidden">
         <div className="absolute inset-0 z-0 opacity-20">
           <PadelNesBackground />
         </div>
         <div className="relative z-10 flex flex-col items-center justify-center text-center">
-            <h1 className="text-4xl font-headline text-primary mb-12" style={{textShadow: '0 0 10px hsl(var(--primary))'}}>{t('bootScreen.title')}</h1>
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-headline text-primary mb-4 sm:mb-6" style={{textShadow: '0 0 10px hsl(var(--primary))'}}>{t('bootScreen.title')}</h1>
             <div className="text-center">
-                <p className="text-3xl font-headline text-accent animate-blink">{t('bootScreen.pressStart')}</p>
+                <p className="text-lg sm:text-xl md:text-2xl font-headline text-accent animate-blink">{t('bootScreen.pressStart')}</p>
             </div>
-            <div className="mt-16 text-center text-lg text-gray-400 font-code">
+            <div className="mt-4 sm:mt-6 text-center text-xs sm:text-sm text-gray-400 font-code">
                 <p>&copy; {new Date().getFullYear()} faaadelmr <br />
                   <span className="animated-highlight-text text-white">{typedText}</span>
                 </p>

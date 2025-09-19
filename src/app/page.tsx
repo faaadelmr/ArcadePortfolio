@@ -243,8 +243,8 @@ export default function PixelPlayHub() {
   };
 
   return (
-    <div className="bg-transparent text-foreground h-screen flex items-center justify-center overflow-hidden p-2 sm:p-4">
-      <main className="w-full max-w-4xl h-full max-h-[1024px] flex flex-col items-center justify-center">
+    <div className="bg-transparent text-foreground min-h-screen flex items-center justify-center overflow-hidden p-2 sm:p-4">
+      <main className="w-full max-w-4xl h-[80vh] max-h-[1024px] flex flex-col items-center justify-center">
         <div className="w-full h-full bg-[#1a1a1a] rounded-2xl shadow-2xl p-2 sm:p-4 flex flex-col border-4 border-yellow-600 shadow-[inset_0_0_20px_black]">
           
           <div className="bg-black flex-grow rounded-lg p-2 border-2 border-yellow-700 relative overflow-hidden flex flex-col">
@@ -259,7 +259,7 @@ export default function PixelPlayHub() {
             </div>
             
             <div className={cn(
-              "w-full h-full flex-grow",
+              "w-full h-full flex-grow overflow-auto",
               isTransitioning ? 'animate-pixel-out' : 'animate-pixel-in'
             )}>
               {CurrentPageComponent}
@@ -275,13 +275,13 @@ export default function PixelPlayHub() {
   
           <div className="flex-shrink-0 pt-4 px-2 sm:px-8 flex flex-wrap sm:flex-nowrap justify-around items-center gap-4 sm:gap-2">
             <div className="flex items-center gap-4 sm:gap-6">
-              <div className="relative w-24 h-24 select-none">
+              <div className="relative w-20 h-20 sm:w-24 sm:h-24 select-none">
                   <div className="absolute inset-0 grid grid-cols-3 grid-rows-3">
                       <div
                           onMouseDown={(e) => { e.preventDefault(); handleNavigation('up'); }}
                           className="col-start-2 row-start-1 bg-gray-700 rounded-t-md border-2 border-b-0 border-gray-800 active:bg-gray-600 cursor-pointer flex items-center justify-center"
                       >
-                         <ArrowUp className="w-6 h-6 text-gray-400"/>
+                         <ArrowUp className="w-4 h-4 sm:w-6 sm:h-6 text-gray-400"/>
                       </div>
                       <div className="col-start-2 row-start-2 bg-gray-700 border-x-2 border-gray-800"></div>
                       <div className="col-start-1 row-start-2 bg-gray-700 rounded-l-md border-2 border-r-0 border-gray-800"></div>
@@ -290,7 +290,7 @@ export default function PixelPlayHub() {
                           onMouseDown={(e) => { e.preventDefault(); handleNavigation('down'); }}
                           className="col-start-2 row-start-3 bg-gray-700 rounded-b-md border-2 border-t-0 border-gray-800 active:bg-gray-600 cursor-pointer flex items-center justify-center"
                       >
-                         <ArrowDown className="w-6 h-6 text-gray-400"/>
+                         <ArrowDown className="w-4 h-4 sm:w-6 sm:h-6 text-gray-400"/>
                       </div>
                   </div>
               </div>
@@ -306,39 +306,39 @@ export default function PixelPlayHub() {
                   onMouseDown={(e) => { e.preventDefault(); handleButtonPress('start'); }}
                   data-internal-key="start"
                   className={cn(
-                    'w-16 h-7 sm:w-20 sm:h-8 rounded-lg bg-gray-500 border-b-4 border-gray-700 transition-all duration-100 active:translate-y-1 active:border-b-0',
+                    'w-14 h-6 sm:w-16 sm:h-8 rounded-lg bg-gray-500 border-b-4 border-gray-700 transition-all duration-100 active:translate-y-1 active:border-b-0',
                     activeButton === 'start' ? 'translate-y-1 border-b-0' : ''
                   )}
                 ></button>
-                <p className="mt-2 font-headline text-xs sm:text-sm text-gray-400">{t('controls.start')}</p>
+                <p className="mt-1 font-headline text-xs text-gray-400">{t('controls.start')}</p>
               </div>
               <div className="text-center">
                 <button 
                   onMouseDown={(e) => { e.preventDefault(); handleButtonPress('b'); }}
                   data-internal-key="b"
                   className={cn(
-                    'w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-primary border-b-8 border-blue-800 transition-all duration-100 active:translate-y-1 active:border-b-2',
+                    'w-10 h-10 sm:w-16 sm:h-16 rounded-full bg-primary border-b-8 border-blue-800 transition-all duration-100 active:translate-y-1 active:border-b-2',
                     activeButton === 'b' ? 'translate-y-1 border-b-2' : ''
                   )}
                 ></button>
-                <p className="mt-2 font-headline text-xs sm:text-sm text-primary">{t('controls.bBack')}</p>
+                <p className="mt-1 font-headline text-xs text-primary">{t('controls.bBack')}</p>
               </div>
               <div className="text-center">
                 <button 
                   onMouseDown={(e) => { e.preventDefault(); handleButtonPress('a'); }}
                   data-internal-key="a"
                   className={cn(
-                    'w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-accent border-b-8 border-green-800 transition-all duration-100 active:translate-y-1 active:border-b-2',
+                    'w-10 h-10 sm:w-16 sm:h-16 rounded-full bg-accent border-b-8 border-green-800 transition-all duration-100 active:translate-y-1 active:border-b-2',
                     activeButton === 'a' ? 'translate-y-1 border-b-2' : ''
                   )}
                 ></button>
-                <p className="mt-2 font-headline text-xs sm:text-sm text-accent">{t('controls.aSelect')}</p>
+                <p className="mt-1 font-headline text-xs text-accent">{t('controls.aSelect')}</p>
               </div>
             </div>
           </div>
   
           <div className="text-center pt-2 sm:pt-4">
-              <h1 className="text-lg sm:text-2xl md:text-3xl font-headline text-primary tracking-widest">{t('mainTitle')}</h1>
+              <h1 className="text-base sm:text-2xl md:text-3xl font-headline text-primary tracking-widest">{t('mainTitle')}</h1>
           </div>
         </div>
       </main>
