@@ -78,7 +78,8 @@
                 "imageHint": "Alat PDF yang lebih cepat",
                 "liveUrl": "https://pdf-adel.pages.dev/",
                 "githubUrl": "https://github.com/faaadelmr/pdf-adel.git",
-                "technologies": ["Next.js", "JavaScript", "React", "TailwindCSS"]
+                "technologies": ["Next.js", "JavaScript", "React", "TailwindCSS"],
+                "status": "active"
             },
             {
                 "title": "Battle Party",
@@ -88,7 +89,8 @@
                 "imageHint": "Komparasi HP dan Laptop",
                 "liveUrl": "https://battleparty.vercel.app/",
                 "githubUrl": "https://github.com/faaadelmr/KaumMendangMending.git",
-                "technologies": ["Next.js", "Genkit AI", "React", "TailwindCSS"]
+                "technologies": ["Next.js", "Genkit AI", "React", "TailwindCSS"],
+                "status": "active"
             },
             {
                 "title": "GridStation",
@@ -111,6 +113,17 @@
               "githubUrl": "https://github.com/faaadelmr/CVlization.git",
               "technologies": ["Next.js", "React", "TailwindCSS", "Genkit AI"],
               "status": "discontinued"
+          },
+          {
+            "title": "Rekonmatch",
+            "date": "2025-10-09",
+            "description": "Capek ribet pakai rumus Excel untuk cari data? RekonMatch hadir sebagai solusi praktis! Dengan aplikasi ini, Anda bisa mencari banyak data sekaligus hanya dalam satu kolom pencarian. Tidak perlu lagi pusing dengan VLOOKUP atau MATCH cukup unggah file Excel Anda, pilih data yang ingin dicari, dan hasilnya langsung tampil rapi. Mudah, cepat, dan ramah untuk semua pengguna.",
+            "imageUrl": "/project/rekonmatch.png",
+            "imageHint": "Alat Pencocokan Data Excel",
+            "liveUrl": "https://rekonmatch.pages.dev/",
+            "githubUrl": "https://github.com/faaadelmr/rekonmatch.git",
+            "technologies": ["Next.js", "TypeScript", "TailwindCSS"],
+            "status": "active"
           }
         ]
     },

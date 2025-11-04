@@ -78,7 +78,8 @@
                 "imageHint": "PDF tools less process",
                 "liveUrl": "https://pdf-adel.pages.dev/",
                 "githubUrl": "https://github.com/faaadelmr/pdf-adel.git",
-                "technologies": ["Next.js", "JavaScript", "TailwindCSS"]
+                "technologies": ["Next.js", "JavaScript", "TailwindCSS"],
+                "status": "active"
             },
             {
                 "title": "Battle Party",
@@ -88,7 +89,8 @@
                 "imageHint": "HP and Laptop Comparison",
                 "liveUrl": "https://battleparty.vercel.app/",
                 "githubUrl": "https://github.com/faaadelmr/KaumMendangMending.git",
-                "technologies": ["Next.js", "Genkit AI", "TailwindCSS"]
+                "technologies": ["Next.js", "Genkit AI", "TailwindCSS"],
+                "status": "active"
             },
             {
                 "title": "GridStation",
@@ -111,6 +113,17 @@
                 "githubUrl": "https://github.com/faaadelmr/CVlization.git",
                 "technologies": ["Next.js", "React", "TailwindCSS", "Genkit AI"],
                 "status": "discontinued"
+            },
+            {
+                "title": "Rekonmatch",
+                "date": "2025-10-09",
+                "description": "Tired of complex Excel formulas for data lookup? RekonMatch is here as a practical solution! With this application, you can search for multiple data at once in a single search column. No more headaches with VLOOKUP or MATCH - just upload your Excel file, select the data you want to find, and the results will appear neatly. Easy, fast, and user-friendly for everyone.",
+                "imageUrl": "/project/rekonmatch.png",
+                "imageHint": "Excel Data Matching Tool",
+                "liveUrl": "https://rekonmatch.pages.dev/",
+                "githubUrl": "https://github.com/faaadelmr/rekonmatch.git",
+                "technologies": ["Next.js", "TypeScript", "TailwindCSS"],
+                "status": "active"
             }
         ]
     },
