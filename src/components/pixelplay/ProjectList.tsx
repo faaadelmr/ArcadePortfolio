@@ -23,6 +23,7 @@ interface Project {
   liveUrl?: string;
   githubUrl?: string;
   technologies: string[];
+  status?: 'active' | 'discontinued' | 'beta' | 'deprecated'; // Optional status field
 }
 
 export default function ProjectList() {
@@ -207,34 +208,51 @@ export default function ProjectList() {
             <AgendaNesBackground />
         </div>
         <div className='relative z-10 flex flex-col h-full'>
-            <div className="flex items-center mb-1 sm:mb-2 md:mb-3 flex-shrink-0">
-            <Button 
-              ref={el => { if (el) {detailItemRefs.current[0] = el;} }} 
-              variant="ghost" 
-              size="icon" 
-              className={cn("mr-1 sm:mr-2 md:mr-3 text-accent hover:bg-accent/20 hover:text-accent focus:outline-none focus:ring-2 focus:ring-accent", selectedDetailButton === 0 ? 'ring-2 ring-accent' : '')}
-              aria-label={t('controls.bBack')}
-            >
-                <ArrowLeft className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5" />
-            </Button>
-            <h1 className="text-base sm:text-lg md:text-xl font-headline text-primary truncate">{title}</h1>
+            <div className="relative">
+              <div className="flex items-center mb-1 sm:mb-2 md:mb-3 flex-shrink-0">
+              <Button 
+                ref={el => { if (el) {detailItemRefs.current[0] = el;} }} 
+                variant="ghost" 
+                size="icon" 
+                className={cn("mr-1 sm:mr-2 md:mr-3 text-accent hover:bg-accent/20 hover:text-accent focus:outline-none focus:ring-2 focus:ring-accent", selectedDetailButton === 0 ? 'ring-2 ring-accent' : '')}
+                aria-label={t('controls.bBack')}
+              >
+                  <ArrowLeft className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5" />
+              </Button>
+              <div className="flex items-center flex-1 relative">
+                <h1 className="text-base sm:text-lg md:text-xl font-headline text-primary truncate mr-2">{title}</h1>
+              </div>
+              </div>
             </div>
             <ScrollArea className="flex-grow pr-1 sm:pr-2">
             <div className="flex flex-col md:flex-row gap-2 sm:gap-3 md:gap-4">
                 <div className={cn("w-full md:w-1/2 flex-shrink-0 rounded-md", selectedDetailButton === 1 ? 'ring-2 ring-primary' : '')}>
-                <Image 
-                    ref={el => { if (el) {detailItemRefs.current[1] = el;} }}
-                    src={project.imageUrl}
-                    alt={`${title} project image`}
-                    width={600}
-                    height={400}
-                    className="rounded-md border border-primary/50 object-cover w-full h-auto"
-                    data-ai-hint={project.imageHint}
-                    loading="lazy"
-                    quality={85}
-                    placeholder="blur"
-                    blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIwIiBoZWlnaHQ9IjMyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2ZXJzaW9uPSIxLjEiLz4="
-                />
+                <div className="relative">
+                  <Image 
+                      ref={el => { if (el) {detailItemRefs.current[1] = el;} }}
+                      src={project.imageUrl}
+                      alt={`${title} project image`}
+                      width={600}
+                      height={400}
+                      className="rounded-md border border-primary/50 object-cover w-full h-auto"
+                      data-ai-hint={project.imageHint}
+                      loading="lazy"
+                      quality={85}
+                      placeholder="blur"
+                      blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIwIiBoZWlnaHQ9IjMyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2ZXJzaW9uPSIxLjEiLz4="
+                  />
+                  {project.status && (
+                    <span 
+                      className={`absolute top-2 right-2 px-2 py-0.5 rounded-md text-[0.6rem] font-bold uppercase tracking-wide transform -rotate-12 ${
+                        project.status === 'discontinued' 
+                          ? 'bg-red-900/70 text-red-200 border border-red-600/50' 
+                          : 'bg-blue-900/70 text-blue-200 border border-blue-600/50'
+                      }`}
+                    >
+                      {project.status === 'discontinued' ? 'DISCONTINUED' : project.status}
+                    </span>
+                  )}
+                </div>
                 </div>
                 <div className="w-full md:w-1/2 flex flex-col">
                 <p className="text-xs sm:text-sm md:text-base text-gray-300 mb-2 sm:mb-3">{project.description}</p>
@@ -312,8 +330,23 @@ export default function ProjectList() {
                     aria-selected={selectedItem === index}
                     tabIndex={-1}
                     >
-                    <span className="truncate pr-1 sm:pr-2 text-xs sm:text-sm">{proj.title}</span>
-                    <span className="font-code text-accent text-opacity-80 text-xs flex-shrink-0">{proj.date}</span>
+                    <div className="flex items-center">
+                      <span className="truncate text-xs sm:text-sm pr-1">{proj.title}</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      {proj.status && (
+                        <span 
+                          className={`px-1.5 py-0.5 rounded-md text-[0.6rem] font-bold uppercase tracking-wide transform -rotate-12 ${
+                            proj.status === 'discontinued' 
+                              ? 'bg-red-900/60 text-red-200 border border-red-600/50' 
+                              : 'bg-blue-900/60 text-blue-200 border border-blue-600/50'
+                          }`}
+                        >
+                          {proj.status === 'discontinued' ? 'DISCONTINUED' : proj.status}
+                        </span>
+                      )}
+                      <span className="font-code text-accent text-opacity-80 text-xs flex-shrink-0">{proj.date}</span>
+                    </div>
                     </li>
                 ))}
                 </ul>

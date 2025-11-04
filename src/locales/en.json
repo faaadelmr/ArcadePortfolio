@@ -46,7 +46,8 @@
                 "imageHint": "Daily Report Claim",
                 "liveUrl": "https://mentanma.cyou",
                 "githubUrl": "https://github.com/faaadelmr/tanma",
-                "technologies": ["Laravel", "PHP", "MySQL", "JavaScript", "TailwindCSS"]
+                "technologies": ["Laravel", "PHP", "MySQL", "JavaScript", "TailwindCSS"],
+                "status": "discontinued"
             },
             {
                 "title": "cewe(k)alcer",
@@ -55,7 +56,8 @@
                 "imageUrl": "/project/cewekalcer.png",
                 "imageHint": "CewekKalcer",
                 "liveUrl": "https://cewekalcer.pages.dev/",
-                "technologies": ["Next.js", "TypeScript", "TailwindCSS"]
+                "technologies": ["Next.js", "TypeScript", "TailwindCSS"],
+                "status": "discontinued"
             },
             {
                 "title": "bayarGess",
@@ -65,7 +67,8 @@
                 "imageHint": "splitbill sharing",
                 "liveUrl": "https://bayargess.vercel.app/",
                 "githubUrl": "https://github.com/faaadelmr/bayarGess.git",
-                "technologies": ["Next.js", "TypeScript", "TailwindCSS", "Genkit AI"]
+                "technologies": ["Next.js", "TypeScript", "TailwindCSS", "Genkit AI"],
+                "status": "discontinued"
             },
             {
                 "title": "PDF-adel",
@@ -95,7 +98,8 @@
                 "imageHint": "Image Cutting, Grid",
                 "liveUrl": "https://gridstation.pages.dev/",
                 "githubUrl": "https://github.com/faaadelmr/gridstation.git",
-                "technologies": [ "Next.js", "React", "TailwindCSS" ]
+                "technologies": [ "Next.js", "React", "TailwindCSS" ],
+                "status": "discontinued"
             },
             {
                 "title": "CV-lization",
@@ -105,7 +109,8 @@
                 "imageHint": "CV Builder",
                 "liveUrl": "https://cv-lization.vercel.app/",
                 "githubUrl": "https://github.com/faaadelmr/CVlization.git",
-                "technologies": ["Next.js", "React", "TailwindCSS", "Genkit AI"]
+                "technologies": ["Next.js", "React", "TailwindCSS", "Genkit AI"],
+                "status": "discontinued"
             }
         ]
     },
