@@ -68,7 +68,7 @@
                 "liveUrl": "https://bayargess.vercel.app/",
                 "githubUrl": "https://github.com/faaadelmr/bayarGess.git",
                 "technologies": ["Next.js", "TypeScript", "TailwindCSS", "Genkit AI"],
-                "status": "discontinued"
+                "status": "active"
             },
             {
                 "title": "PDF-adel",
@@ -90,7 +90,7 @@
                 "liveUrl": "https://battleparty.vercel.app/",
                 "githubUrl": "https://github.com/faaadelmr/KaumMendangMending.git",
                 "technologies": ["Next.js", "Genkit AI", "TailwindCSS"],
-                "status": "active"
+                "status": "discontinued"
             },
             {
                 "title": "GridStation",
@@ -112,7 +112,7 @@
                 "liveUrl": "https://cv-lization.vercel.app/",
                 "githubUrl": "https://github.com/faaadelmr/CVlization.git",
                 "technologies": ["Next.js", "React", "TailwindCSS", "Genkit AI"],
-                "status": "discontinued"
+                "status": "active"
             },
             {
                 "title": "Rekonmatch",
