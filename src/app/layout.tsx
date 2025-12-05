@@ -5,8 +5,8 @@ import { LocalizationProvider } from '@/hooks/useLocalization';
 import { VisualSettingsProvider } from '@/hooks/useVisualSettings';
 
 export const metadata: Metadata = {
-  title: 'Portofolio ARCADE by Fadel Muhamad Rifai',
-  description: 'Dengan tema arcade, disini kalian bisa #CobaAjaDulu untuk melihat proyek apa saja yang telah saya kerjakan.',
+  title: 'Portofolio Fadel Muhamad Rifai',
+  description: 'Portofolio faaadelmr, disini kalian #CobaAjaDulu untuk melihat proyek apa saja yang telah saya kerjakan.',
 };
 
 export default function RootLayout({
