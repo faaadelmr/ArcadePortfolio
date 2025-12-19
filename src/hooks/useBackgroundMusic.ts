@@ -9,11 +9,11 @@ const MUSIC_SRC = '/HyperOlympic.mp3';
 
 let audioInstance: HTMLAudioElement | null = null;
 const getAudioInstance = () => {
-    if (typeof window === 'undefined') return null;
-    if (!audioInstance) {
-        audioInstance = new Audio();
-    }
-    return audioInstance;
+  if (typeof window === 'undefined') return null;
+  if (!audioInstance) {
+    audioInstance = new Audio();
+  }
+  return audioInstance;
 }
 
 export default function useBackgroundMusic() {
@@ -25,30 +25,30 @@ export default function useBackgroundMusic() {
 
   useEffect(() => {
     audioRef.current = getAudioInstance();
-    
+
     const handleCanPlay = () => {
-        setIsReady(true);
+      setIsReady(true);
     };
 
     const handleError = (e: ErrorEvent) => {
-        console.error("Audio loading error:", e);
-        setIsReady(false);
+      console.error("Audio loading error:", e);
+      setIsReady(false);
     };
 
     if (audioRef.current) {
-        audioRef.current.addEventListener('canplay', handleCanPlay);
-        audioRef.current.addEventListener('error', handleError);
-        
-        // Set src only if it's not set, to avoid re-triggering load
-        if (audioRef.current.src !== window.location.origin + MUSIC_SRC) {
-             audioRef.current.src = MUSIC_SRC;
-             audioRef.current.load();
-        }
-        
-        // Check if already ready
-        if (audioRef.current.readyState >= 2) { // HAVE_CURRENT_DATA or more
-            handleCanPlay();
-        }
+      audioRef.current.addEventListener('canplay', handleCanPlay);
+      audioRef.current.addEventListener('error', handleError);
+
+      // Set src only if it's not set, to avoid re-triggering load
+      if (audioRef.current.src !== window.location.origin + MUSIC_SRC) {
+        audioRef.current.src = MUSIC_SRC;
+        audioRef.current.load();
+      }
+
+      // Check if already ready
+      if (audioRef.current.readyState >= 2) { // HAVE_CURRENT_DATA or more
+        handleCanPlay();
+      }
     }
 
     const storedMusicPref = localStorage.getItem(MUSIC_STORAGE_KEY);
@@ -58,35 +58,27 @@ export default function useBackgroundMusic() {
     const storedVolume = localStorage.getItem(VOLUME_STORAGE_KEY);
     const initialVolume = storedVolume ? parseFloat(storedVolume) : 0.3;
     setVolumeState(initialVolume);
-    
-    if(audioRef.current) {
-        audioRef.current.volume = initialVolume;
-        audioRef.current.loop = true;
+
+    if (audioRef.current) {
+      audioRef.current.volume = initialVolume;
+      audioRef.current.loop = true;
     }
 
     setIsInitialized(true);
-    
+
     return () => {
-        if (audioRef.current) {
-            audioRef.current.removeEventListener('canplay', handleCanPlay);
-            audioRef.current.removeEventListener('error', handleError);
-        }
+      if (audioRef.current) {
+        audioRef.current.removeEventListener('canplay', handleCanPlay);
+        audioRef.current.removeEventListener('error', handleError);
+      }
     };
   }, []);
 
   const playMusic = useCallback(() => {
     if (isReady && audioRef.current && audioRef.current.paused && isMusicEnabled) {
-      audioRef.current.play().catch(error => {
-        console.error("Music autoplay was prevented:", error);
-        // Try to load and play again
-        if (audioRef.current) {
-          audioRef.current.load();
-          setTimeout(() => {
-            if (audioRef.current && isMusicEnabled) {
-              audioRef.current.play().catch(e => console.error("Retry failed:", e));
-            }
-          }, 100);
-        }
+      audioRef.current.play().catch(() => {
+        // Silently ignore autoplay errors - this is expected browser behavior
+        // Music will play once user interacts with the page
       });
     }
   }, [isMusicEnabled, isReady]);
@@ -112,7 +104,7 @@ export default function useBackgroundMusic() {
       console.error("Error setting volume:", error);
     }
   }, [isInitialized]);
-  
+
   const toggleMusic = useCallback(() => {
     if (!isInitialized) return;
     try {
@@ -128,14 +120,14 @@ export default function useBackgroundMusic() {
       console.error("Error toggling music:", error);
     }
   }, [isMusicEnabled, isInitialized, playMusic, pauseMusic]);
-  
+
   useEffect(() => {
     if (isInitialized) {
-        if (isMusicEnabled) {
-            playMusic();
-        } else {
-            pauseMusic();
-        }
+      if (isMusicEnabled) {
+        playMusic();
+      } else {
+        pauseMusic();
+      }
     }
   }, [isMusicEnabled, isInitialized, playMusic, pauseMusic]);
 

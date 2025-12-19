@@ -37,21 +37,21 @@ export default function ProjectList() {
     const projectData = t('projects.list');
     let parsedProjects: Project[] = [];
     try {
-        if (typeof projectData === 'string' && projectData.startsWith('[')) {
-             parsedProjects = JSON.parse(projectData);
-        } else if (Array.isArray(projectData)) {
-            parsedProjects = projectData;
-        }
-    } catch(e) {
-        console.error("Could not parse projects data from localization file.", e);
-        return [];
+      if (typeof projectData === 'string' && projectData.startsWith('[')) {
+        parsedProjects = JSON.parse(projectData);
+      } else if (Array.isArray(projectData)) {
+        parsedProjects = projectData;
+      }
+    } catch (e) {
+      console.error("Could not parse projects data from localization file.", e);
+      return [];
     }
     return parsedProjects.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   }, [t]);
 
   const itemRefs = useRef<(HTMLLIElement | null)[]>([]);
   const detailItemRefs = useRef<(HTMLElement | null)[]>([]);
-  
+
   const project = viewingProjectIndex !== null ? projects[viewingProjectIndex] : null;
 
   const detailButtons = React.useMemo(() => {
@@ -77,7 +77,7 @@ export default function ProjectList() {
       });
     }
   }, [selectedItem, viewingProjectIndex]);
-  
+
   useEffect(() => {
     if (viewingProjectIndex !== null) {
       const element = detailItemRefs.current[selectedDetailButton];
@@ -86,7 +86,7 @@ export default function ProjectList() {
       }
     }
   }, [selectedDetailButton, viewingProjectIndex]);
-  
+
   const handleNavigation = useCallback((direction: 'up' | 'down') => {
     if (viewingProjectIndex !== null) return;
     playNavigate();
@@ -104,23 +104,59 @@ export default function ProjectList() {
       return (newIndex + detailButtons.length) % detailButtons.length;
     });
   }, [viewingProjectIndex, playNavigate, detailButtons.length]);
-  
-  const handleSelectProject = useCallback(() => {
+
+  const handleSelectProject = useCallback((index?: number) => {
+    const targetIndex = index !== undefined ? index : selectedItem;
     if (viewingProjectIndex !== null) return;
     playSelect();
     setSelectedDetailButton(0); // Default to back button on entry
-    setViewingProjectIndex(selectedItem);
+    setViewingProjectIndex(targetIndex);
   }, [viewingProjectIndex, selectedItem, playSelect]);
-  
+
   const handleBackToList = useCallback(() => {
     playBack();
     setViewingProjectIndex(null);
   }, [playBack]);
-  
+
   const handleBackToMain = useCallback(() => {
     playBack();
     window.dispatchEvent(backToMainEvent);
   }, [playBack]);
+
+  const handleProjectClick = useCallback((index: number) => {
+    setSelectedItem(index);
+    handleSelectProject(index);
+  }, [handleSelectProject]);
+
+  const handleProjectHover = useCallback((index: number) => {
+    if (index !== selectedItem) {
+      playNavigate();
+      setSelectedItem(index);
+    }
+  }, [selectedItem, playNavigate]);
+
+  const handleDetailButtonClick = useCallback((index: number) => {
+    setSelectedDetailButton(index);
+    // Execute the action for the clicked button
+    const selectedButton = detailButtons[index];
+    if (selectedButton) {
+      playSelect();
+      if (selectedButton.id === 'back') {
+        handleBackToList();
+        return;
+      }
+      if (selectedButton.url) {
+        window.open(selectedButton.url, '_blank');
+      }
+    }
+  }, [detailButtons, playSelect, handleBackToList]);
+
+  const handleDetailButtonHover = useCallback((index: number) => {
+    if (index !== selectedDetailButton) {
+      playNavigate();
+      setSelectedDetailButton(index);
+    }
+  }, [selectedDetailButton, playNavigate]);
 
   const handleSelectDetail = useCallback(() => {
     if (viewingProjectIndex === null) return;
@@ -129,12 +165,12 @@ export default function ProjectList() {
     const selectedButton = detailButtons[selectedDetailButton];
 
     if (selectedButton.id === 'back') {
-        handleBackToList();
-        return;
+      handleBackToList();
+      return;
     }
 
     if (selectedButton.url) {
-        window.open(selectedButton.url, '_blank');
+      window.open(selectedButton.url, '_blank');
     }
   }, [viewingProjectIndex, selectedDetailButton, playSelect, handleBackToList, detailButtons]);
 
@@ -191,7 +227,7 @@ export default function ProjectList() {
       }
       if (keyHandled) e.preventDefault();
     };
-    
+
     window.addEventListener('keydown', handleKeyDown);
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
@@ -205,105 +241,104 @@ export default function ProjectList() {
     return (
       <div className="w-full h-full flex flex-col p-1 sm:p-2 md:p-3 text-white animate-pixel-in relative">
         <div className="absolute inset-0 z-0 opacity-20">
-            <AgendaNesBackground />
+          <AgendaNesBackground />
         </div>
         <div className='relative z-10 flex flex-col h-full'>
-            <div className="relative">
-              <div className="flex items-center mb-1 sm:mb-2 md:mb-3 flex-shrink-0">
-              <Button 
-                ref={el => { if (el) {detailItemRefs.current[0] = el;} }} 
-                variant="ghost" 
-                size="icon" 
-                className={cn("mr-1 sm:mr-2 md:mr-3 text-accent hover:bg-accent/20 hover:text-accent focus:outline-none focus:ring-2 focus:ring-accent", selectedDetailButton === 0 ? 'ring-2 ring-accent' : '')}
+          <div className="relative">
+            <div className="flex items-center mb-1 sm:mb-2 md:mb-3 flex-shrink-0">
+              <Button
+                ref={el => { if (el) { detailItemRefs.current[0] = el; } }}
+                variant="ghost"
+                size="icon"
+                className={cn("mr-1 sm:mr-2 md:mr-3 text-accent hover:bg-accent/20 hover:text-accent focus:outline-none focus:ring-2 focus:ring-accent cursor-pointer", selectedDetailButton === 0 ? 'ring-2 ring-accent' : '')}
                 aria-label={t('controls.bBack')}
+                onClick={() => handleDetailButtonClick(0)}
+                onMouseEnter={() => handleDetailButtonHover(0)}
               >
-                  <ArrowLeft className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5" />
+                <ArrowLeft className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5" />
               </Button>
               <div className="flex items-center flex-1 relative">
                 <h1 className="text-base sm:text-lg md:text-xl font-headline text-primary truncate mr-2">{title}</h1>
               </div>
-              </div>
             </div>
-            <ScrollArea className="flex-grow pr-1 sm:pr-2">
+          </div>
+          <ScrollArea className="flex-grow pr-1 sm:pr-2">
             <div className="flex flex-col md:flex-row gap-2 sm:gap-3 md:gap-4">
-                <div className={cn("w-full md:w-1/2 flex-shrink-0 rounded-md", selectedDetailButton === 1 ? 'ring-2 ring-primary' : '')}>
+              <div className={cn("w-full md:w-1/2 flex-shrink-0 rounded-md", selectedDetailButton === 1 ? 'ring-2 ring-primary' : '')}>
                 <div className="relative">
-                  <Image 
-                      ref={el => { if (el) {detailItemRefs.current[1] = el;} }}
-                      src={project.imageUrl}
-                      alt={`${title} project image`}
-                      width={600}
-                      height={400}
-                      className="rounded-md border border-primary/50 object-cover w-full h-auto"
-                      data-ai-hint={project.imageHint}
-                      loading="lazy"
-                      quality={85}
-                      placeholder="blur"
-                      blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIwIiBoZWlnaHQ9IjMyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2ZXJzaW9uPSIxLjEiLz4="
+                  <Image
+                    ref={el => { if (el) { detailItemRefs.current[1] = el; } }}
+                    src={project.imageUrl}
+                    alt={`${title} project image`}
+                    width={600}
+                    height={400}
+                    className="rounded-md border border-primary/50 object-cover w-full h-auto"
+                    data-ai-hint={project.imageHint}
+                    loading="lazy"
+                    quality={85}
+                    placeholder="blur"
+                    blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIwIiBoZWlnaHQ9IjMyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2ZXJzaW9uPSIxLjEiLz4="
                   />
                   {project.status && (
-                    <span 
-                      className={`absolute top-2 right-2 px-2 py-0.5 rounded-md text-[0.6rem] font-bold uppercase tracking-wide transform -rotate-12 ${
-                        project.status === 'discontinued' 
-                          ? 'bg-red-900/70 text-red-200 border border-red-600/50' 
+                    <span
+                      className={`absolute top-2 right-2 px-2 py-0.5 rounded-md text-[0.6rem] font-bold uppercase tracking-wide transform -rotate-12 ${project.status === 'discontinued'
+                          ? 'bg-red-900/70 text-red-200 border border-red-600/50'
                           : 'bg-blue-900/70 text-blue-200 border border-blue-600/50'
-                      }`}
+                        }`}
                     >
                       {project.status === 'discontinued' ? 'DISCONTINUED' : project.status}
                     </span>
                   )}
                 </div>
-                </div>
-                <div className="w-full md:w-1/2 flex flex-col">
+              </div>
+              <div className="w-full md:w-1/2 flex flex-col">
                 <p className="text-xs sm:text-sm md:text-base text-gray-300 mb-2 sm:mb-3">{project.description}</p>
                 <div className="flex flex-wrap gap-1 sm:gap-2 mb-2 sm:mb-3">
-                    {project.technologies.map(tech => (
-                        <Badge key={tech} variant="secondary" className="text-xs sm:text-sm">{tech}</Badge>
-                    ))}
+                  {project.technologies.map(tech => (
+                    <Badge key={tech} variant="secondary" className="text-xs sm:text-sm">{tech}</Badge>
+                  ))}
                 </div>
                 <p className="text-xs sm:text-sm text-accent font-code mb-3 sm:mb-4">{t('projects.created')}: {project.date}</p>
                 <div className="flex flex-col gap-1 sm:gap-2 mt-auto">
-                    {project.liveUrl && (
-                    <Button 
-                      ref={el => { if (el) {detailItemRefs.current[buttonIndex++] = el;} }} 
-                      asChild 
+                  {project.liveUrl && (
+                    <Button
+                      ref={el => { if (el) { detailItemRefs.current[buttonIndex++] = el; } }}
                       className={cn(
-                        "w-full bg-primary text-primary-foreground font-headline text-xs py-1 sm:py-2 pointer-events-none focus:outline-none focus:ring-2 focus:ring-white", 
+                        "w-full bg-primary text-primary-foreground font-headline text-xs py-1 sm:py-2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-white",
                         selectedDetailButton === detailButtons.findIndex(b => b.id === 'live') ? 'ring-2 ring-white bg-primary/90' : ''
                       )}
                       aria-label={`${t('projects.visitWebsite')} ${title}`}
+                      onClick={() => handleDetailButtonClick(detailButtons.findIndex(b => b.id === 'live'))}
+                      onMouseEnter={() => handleDetailButtonHover(detailButtons.findIndex(b => b.id === 'live'))}
                     >
-                        <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" tabIndex={-1}>
-                        <Globe className="mr-1 h-3 w-3 sm:mr-2 sm:h-4 sm:w-4" />
-                        <span className="text-xs sm:text-sm">{t('projects.visitWebsite')}</span>
-                        </a>
+                      <Globe className="mr-1 h-3 w-3 sm:mr-2 sm:h-4 sm:w-4" />
+                      <span className="text-xs sm:text-sm">{t('projects.visitWebsite')}</span>
                     </Button>
-                    )}
-                    {project.githubUrl && (
-                    <Button 
-                      ref={el => { if (el) {detailItemRefs.current[buttonIndex++] = el;} }} 
-                      asChild 
-                      variant="outline" 
+                  )}
+                  {project.githubUrl && (
+                    <Button
+                      ref={el => { if (el) { detailItemRefs.current[buttonIndex++] = el; } }}
+                      variant="outline"
                       className={cn(
-                        "w-full font-headline border-accent text-accent text-xs py-1 sm:py-2 pointer-events-none focus:outline-none focus:ring-2 focus:ring-accent", 
+                        "w-full font-headline border-accent text-accent text-xs py-1 sm:py-2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-accent",
                         selectedDetailButton === detailButtons.findIndex(b => b.id === 'github') ? 'ring-2 ring-accent bg-accent text-accent-foreground' : ''
                       )}
                       aria-label={`View ${title} on GitHub`}
+                      onClick={() => handleDetailButtonClick(detailButtons.findIndex(b => b.id === 'github'))}
+                      onMouseEnter={() => handleDetailButtonHover(detailButtons.findIndex(b => b.id === 'github'))}
                     >
-                        <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" tabIndex={-1}>
-                        <Github className="mr-1 h-3 w-3 sm:mr-2 sm:h-4 sm:w-4" />
-                        <span className="text-xs sm:text-sm">GitHub</span>
-                        </a>
+                      <Github className="mr-1 h-3 w-3 sm:mr-2 sm:h-4 sm:w-4" />
+                      <span className="text-xs sm:text-sm">GitHub</span>
                     </Button>
-                    )}
+                  )}
                 </div>
-                </div>
+              </div>
             </div>
-            </ScrollArea>
-            <div className="mt-1 sm:mt-2 text-center text-xs text-gray-400 font-code flex-shrink-0">
+          </ScrollArea>
+          <div className="mt-1 sm:mt-2 text-center text-xs text-gray-400 font-code flex-shrink-0">
             <p>{t('projects.controls.detail.navigate')}</p>
             <p>{t('projects.controls.detail.back')}</p>
-            </div>
+          </div>
         </div>
       </div>
     );
@@ -311,51 +346,58 @@ export default function ProjectList() {
 
   return (
     <div className="w-full h-full flex flex-col p-1 sm:p-2 md:p-3 text-white relative">
-        <div className="absolute inset-0 z-0 opacity-20">
-            <AgendaNesBackground />
-        </div>
-        <div className="relative z-10 flex flex-col h-full">
-            <h1 className="text-lg sm:text-xl md:text-2xl font-headline text-primary mb-1 sm:mb-2 md:mb-3 text-center">{t('projects.title')}</h1>
-            <ScrollArea className="flex-grow">
-                <ul className="space-y-1 text-xs sm:text-sm md:text-base font-headline pr-1 sm:pr-2">
-                {projects.map((proj, index) => (
-                    <li 
-                    key={proj.title}
-                    ref={el => {if(el) itemRefs.current[index] = el}}
-                    className={cn(
-                        "flex justify-between items-center p-1 border-b border-dashed border-gray-700 transition-all duration-200 rounded focus:outline-none focus:ring-2 focus:ring-accent",
-                        selectedItem === index ? "bg-primary/20 text-accent" : ""
-                    )}
-                    role="option"
-                    aria-selected={selectedItem === index}
-                    tabIndex={-1}
+      <div className="absolute inset-0 z-0 opacity-20">
+        <AgendaNesBackground />
+      </div>
+      <div className="relative z-10 flex flex-col h-full">
+        <h1 className="text-lg sm:text-xl md:text-2xl font-headline text-primary mb-1 sm:mb-2 md:mb-3 text-center">{t('projects.title')}</h1>
+        <ScrollArea className="flex-grow">
+          <ul className="space-y-1 text-xs sm:text-sm md:text-base font-headline pr-1 sm:pr-2">
+            {projects.map((proj, index) => (
+              <li
+                key={proj.title}
+                ref={el => { if (el) itemRefs.current[index] = el }}
+                className={cn(
+                  "flex justify-between items-center p-1 border-b border-dashed border-gray-700 transition-all duration-200 rounded focus:outline-none focus:ring-2 focus:ring-accent cursor-pointer select-none",
+                  selectedItem === index ? "bg-primary/20 text-accent" : "hover:bg-primary/10"
+                )}
+                role="option"
+                aria-selected={selectedItem === index}
+                tabIndex={0}
+                onClick={() => handleProjectClick(index)}
+                onMouseEnter={() => handleProjectHover(index)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleProjectClick(index);
+                  }
+                }}
+              >
+                <div className="flex items-center">
+                  <span className="truncate text-xs sm:text-sm pr-1">{proj.title}</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  {proj.status && (
+                    <span
+                      className={`px-1.5 py-0.5 rounded-md text-[0.6rem] font-bold uppercase tracking-wide transform -rotate-12 ${proj.status === 'discontinued'
+                          ? 'bg-red-900/60 text-red-200 border border-red-600/50'
+                          : 'bg-blue-900/60 text-blue-200 border border-blue-600/50'
+                        }`}
                     >
-                    <div className="flex items-center">
-                      <span className="truncate text-xs sm:text-sm pr-1">{proj.title}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      {proj.status && (
-                        <span 
-                          className={`px-1.5 py-0.5 rounded-md text-[0.6rem] font-bold uppercase tracking-wide transform -rotate-12 ${
-                            proj.status === 'discontinued' 
-                              ? 'bg-red-900/60 text-red-200 border border-red-600/50' 
-                              : 'bg-blue-900/60 text-blue-200 border border-blue-600/50'
-                          }`}
-                        >
-                          {proj.status === 'discontinued' ? 'DISCONTINUED' : proj.status}
-                        </span>
-                      )}
-                      <span className="font-code text-accent text-opacity-80 text-xs flex-shrink-0">{proj.date}</span>
-                    </div>
-                    </li>
-                ))}
-                </ul>
-            </ScrollArea>
-            <div className="mt-1 sm:mt-2 text-center text-xs text-gray-400 font-code">
-                <p>{t('projects.controls.list.navigate')}</p>
-                <p>{t('projects.controls.list.back')}</p>
-            </div>
+                      {proj.status === 'discontinued' ? 'DISCONTINUED' : proj.status}
+                    </span>
+                  )}
+                  <span className="font-code text-accent text-opacity-80 text-xs flex-shrink-0">{proj.date}</span>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </ScrollArea>
+        <div className="mt-1 sm:mt-2 text-center text-xs text-gray-400 font-code">
+          <p>{t('projects.controls.list.navigate')}</p>
+          <p>{t('projects.controls.list.back')}</p>
         </div>
+      </div>
     </div>
   );
 }

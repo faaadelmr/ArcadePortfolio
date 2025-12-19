@@ -51,27 +51,31 @@ export default function useArcadeSounds(props?: UseArcadeSoundsProps) {
 
   const playSound = useCallback((note: string, duration: string) => {
     if (!Tone || !synth || !isReady || isSoundPlaying.current || !isSoundEnabled) return;
-    
+
     const T = Tone;
-    
+
+    // Check if audio context is running, if not, just return silently
+    // This handles the autoplay policy without logging errors
     if (T.context.state !== 'running') {
-      T.context.resume().catch(e => console.error("Could not resume audio context", e));
-      return; // Resume and try on the next user interaction
+      T.context.resume().catch(() => {
+        // Silently ignore - will work on next user interaction
+      });
+      return;
     }
-    
+
     isSoundPlaying.current = true;
-    
+
     try {
-        // Stop any previous sound to prevent timing conflicts
-        synth.triggerRelease();
-        // By not providing a time, we let Tone.js schedule it for "now" without conflicts.
-        synth.triggerAttackRelease(note, duration);
-    } catch(e) {
-        console.error("Failed to play sound", e);
-        isSoundPlaying.current = false; // Reset the flag on error
-        return;
+      // Get current time from Tone.js context
+      const now = T.now();
+      // Schedule attack slightly in the future to avoid timing conflicts
+      synth.triggerAttackRelease(note, duration, now + 0.01);
+    } catch (e) {
+      // Silently handle errors to avoid console spam
+      isSoundPlaying.current = false;
+      return;
     }
-    
+
     // Use a numeric duration for the timeout
     try {
       const durationMs = T.Time(duration).toMilliseconds();
@@ -79,11 +83,10 @@ export default function useArcadeSounds(props?: UseArcadeSoundsProps) {
         clearTimeout(soundTimeoutRef.current);
       }
       soundTimeoutRef.current = setTimeout(() => {
-          isSoundPlaying.current = false;
-      }, durationMs);
+        isSoundPlaying.current = false;
+      }, durationMs + 50); // Add small buffer
     } catch (e) {
-      console.error("Failed to set sound timeout", e);
-      isSoundPlaying.current = false; // Reset the flag on error
+      isSoundPlaying.current = false;
     }
   }, [isReady, isSoundEnabled]);
 

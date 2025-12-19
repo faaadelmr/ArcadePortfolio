@@ -4,7 +4,7 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, X } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 import useArcadeSounds from '@/hooks/useArcadeSounds';
@@ -14,66 +14,200 @@ import { TrophyRoomNesBackground } from './TrophyRoomNesBackground';
 const backToMainEvent = new Event('backToMain', { bubbles: true });
 
 interface Certification {
-    title: string;
-    issuer: string;
-    date: string;
-    imageUrl: string;
+  title: string;
+  issuer: string;
+  date: string;
+  imageUrl: string;
+}
+
+// 3D Card Component with hover effect
+function CertCard({
+  cert,
+  index,
+  isSelected,
+  onClick,
+  onHover
+}: {
+  cert: Certification;
+  index: number;
+  isSelected: boolean;
+  onClick: () => void;
+  onHover: () => void;
+}) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [rotation, setRotation] = useState({ x: 0, y: 0 });
+  const [isHovering, setIsHovering] = useState(false);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
+
+    const rect = cardRef.current.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+
+    const rotateX = ((e.clientY - centerY) / (rect.height / 2)) * -8;
+    const rotateY = ((e.clientX - centerX) / (rect.width / 2)) * 8;
+
+    setRotation({ x: rotateX, y: rotateY });
+  };
+
+  const handleMouseEnter = () => {
+    setIsHovering(true);
+    onHover();
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovering(false);
+    setRotation({ x: 0, y: 0 });
+  };
+
+  return (
+    <div
+      ref={cardRef}
+      className={cn(
+        "relative cursor-pointer select-none transition-all duration-300",
+        "group perspective-[1000px]",
+        isSelected && "z-10"
+      )}
+      style={{ perspective: '1000px' }}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onClick={onClick}
+    >
+      <div
+        className={cn(
+          "relative rounded-lg overflow-hidden border-2 transition-all duration-200",
+          "transform-gpu",
+          isSelected
+            ? "border-accent shadow-[0_0_20px_rgba(74,222,128,0.5)] scale-105"
+            : "border-primary/30 hover:border-primary/60",
+          isHovering && "shadow-xl"
+        )}
+        style={{
+          transform: isHovering
+            ? `rotateX(${rotation.x}deg) rotateY(${rotation.y}deg) scale(1.02)`
+            : 'rotateX(0) rotateY(0) scale(1)',
+          transformStyle: 'preserve-3d',
+          transition: isHovering ? 'transform 0.1s ease-out' : 'transform 0.3s ease-out',
+        }}
+      >
+        {/* Card Image */}
+        <div className="relative aspect-[4/3] overflow-hidden bg-black/50">
+          <Image
+            src={cert.imageUrl}
+            alt={cert.title}
+            fill
+            className="object-cover transition-transform duration-300 group-hover:scale-110"
+            loading="lazy"
+            quality={75}
+            sizes="(max-width: 400px) 45vw, (max-width: 600px) 30vw, 25vw"
+          />
+          {/* Shine effect on hover */}
+          <div
+            className={cn(
+              "absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent",
+              "opacity-0 group-hover:opacity-100 transition-opacity duration-300",
+              "pointer-events-none"
+            )}
+            style={{
+              transform: `translateX(${rotation.y * 10}%) translateY(${rotation.x * 10}%)`,
+            }}
+          />
+        </div>
+
+        {/* Card Footer */}
+        <div className="p-1.5 sm:p-2 bg-gradient-to-t from-black/90 to-black/60">
+          <h3 className={cn(
+            "text-[10px] sm:text-xs font-headline truncate transition-colors",
+            isSelected ? "text-accent" : "text-white"
+          )}>
+            {cert.title}
+          </h3>
+          <p className="text-[8px] sm:text-[10px] text-gray-400 truncate">{cert.issuer}</p>
+        </div>
+
+        {/* Selection indicator */}
+        {isSelected && (
+          <div className="absolute top-1 right-1 w-2 h-2 sm:w-3 sm:h-3 bg-accent rounded-full animate-pulse shadow-[0_0_8px_rgba(74,222,128,0.8)]" />
+        )}
+      </div>
+    </div>
+  );
 }
 
 export default function Certified() {
   const [selectedItem, setSelectedItem] = useState(0);
   const [viewingCertIndex, setViewingCertIndex] = useState<number | null>(null);
-  const itemRefs = useRef<(HTMLLIElement | null)[]>([]);
+  const cardContainerRef = useRef<HTMLDivElement>(null);
   const scrollViewportRef = useRef<HTMLDivElement>(null);
   const { playNavigate, playSelect, playBack } = useArcadeSounds();
   const scrollIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const [scrollingDirection, setScrollingDirection] = useState<'up' | 'down' | null>(null);
   const { t } = useLocalization();
-  
+
   const certifications: Certification[] = useMemo(() => {
     const certsData = t('certifications.list');
     let parsedCerts: Certification[] = [];
     try {
-        if (typeof certsData === 'string' && certsData.startsWith('[')) {
-             parsedCerts = JSON.parse(certsData);
-        } else if (Array.isArray(certsData)) {
-            parsedCerts = certsData;
-        }
-    } catch(e) {
-        console.error("Could not parse certifications data from localization file.", e);
-        return [];
+      if (typeof certsData === 'string' && certsData.startsWith('[')) {
+        parsedCerts = JSON.parse(certsData);
+      } else if (Array.isArray(certsData)) {
+        parsedCerts = certsData;
+      }
+    } catch (e) {
+      console.error("Could not parse certifications data from localization file.", e);
+      return [];
     }
-    
+
     return parsedCerts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   }, [t]);
 
-  useEffect(() => {
-    itemRefs.current = itemRefs.current.slice(0, certifications.length);
-  }, [certifications.length]);
+  // Grid navigation - calculate columns based on container width
+  const getColumnsCount = useCallback(() => {
+    if (!cardContainerRef.current) return 2;
+    const width = cardContainerRef.current.offsetWidth;
+    if (width < 300) return 2;
+    if (width < 450) return 3;
+    return 4;
+  }, []);
 
-  useEffect(() => {
-    if (viewingCertIndex === null && itemRefs.current[selectedItem]) {
-      itemRefs.current[selectedItem]?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'nearest',
-      });
-    }
-  }, [selectedItem, viewingCertIndex]);
-  
-  const handleNavigation = useCallback((direction: 'up' | 'down') => {
+  const handleNavigation = useCallback((direction: 'up' | 'down' | 'left' | 'right') => {
     if (viewingCertIndex !== null) return;
     playNavigate();
-    setSelectedItem(prev => {
-      const newIndex = direction === 'up' ? prev - 1 : prev + 1;
-      return (newIndex + certifications.length) % certifications.length;
-    });
-  }, [playNavigate, viewingCertIndex, certifications.length]);
 
-  const handleSelectCert = useCallback(() => {
+    const cols = getColumnsCount();
+
+    setSelectedItem(prev => {
+      let newIndex = prev;
+      switch (direction) {
+        case 'up':
+          newIndex = prev - cols;
+          if (newIndex < 0) newIndex = prev; // Stay in place if at top
+          break;
+        case 'down':
+          newIndex = prev + cols;
+          if (newIndex >= certifications.length) newIndex = prev; // Stay if at bottom
+          break;
+        case 'left':
+          newIndex = prev - 1;
+          if (newIndex < 0) newIndex = certifications.length - 1;
+          break;
+        case 'right':
+          newIndex = prev + 1;
+          if (newIndex >= certifications.length) newIndex = 0;
+          break;
+      }
+      return newIndex;
+    });
+  }, [viewingCertIndex, playNavigate, certifications.length, getColumnsCount]);
+
+  const handleSelectCert = useCallback((index?: number) => {
+    const targetIndex = index !== undefined ? index : selectedItem;
     if (viewingCertIndex !== null) return;
     playSelect();
-    setViewingCertIndex(selectedItem);
+    setViewingCertIndex(targetIndex);
   }, [playSelect, selectedItem, viewingCertIndex]);
 
   const handleBackToList = useCallback(() => {
@@ -83,27 +217,39 @@ export default function Certified() {
 
   const handleBackToMain = useCallback(() => {
     if (viewingCertIndex !== null) {
-        handleBackToList();
+      handleBackToList();
     } else {
-        playBack();
-        window.dispatchEvent(backToMainEvent);
+      playBack();
+      window.dispatchEvent(backToMainEvent);
     }
   }, [playBack, viewingCertIndex, handleBackToList]);
-  
+
+  const handleCertClick = useCallback((index: number) => {
+    setSelectedItem(index);
+    handleSelectCert(index);
+  }, [handleSelectCert]);
+
+  const handleCertHover = useCallback((index: number) => {
+    if (index !== selectedItem) {
+      playNavigate();
+      setSelectedItem(index);
+    }
+  }, [selectedItem, playNavigate]);
+
   const startScrolling = useCallback((direction: 'up' | 'down') => {
     if (scrollIntervalRef.current) return;
     if (viewingCertIndex === null) return;
     playNavigate();
-    
+
     const scroll = () => {
-        if (scrollViewportRef.current) {
-            const scrollAmount = direction === 'up' ? -10 : 10;
-            scrollViewportRef.current.scrollBy({ top: scrollAmount, behavior: 'smooth' });
-        }
+      if (scrollViewportRef.current) {
+        const scrollAmount = direction === 'up' ? -15 : 15;
+        scrollViewportRef.current.scrollBy({ top: scrollAmount, behavior: 'smooth' });
+      }
     };
-    
-    scroll(); // a single scroll on press
-    scrollIntervalRef.current = setInterval(scroll, 50); // continuous scroll
+
+    scroll();
+    scrollIntervalRef.current = setInterval(scroll, 50);
   }, [playNavigate, viewingCertIndex]);
 
   const stopScrolling = useCallback(() => {
@@ -115,48 +261,56 @@ export default function Certified() {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-        if (e.repeat) return;
+      if (e.repeat) return;
 
-        if (viewingCertIndex !== null) {
-            switch (e.key.toLowerCase()) {
-                case 'b':
-                case 'escape':
-                    e.preventDefault();
-                    handleBackToList();
-                    break;
-                case 'arrowup':
-                    e.preventDefault();
-                    setScrollingDirection('up');
-                    startScrolling('up');
-                    break;
-                case 'arrowdown':
-                    e.preventDefault();
-                    setScrollingDirection('down');
-                    startScrolling('down');
-                    break;
-            }
-        } else {
-            switch (e.key.toLowerCase()) {
-                case 'arrowup':
-                    e.preventDefault();
-                    handleNavigation('up');
-                    break;
-                case 'arrowdown':
-                    e.preventDefault();
-                    handleNavigation('down');
-                    break;
-                case 'a':
-                case 'enter':
-                    e.preventDefault();
-                    handleSelectCert();
-                    break;
-                case 'b':
-                case 'escape':
-                    e.preventDefault();
-                    handleBackToMain();
-                    break;
-            }
+      if (viewingCertIndex !== null) {
+        switch (e.key.toLowerCase()) {
+          case 'b':
+          case 'escape':
+            e.preventDefault();
+            handleBackToList();
+            break;
+          case 'arrowup':
+            e.preventDefault();
+            setScrollingDirection('up');
+            startScrolling('up');
+            break;
+          case 'arrowdown':
+            e.preventDefault();
+            setScrollingDirection('down');
+            startScrolling('down');
+            break;
         }
+      } else {
+        switch (e.key.toLowerCase()) {
+          case 'arrowup':
+            e.preventDefault();
+            handleNavigation('up');
+            break;
+          case 'arrowdown':
+            e.preventDefault();
+            handleNavigation('down');
+            break;
+          case 'arrowleft':
+            e.preventDefault();
+            handleNavigation('left');
+            break;
+          case 'arrowright':
+            e.preventDefault();
+            handleNavigation('right');
+            break;
+          case 'a':
+          case 'enter':
+            e.preventDefault();
+            handleSelectCert();
+            break;
+          case 'b':
+          case 'escape':
+            e.preventDefault();
+            handleBackToMain();
+            break;
+        }
+      }
     };
 
     const handleKeyUp = (e: KeyboardEvent) => {
@@ -182,99 +336,100 @@ export default function Certified() {
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('keyup', handleKeyUp);
     return () => {
-        window.removeEventListener('keydown', handleKeyDown);
-        window.removeEventListener('keyup', handleKeyUp);
-        stopScrolling();
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
+      stopScrolling();
     }
   }, [handleNavigation, handleSelectCert, handleBackToMain, handleBackToList, startScrolling, stopScrolling, viewingCertIndex, scrollingDirection]);
 
   const cert = viewingCertIndex !== null ? certifications[viewingCertIndex] : null;
 
+  // Full view modal
   if (cert) {
     const title = cert.title;
     return (
-      <div className="w-full h-full flex flex-col p-1 sm:p-2 md:p-3 text-white animate-pixel-in relative">
+      <div className="w-full h-full flex flex-col p-1 sm:p-2 text-white animate-pixel-in relative">
         <div className="absolute inset-0 z-0 opacity-20">
-            <TrophyRoomNesBackground />
+          <TrophyRoomNesBackground />
         </div>
         <div className="relative z-10 flex flex-col h-full">
-            <div className="flex items-center mb-1 sm:mb-2 md:mb-3 flex-shrink-0">
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              className="mr-1 sm:mr-2 md:mr-3 text-accent ring-2 ring-accent bg-accent/20 focus:outline-none focus:ring-2 focus:ring-accent" 
+          {/* Header */}
+          <div className="flex items-center mb-1 sm:mb-2 flex-shrink-0">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="mr-1 sm:mr-2 text-accent ring-2 ring-accent bg-accent/20 focus:outline-none cursor-pointer h-6 w-6 sm:h-8 sm:w-8"
               onClick={handleBackToList}
               aria-label={t('controls.bBack')}
             >
-                <ArrowLeft className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5" />
+              <ArrowLeft className="w-3 h-3 sm:w-4 sm:h-4" />
             </Button>
-            <div className='truncate'>
-                <h1 className="text-base sm:text-lg md:text-xl font-headline text-primary truncate">{title}</h1>
-                <p className="text-xs sm:text-sm text-gray-300 truncate">{cert.issuer}</p>
+            <div className='flex-1 truncate'>
+              <h1 className="text-sm sm:text-base font-headline text-primary truncate">{title}</h1>
+              <p className="text-[10px] sm:text-xs text-gray-400 truncate">{cert.issuer} • {cert.date}</p>
             </div>
+          </div>
+
+          {/* Full Certificate Image */}
+          <ScrollArea viewportRef={scrollViewportRef} className="flex-1 min-h-0">
+            <div className="flex items-center justify-center p-1">
+              <Image
+                src={cert.imageUrl}
+                alt={`${t('certifications.alt')} ${title}`}
+                width={800}
+                height={600}
+                className="rounded-md border-2 border-accent/50 object-contain max-w-full h-auto shadow-lg"
+                loading="eager"
+                quality={90}
+              />
             </div>
-            <ScrollArea viewportRef={scrollViewportRef} className="flex-grow pr-1 sm:pr-2">
-                <Image 
-                    src={cert.imageUrl}
-                    alt={`${t('certifications.alt')} ${title}`}
-                    width={800}
-                    height={600}
-                    className="rounded-md border border-primary/50 object-contain w-full h-auto"
-                    loading="lazy"
-                    quality={85}
-                    placeholder="blur"
-                    blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIwIiBoZWlnaHQ9IjMyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2ZXJzaW9uPSIxLjEiLz4="
-                />
-            </ScrollArea>
-            <div className="mt-1 sm:mt-2 text-center text-xs text-gray-400 font-code flex-shrink-0">
-            <p>{t('certifications.controls.scroll')}</p>
-            <p>{t('certifications.controls.backToList')}</p>
-            </div>
+          </ScrollArea>
+
+          {/* Controls hint */}
+          <div className="mt-1 text-center text-[10px] text-gray-500 font-code flex-shrink-0">
+            <p>{t('certifications.controls.scroll')} • {t('certifications.controls.backToList')}</p>
+          </div>
         </div>
       </div>
     );
   }
 
+  // Card Gallery View
   return (
-    <div className="w-full h-full flex flex-col p-1 sm:p-2 md:p-3 text-white relative">
-        <div className="absolute inset-0 z-0 opacity-20">
-            <TrophyRoomNesBackground />
+    <div className="w-full h-full flex flex-col p-1 sm:p-2 text-white relative">
+      <div className="absolute inset-0 z-0 opacity-20">
+        <TrophyRoomNesBackground />
+      </div>
+      <div className="relative z-10 flex flex-col h-full">
+        {/* Title */}
+        <h1 className="text-sm sm:text-base font-headline text-primary mb-2 text-center flex-shrink-0">
+          {t('certifications.title')}
+        </h1>
+
+        {/* Card Grid Gallery */}
+        <ScrollArea className="flex-1 min-h-0">
+          <div
+            ref={cardContainerRef}
+            className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3 p-1"
+          >
+            {certifications.map((cert, index) => (
+              <CertCard
+                key={index}
+                cert={cert}
+                index={index}
+                isSelected={selectedItem === index}
+                onClick={() => handleCertClick(index)}
+                onHover={() => handleCertHover(index)}
+              />
+            ))}
+          </div>
+        </ScrollArea>
+
+        {/* Controls hint */}
+        <div className="mt-1 text-center text-[10px] text-gray-500 font-code flex-shrink-0">
+          <p>↑↓←→ {t('certifications.controls.navigate')} • A {t('certifications.controls.backToMain')}</p>
         </div>
-        <div className="relative z-10 flex flex-col h-full">
-            <h1 className="text-lg sm:text-xl md:text-2xl font-headline text-primary mb-1 sm:mb-2 md:mb-3 text-center">{t('certifications.title')}</h1>
-            <ScrollArea className="flex-grow pr-1 sm:pr-2">
-                <ul className="space-y-1 sm:space-y-2">
-                {certifications.map((cert, index) => (
-                    <li 
-                    key={index}
-                    ref={el => { if(el) itemRefs.current[index] = el; }}
-                    className={cn(
-                        "p-1 sm:p-2 border-l-2 rounded-r transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent",
-                        selectedItem === index 
-                        ? "border-accent bg-primary/20" 
-                        : "border-gray-700"
-                    )}
-                    role="option"
-                    aria-selected={selectedItem === index}
-                    tabIndex={-1}
-                    >
-                    <h2 className={cn(
-                        "text-xs sm:text-sm md:text-base font-headline truncate",
-                        selectedItem === index ? 'text-accent' : 'text-white'
-                    )}>
-                        {cert.title}
-                    </h2>
-                    <p className="text-xs text-gray-300">{cert.issuer}</p>
-                    <p className="text-xs font-code text-primary/80 mt-1">{cert.date}</p>
-                    </li>
-                ))}
-                </ul>
-            </ScrollArea>
-            <div className="mt-1 sm:mt-2 text-center text-xs text-gray-400 font-code">
-                <p>{t('certifications.controls.navigate')}</p>
-                <p>{t('certifications.controls.backToMain')}</p>
-            </div>
-        </div>
+      </div>
     </div>
   );
 }
