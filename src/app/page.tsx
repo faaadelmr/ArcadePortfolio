@@ -11,13 +11,14 @@ import useArcadeSounds from '@/hooks/useArcadeSounds';
 import useBackgroundMusic from '@/hooks/useBackgroundMusic';
 import { useLocalization } from '@/hooks/useLocalization';
 import { cn } from '@/lib/utils';
-import { Gamepad2, Trophy, Settings as SettingsIcon, User, ArrowUp, ArrowDown } from 'lucide-react';
+import { Gamepad2, Trophy, Settings as SettingsIcon, User, ArrowUp, ArrowDown, ArrowLeft, ArrowRight, Joystick } from 'lucide-react';
 import BootScreen from '@/components/pixelplay/BootScreen';
 import LoadingScreen from '@/components/pixelplay/LoadingScreen';
 import { useVisualSettings } from '@/hooks/useVisualSettings';
 import useSoundSettings from '@/hooks/useSoundSettings';
+import GameStation from '@/components/pixelplay/GameStation';
 
-type Page = 'main' | 'games' | 'scores' | 'settings' | 'about';
+type Page = 'main' | 'games' | 'gamestation' | 'scores' | 'settings' | 'about';
 type GameState = 'loading' | 'booting' | 'active';
 
 export default function PixelPlayHub() {
@@ -32,6 +33,7 @@ export default function PixelPlayHub() {
 
   const menuItems = useMemo(() => [
     { id: 'games', label: t('mainMenu.projectList'), icon: Gamepad2, target: 'games' as Page },
+    { id: 'gamestation', label: t('mainMenu.gameStation'), icon: Joystick, target: 'gamestation' as Page },
     { id: 'scores', label: t('mainMenu.certified'), icon: Trophy, target: 'scores' as Page },
     { id: 'about', label: t('mainMenu.aboutMe'), icon: User, target: 'about' as Page },
     { id: 'settings', label: t('mainMenu.settings'), icon: SettingsIcon, target: 'settings' as Page },
@@ -59,16 +61,22 @@ export default function PixelPlayHub() {
   }, [isLocalizationReady, gameState]);
 
 
-  const handleNavigation = useCallback((direction: 'up' | 'down') => {
+  const handleNavigation = useCallback((direction: 'up' | 'down' | 'left' | 'right') => {
     if (isTransitioning || gameState !== 'active') return;
     playNavigate();
     const upEvent = new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true });
     const downEvent = new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true });
+    const leftEvent = new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true });
+    const rightEvent = new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true });
 
     if (direction === 'up') {
       window.dispatchEvent(upEvent);
-    } else {
+    } else if (direction === 'down') {
       window.dispatchEvent(downEvent);
+    } else if (direction === 'left') {
+      window.dispatchEvent(leftEvent);
+    } else if (direction === 'right') {
+      window.dispatchEvent(rightEvent);
     }
   }, [isTransitioning, playNavigate, gameState]);
 
@@ -231,6 +239,8 @@ export default function PixelPlayHub() {
     switch (currentPage) {
       case 'games':
         return <ProjectList />;
+      case 'gamestation':
+        return <GameStation />;
       case 'scores':
         return <Certified />;
       case 'about':
@@ -265,16 +275,18 @@ export default function PixelPlayHub() {
 
           {/* Screen Area - takes remaining space, content scrolls inside */}
           <div className="bg-black rounded-lg p-2 border-2 border-yellow-700 relative overflow-hidden flex-1 flex flex-col min-h-0">
-            {/* P1 Indicator */}
-            <div className="absolute top-2 right-3 flex items-center gap-2 z-10">
-              <span className="text-accent font-headline text-xs sm:text-sm">P1</span>
-              <div className={cn(
-                "w-2 h-2 sm:w-3 sm:h-3 rounded-full",
-                gameState === 'loading'
-                  ? 'bg-red-600 shadow-[0_0_8px_red]'
-                  : 'bg-green-600 shadow-[0_0_8px_green]'
-              )}></div>
-            </div>
+            {/* P1 Indicator - hidden in gamestation to avoid overlap */}
+            {currentPage !== 'gamestation' && (
+              <div className="absolute top-2 right-3 flex items-center gap-2 z-10">
+                <span className="text-accent font-headline text-xs sm:text-sm">P1</span>
+                <div className={cn(
+                  "w-2 h-2 sm:w-3 sm:h-3 rounded-full",
+                  gameState === 'loading'
+                    ? 'bg-red-600 shadow-[0_0_8px_red]'
+                    : 'bg-green-600 shadow-[0_0_8px_green]'
+                )}></div>
+              </div>
+            )}
 
             {/* Content Container - scrollable */}
             <div className={cn(
@@ -294,31 +306,40 @@ export default function PixelPlayHub() {
           </div>
 
           {/* Controls Area - fixed height */}
-          <div className="flex-shrink-0 pt-2 sm:pt-3 pb-1 px-1 sm:px-2 flex justify-between items-center">
-            {/* D-Pad */}
-            <div className="flex items-center gap-2 sm:gap-3">
-              <div className="relative w-14 h-14 sm:w-16 sm:h-16 select-none">
-                <div className="absolute inset-0 grid grid-cols-3 grid-rows-3">
+          <div className="flex-shrink-0 pt-2 sm:pt-3 pb-1 px-1 sm:px-2 flex justify-center gap-4 sm:gap-8 items-center">
+            {/* D-Pad - compact */}
+            <div className="flex items-center gap-1 sm:gap-2">
+              <div className="relative w-12 h-12 sm:w-14 sm:h-14 select-none">
+                <div className="absolute inset-0 grid grid-cols-3 grid-rows-3 gap-0">
                   <div
                     onMouseDown={(e) => { e.preventDefault(); handleNavigation('up'); }}
-                    className="col-start-2 row-start-1 bg-gray-700 rounded-t-md border-2 border-b-0 border-gray-800 active:bg-gray-600 cursor-pointer flex items-center justify-center"
+                    className="col-start-2 row-start-1 bg-gray-700 rounded-t border border-b-0 border-gray-800 active:bg-gray-600 cursor-pointer flex items-center justify-center"
                   >
                     <ArrowUp className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400" />
                   </div>
-                  <div className="col-start-2 row-start-2 bg-gray-700 border-x-2 border-gray-800"></div>
-                  <div className="col-start-1 row-start-2 bg-gray-700 rounded-l-md border-2 border-r-0 border-gray-800"></div>
-                  <div className="col-start-3 row-start-2 bg-gray-700 rounded-r-md border-2 border-l-0 border-gray-800"></div>
+                  <div className="col-start-2 row-start-2 bg-gray-700 border-x border-gray-800"></div>
+                  <div
+                    onMouseDown={(e) => { e.preventDefault(); handleNavigation('left'); }}
+                    className="col-start-1 row-start-2 bg-gray-700 rounded-l border border-r-0 border-gray-800 active:bg-gray-600 cursor-pointer flex items-center justify-center"
+                  >
+                    <ArrowLeft className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400" />
+                  </div>
+                  <div
+                    onMouseDown={(e) => { e.preventDefault(); handleNavigation('right'); }}
+                    className="col-start-3 row-start-2 bg-gray-700 rounded-r border border-l-0 border-gray-800 active:bg-gray-600 cursor-pointer flex items-center justify-center"
+                  >
+                    <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400" />
+                  </div>
                   <div
                     onMouseDown={(e) => { e.preventDefault(); handleNavigation('down'); }}
-                    className="col-start-2 row-start-3 bg-gray-700 rounded-b-md border-2 border-t-0 border-gray-800 active:bg-gray-600 cursor-pointer flex items-center justify-center"
+                    className="col-start-2 row-start-3 bg-gray-700 rounded-b border border-t-0 border-gray-800 active:bg-gray-600 cursor-pointer flex items-center justify-center"
                   >
                     <ArrowDown className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400" />
                   </div>
                 </div>
               </div>
-              <div className="font-headline text-center text-[9px] sm:text-[10px] text-gray-500 hidden sm:block">
+              <div className="font-headline text-center text-[8px] sm:text-[9px] text-gray-500 hidden sm:block">
                 <p>{t('controls.dpad')}</p>
-                <p>{t('controls.upDown')}</p>
               </div>
             </div>
 

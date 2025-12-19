@@ -1,13 +1,13 @@
-
 {
     "mainTitle": "Arcade Portfolio",
     "bootScreen": {
- "pressStart": "PRESS START",
+        "pressStart": "PRESS START",
         "rightsReserved": "lets try",
         "title": "FADEL, not PADEL🎾"
     },
     "mainMenu": {
         "projectList": "Project List",
+        "gameStation": "Game Station",
         "certified": "Certified",
         "aboutMe": "About Me",
         "settings": "Settings",
@@ -37,6 +37,10 @@
                 "back": "[B] or [ESC] to go back to list."
             }
         },
+        "status": {
+            "active": "Active",
+            "discontinued": "Discontinued"
+        },
         "list": [
             {
                 "title": "Tanma",
@@ -46,7 +50,13 @@
                 "imageHint": "Daily Report Claim",
                 "liveUrl": "https://mentanma.cyou",
                 "githubUrl": "https://github.com/faaadelmr/tanma",
-                "technologies": ["Laravel", "PHP", "MySQL", "JavaScript", "TailwindCSS"],
+                "technologies": [
+                    "Laravel",
+                    "PHP",
+                    "MySQL",
+                    "JavaScript",
+                    "TailwindCSS"
+                ],
                 "status": "discontinued"
             },
             {
@@ -56,7 +66,11 @@
                 "imageUrl": "/project/cewekalcer.png",
                 "imageHint": "CewekKalcer",
                 "liveUrl": "https://cewekalcer.pages.dev/",
-                "technologies": ["Next.js", "TypeScript", "TailwindCSS"],
+                "technologies": [
+                    "Next.js",
+                    "TypeScript",
+                    "TailwindCSS"
+                ],
                 "status": "discontinued"
             },
             {
@@ -67,7 +81,12 @@
                 "imageHint": "splitbill sharing",
                 "liveUrl": "https://bayargess.vercel.app/",
                 "githubUrl": "https://github.com/faaadelmr/bayarGess.git",
-                "technologies": ["Next.js", "TypeScript", "TailwindCSS", "Genkit AI"],
+                "technologies": [
+                    "Next.js",
+                    "TypeScript",
+                    "TailwindCSS",
+                    "Genkit AI"
+                ],
                 "status": "active"
             },
             {
@@ -78,7 +97,11 @@
                 "imageHint": "PDF tools less process",
                 "liveUrl": "https://pdf-adel.pages.dev/",
                 "githubUrl": "https://github.com/faaadelmr/pdf-adel.git",
-                "technologies": ["Next.js", "JavaScript", "TailwindCSS"],
+                "technologies": [
+                    "Next.js",
+                    "JavaScript",
+                    "TailwindCSS"
+                ],
                 "status": "active"
             },
             {
@@ -89,7 +112,11 @@
                 "imageHint": "HP and Laptop Comparison",
                 "liveUrl": "https://battleparty.vercel.app/",
                 "githubUrl": "https://github.com/faaadelmr/KaumMendangMending.git",
-                "technologies": ["Next.js", "Genkit AI", "TailwindCSS"],
+                "technologies": [
+                    "Next.js",
+                    "Genkit AI",
+                    "TailwindCSS"
+                ],
                 "status": "discontinued"
             },
             {
@@ -100,7 +127,11 @@
                 "imageHint": "Image Cutting, Grid",
                 "liveUrl": "https://gridstation.pages.dev/",
                 "githubUrl": "https://github.com/faaadelmr/gridstation.git",
-                "technologies": [ "Next.js", "React", "TailwindCSS" ],
+                "technologies": [
+                    "Next.js",
+                    "React",
+                    "TailwindCSS"
+                ],
                 "status": "discontinued"
             },
             {
@@ -111,7 +142,12 @@
                 "imageHint": "CV Builder",
                 "liveUrl": "https://cv-lization.vercel.app/",
                 "githubUrl": "https://github.com/faaadelmr/CVlization.git",
-                "technologies": ["Next.js", "React", "TailwindCSS", "Genkit AI"],
+                "technologies": [
+                    "Next.js",
+                    "React",
+                    "TailwindCSS",
+                    "Genkit AI"
+                ],
                 "status": "active"
             },
             {
@@ -122,7 +158,11 @@
                 "imageHint": "Excel Data Matching Tool",
                 "liveUrl": "https://rekonmatch.pages.dev/",
                 "githubUrl": "https://github.com/faaadelmr/rekonmatch.git",
-                "technologies": ["Next.js", "TypeScript", "TailwindCSS"],
+                "technologies": [
+                    "Next.js",
+                    "TypeScript",
+                    "TailwindCSS"
+                ],
                 "status": "active"
             }
         ]
@@ -139,94 +179,94 @@
         "list": [
             {
                 "title": "GIT untuk Pemula",
- "issuer": "Codepolitan",
- "date": "2025-04-08",
+                "issuer": "Codepolitan",
+                "date": "2025-04-08",
                 "imageUrl": "/certified/GITuntukPemula.jpg"
- },
- {
+            },
+            {
                 "title": "HTML dan CSS",
- "issuer": "Codepolitan",
- "date": "2022-04-15",
+                "issuer": "Codepolitan",
+                "date": "2022-04-15",
                 "imageUrl": "/certified/HTMLdanCSS.jpg"
- },
- {
+            },
+            {
                 "title": "JavaScript Dasar",
- "issuer": "Codepolitan",
- "date": "2025-04-15",
+                "issuer": "Codepolitan",
+                "date": "2025-04-15",
                 "imageUrl": "/certified/JavaScriptDasar.jpg"
- },
- {
+            },
+            {
                 "title": "Konsep Dasar Pemrograman Berorientasi Objek di PHP",
- "issuer": "Codepolitan",
- "date": "2025-05-03",
+                "issuer": "Codepolitan",
+                "date": "2025-05-03",
                 "imageUrl": "/certified/OOPPHP.jpg"
- },
- {
+            },
+            {
                 "title": "Laravel 6 Intermediate",
- "issuer": "Codepolitan",
- "date": "2025-04-10",
+                "issuer": "Codepolitan",
+                "date": "2025-04-10",
                 "imageUrl": "/certified/Laravel6Intermediate.jpg"
- },
- {
+            },
+            {
                 "title": "Laravel 8x Fundamental",
- "issuer": "Codepolitan",
- "date": "2025-04-10",
+                "issuer": "Codepolitan",
+                "date": "2025-04-10",
                 "imageUrl": "/certified/Laravel8xFundamental.jpg"
- },
- {
+            },
+            {
                 "title": "Laravel Development",
- "issuer": "Codepolitan",
- "date": "2022-03-01",
+                "issuer": "Codepolitan",
+                "date": "2022-03-01",
                 "imageUrl": "/certified/LaravelDevelopment.jpg"
- },
- {
+            },
+            {
                 "title": "Mengenal Pemrograman Komputer",
- "issuer": "Codepolitan",
- "date": "2025-04-08",
+                "issuer": "Codepolitan",
+                "date": "2025-04-08",
                 "imageUrl": "/certified/MengenalPemrogramanKomputer.jpg"
- },
- {
+            },
+            {
                 "title": "Menggunakan Bootstrap Framework",
- "issuer": "Codepolitan",
- "date": "2025-04-15",
+                "issuer": "Codepolitan",
+                "date": "2025-04-15",
                 "imageUrl": "/certified/MenggunakanBootstrapFramework.jpg"
- },
- {
+            },
+            {
                 "title": "Oracle Database Design",
- "issuer": "Codepolitan",
- "date": "2023-06-07",
+                "issuer": "Codepolitan",
+                "date": "2023-06-07",
                 "imageUrl": "/certified/OracleDatabaseDesign.jpg"
- },
- {
+            },
+            {
                 "title": "ORACLE DATABASE PROGRAMMING WITH SQL",
- "issuer": "Codepolitan",
- "date": "2023-12-18",
+                "issuer": "Codepolitan",
+                "date": "2023-12-18",
                 "imageUrl": "/certified/ORACLEDATABASEPROGRAMMINGWITHSQL.jpg"
-              },
-              {
+            },
+            {
                 "title": "Pemrograman PHP",
                 "issuer": "Codepolitan",
                 "date": "2025-04-20",
                 "imageUrl": "/certified/PemrogramanPHP.jpg"
- },
- {
+            },
+            {
                 "title": "Penggunaan Database MySQL pada Pemrograman PHP",
                 "issuer": "Codepolitan",
                 "date": "2025-04-08",
                 "imageUrl": "/certified/PenggunaanDatabaseMySQLpadaPemrogramanPHP.jpg"
- },
- {
+            },
+            {
                 "title": "Python Essentials 1",
- "issuer": "Codepolitan",
- "date": "2023-06-10",
+                "issuer": "Codepolitan",
+                "date": "2023-06-10",
                 "imageUrl": "/certified/PythonEssentials1.jpg"
-              },
-              {
+            },
+            {
                 "title": "Python Essentials 2",
                 "issuer": "Codepolitan",
                 "date": "2023-06-10",
                 "imageUrl": "/certified/PythonEssentials2.jpg"
- }
+            }
         ]
     },
     "aboutMe": {
@@ -262,5 +302,28 @@
             "navigate": "[UP/DOWN] to navigate/adjust. [A] to toggle/select.",
             "back": "[B] or [ESC] to go back."
         }
+    },
+    "gameStation": {
+        "title": "GAME STATION",
+        "controls": {
+            "navigate": "↑↓ Navigate • A/Enter Play • B Back"
+        },
+        "games": {
+            "endlessCode": {
+                "title": "Endless Code",
+                "description": "Dodge the coding bugs! Speed increases every 10 points!"
+            }
+        }
+    },
+    "endlessCode": {
+        "title": "ENDLESS CODE",
+        "description": "Dodge bugs! Collect Git for 2x points!",
+        "controls": "Use D-PAD ↑↓ to move",
+        "start": "START",
+        "gameOver": "GAME OVER",
+        "score": "Score",
+        "newHighScore": "🎉 NEW HIGH SCORE!",
+        "retry": "RETRY",
+        "share": "SHARE"
     }
 }

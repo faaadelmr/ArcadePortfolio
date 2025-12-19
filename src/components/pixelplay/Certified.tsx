@@ -26,22 +26,24 @@ function CertCard({
   index,
   isSelected,
   onClick,
-  onHover
+  onHover,
+  cardRef
 }: {
   cert: Certification;
   index: number;
   isSelected: boolean;
   onClick: () => void;
   onHover: () => void;
+  cardRef: React.RefObject<HTMLDivElement>;
 }) {
-  const cardRef = useRef<HTMLDivElement>(null);
+  const innerRef = useRef<HTMLDivElement>(null);
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return;
+    if (!innerRef.current) return;
 
-    const rect = cardRef.current.getBoundingClientRect();
+    const rect = innerRef.current.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
 
@@ -140,6 +142,7 @@ export default function Certified() {
   const [selectedItem, setSelectedItem] = useState(0);
   const [viewingCertIndex, setViewingCertIndex] = useState<number | null>(null);
   const cardContainerRef = useRef<HTMLDivElement>(null);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const scrollViewportRef = useRef<HTMLDivElement>(null);
   const { playNavigate, playSelect, playBack } = useArcadeSounds();
   const scrollIntervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -164,13 +167,17 @@ export default function Certified() {
 
   }, [t]);
 
+  // Initialize card refs array
+  useEffect(() => {
+    cardRefs.current = cardRefs.current.slice(0, certifications.length);
+  }, [certifications.length]);
+
   // Grid navigation - calculate columns based on container width
   const getColumnsCount = useCallback(() => {
     if (!cardContainerRef.current) return 2;
     const width = cardContainerRef.current.offsetWidth;
     if (width < 300) return 2;
-    if (width < 450) return 3;
-    return 4;
+    return 3; // Always 3 columns for sm and above (matching grid-cols-2 sm:grid-cols-3)
   }, []);
 
   const handleNavigation = useCallback((direction: 'up' | 'down' | 'left' | 'right') => {
@@ -202,6 +209,17 @@ export default function Certified() {
       return newIndex;
     });
   }, [viewingCertIndex, playNavigate, certifications.length, getColumnsCount]);
+
+  // Scroll selected card into view
+  useEffect(() => {
+    if (viewingCertIndex === null && cardRefs.current[selectedItem]) {
+      cardRefs.current[selectedItem]?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'nearest'
+      });
+    }
+  }, [selectedItem, viewingCertIndex]);
 
   const handleSelectCert = useCallback((index?: number) => {
     const targetIndex = index !== undefined ? index : selectedItem;
@@ -412,16 +430,31 @@ export default function Certified() {
             ref={cardContainerRef}
             className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3 p-1"
           >
-            {certifications.map((cert, index) => (
-              <CertCard
-                key={index}
-                cert={cert}
-                index={index}
-                isSelected={selectedItem === index}
-                onClick={() => handleCertClick(index)}
-                onHover={() => handleCertHover(index)}
-              />
-            ))}
+            {certifications.map((cert, index) => {
+              // Create a ref for this card
+              if (!cardRefs.current[index]) {
+                cardRefs.current[index] = null;
+              }
+              const cardRef = {
+                current: cardRefs.current[index]
+              } as React.RefObject<HTMLDivElement>;
+
+              return (
+                <div
+                  key={index}
+                  ref={(el) => { cardRefs.current[index] = el; }}
+                >
+                  <CertCard
+                    cert={cert}
+                    index={index}
+                    isSelected={selectedItem === index}
+                    onClick={() => handleCertClick(index)}
+                    onHover={() => handleCertHover(index)}
+                    cardRef={cardRef}
+                  />
+                </div>
+              );
+            })}
           </div>
         </ScrollArea>
 

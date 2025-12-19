@@ -1,266 +1,332 @@
-
 {
-    "mainTitle": "Portfolio Arcade",
-    "bootScreen": {
-        "pressStart": "TEKAN Mulai",
-        "rightsReserved": "Coba aja dulu.",
-        "title": "FADEL, bukan PADEL🎾"
-    },
-    "mainMenu": {
-        "projectList": "Daftar Proyek",
-        "certified": "Sertifikasi",
-        "aboutMe": "Tentang Saya",
-        "settings": "Pengaturan",
-        "controls": {
-            "navigate": "Gunakan [TOMBOL ARAH] atau [D-PAD] untuk navigasi.",
-            "select": "[A] atau [ENTER] untuk memilih."
-        }
-    },
+  "mainTitle": "Portfolio Arcade",
+  "bootScreen": {
+    "pressStart": "TEKAN Mulai",
+    "rightsReserved": "Coba aja dulu.",
+    "title": "FADEL, bukan PADEL🎾"
+  },
+  "mainMenu": {
+    "projectList": "Daftar Proyek",
+    "gameStation": "Stasiun Permainan",
+    "certified": "Sertifikasi",
+    "aboutMe": "Tentang Saya",
+    "settings": "Pengaturan",
     "controls": {
-        "dpad": "D-PAD",
-        "upDown": "ATAS/BAWAH",
-        "start": "MULAI",
-        "bBack": "B (Kembali)",
-        "aSelect": "A (Pilih)"
-    },
-    "projects": {
-        "title": "DAFTAR PROYEK",
-        "created": "Dibuat",
-        "visitWebsite": "Kunjungi Website",
-        "controls": {
-            "list": {
-                "navigate": "Gunakan [TOMBOL ARAH] untuk navigasi. [A] atau [ENTER] untuk memilih.",
-                "back": "[B] atau [ESC] untuk kembali ke Menu Utama."
-            },
-            "detail": {
-                "navigate": "Gunakan [TOMBOL ARAH] untuk memilih. [A] atau [ENTER] untuk mengaktifkan.",
-                "back": "[B] atau [ESC] untuk kembali ke daftar."
-            }
-        },
-        "list": [
-            {
-                "title": "Tanma",
-                "date": "2024-12-08",
-                "description": "Sebuah aplikasi laporan harian di tempat kerja saya (asuransi reliance) untuk menyederhanakan pelaporan yang dapat diekspor dan menampilkan grafik untuk analisis jika diperlukan. ada alat tambahan untuk mendukung pekerjaan seperti notulen rapat, manajemen pengguna, ruang obrolan, alat PDF (menggabungkan, memilih), dan pisah tagihan secara manual.",
-                "imageUrl": "/project/tanma.png",
-                "imageHint": "Laporan Klaim Harian",
-                "liveUrl": "https://mentanma.cyou",
-                "githubUrl": "https://github.com/faaadelmr/tanma",
-                "technologies": ["Laravel", "PHP", "MySQL", "JavaScript", "TailwindCSS"],
-                "status": "discontinued"
-            },
-            {
-                "title": "cewe(k)alcer",
-                "date": "2025-05-18",
-                "description": "aplikasi untuk menyediakan link afiliasi dengan fitur utama QR Code dan bisa menambahkan 3 link (Shopee, TiktokShop, Tokopedia).",
-                "imageUrl": "/project/cewekalcer.png",
-                "imageHint": "CewekKalcer",
-                "liveUrl": "https://cewekalcer.pages.dev/",
-                "technologies": ["Next.js", "TypeScript", "TailwindCSS"],
-                "status": "discontinued"
-            },
-            {
-                "title": "bayarGess",
-                "date": "2025-07-09",
-                "description": "Aplikasi pisah tagihan yang menggunakan AI untuk pembacaan struk dan berbagi barang. cocok buat kamu yang ribet bagi uang makan bareng teman.",
-                "imageUrl": "/project/bayargess.png",
-                "imageHint": "berbagi tagihan",
-                "liveUrl": "https://bayargess.vercel.app/",
-                "githubUrl": "https://github.com/faaadelmr/bayarGess.git",
-                "technologies": ["Next.js", "TypeScript", "React", "TailwindCSS", "Genkit AI"],
-                "status": "active"
-            },
-            {
-                "title": "PDF-adel",
-                "date": "2025-07-09",
-                "description": "Web Manipulasi PDF yang aman. tidak perlu upload, semua proses di browser lokal Anda.",
-                "imageUrl": "/project/PDF-adel.png",
-                "imageHint": "Alat PDF yang lebih cepat",
-                "liveUrl": "https://pdf-adel.pages.dev/",
-                "githubUrl": "https://github.com/faaadelmr/pdf-adel.git",
-                "technologies": ["Next.js", "JavaScript", "React", "TailwindCSS"],
-                "status": "active"
-            },
-            {
-                "title": "Battle Party",
-                "date": "2025-08-01",
-                "description": "Untuk Kaum Mendang Mending yang suka menimbang, membandingkan, dan mencari suatu nilai terbaik dari teknologi yang belum tentu kalian beli!.",
-                "imageUrl": "/project/battleParty.png",
-                "imageHint": "Komparasi HP dan Laptop",
-                "liveUrl": "https://battleparty.vercel.app/",
-                "githubUrl": "https://github.com/faaadelmr/KaumMendangMending.git",
-                "technologies": ["Next.js", "Genkit AI", "React", "TailwindCSS"],
-                "status": "discontinued"
-            },
-            {
-                "title": "GridStation",
-                "date": "2025-08-13",
-                "description": "Grid online yang menampilkan preview dan fleksibilitas dalam memotong ukuran gambar.",
-                "imageUrl": "/project/gridstation.png",
-                "imageHint": "Pemotongan Gambar, Grid",
-                "liveUrl": "https://gridstation.pages.dev/",
-                "githubUrl": "https://github.com/faaadelmr/gridstation.git",
-                "technologies": ["Next.js", "React", "TailwindCSS"],
-                "status": "discontinued"
-            },
-            {
-              "title": "CV-lization",
-              "date": "2025-08-20",
-              "description": "Pembuatan CV online tanpa ribet, tanpa regis, dan banyak kostumisasi.",
-              "imageUrl": "/project/cvlization.png",
-              "imageHint": "CV Builder",
-              "liveUrl": "https://cv-lization.vercel.app/",
-              "githubUrl": "https://github.com/faaadelmr/CVlization.git",
-              "technologies": ["Next.js", "React", "TailwindCSS", "Genkit AI"],
-              "status": "active"
-          },
-          {
-            "title": "Rekonmatch",
-            "date": "2025-10-09",
-            "description": "Capek ribet pakai rumus Excel untuk cari data? RekonMatch hadir sebagai solusi praktis! Dengan aplikasi ini, Anda bisa mencari banyak data sekaligus hanya dalam satu kolom pencarian. Tidak perlu lagi pusing dengan VLOOKUP atau MATCH cukup unggah file Excel Anda, pilih data yang ingin dicari, dan hasilnya langsung tampil rapi. Mudah, cepat, dan ramah untuk semua pengguna.",
-            "imageUrl": "/project/rekonmatch.png",
-            "imageHint": "Alat Pencocokan Data Excel",
-            "liveUrl": "https://rekonmatch.pages.dev/",
-            "githubUrl": "https://github.com/faaadelmr/rekonmatch.git",
-            "technologies": ["Next.js", "TypeScript", "TailwindCSS"],
-            "status": "active"
-          }
-        ]
-    },
-    "certifications": {
-        "title": "SERTIFIKASI",
-        "alt": "Sertifikat untuk",
-        "controls": {
-            "navigate": "Gunakan [TOMBOL ARAH] atau [D-PAD] untuk navigasi. [A] untuk melihat.",
-            "backToMain": "[B] atau [ESC] untuk kembali ke Menu Utama.",
-            "scroll": "Tahan [D-PAD] atau [TOMBOL ARAH] untuk menggulir.",
-            "backToList": "[B] atau [ESC] untuk kembali ke daftar."
-        },
-        "list": [
-            {
-                "title": "GIT untuk Pemula",
-                "issuer": "Codepolitan",
-                "date": "2025-04-08",
-                "imageUrl": "/certified/GITuntukPemula.jpg"
-              },
-              {
-                "title": "HTML dan CSS",
-                "issuer": "Codepolitan",
-                "date": "2022-04-15",
-                "imageUrl": "/certified/HTMLdanCSS.jpg"
-              },
-              {
-                "title": "JavaScript Dasar",
-                "issuer": "Codepolitan",
-                "date": "2025-04-15",
-                "imageUrl": "/certified/JavaScriptDasar.jpg"
-              },
-              {
-                "title": "Konsep Dasar Pemrograman Berorientasi Objek di PHP",
-                "issuer": "Codepolitan",
-                "date": "2025-05-03",
-                "imageUrl": "/certified/OOPPHP.jpg"
-              },
-              {
-                "title": "Laravel 6 Intermediate",
-                "issuer": "Codepolitan",
-                "date": "2025-04-10",
-                "imageUrl": "/certified/Laravel6Intermediate.jpg"
-              },
-              {
-                "title": "Laravel 8x Fundamental",
-                "issuer": "Codepolitan",
-                "date": "2025-04-10",
-                "imageUrl": "/certified/Laravel8xFundamental.jpg"
-              },
-              {
-                "title": "Laravel Development",
-                "issuer": "Codepolitan",
-                "date": "2022-03-01",
-                "imageUrl": "/certified/LaravelDevelopment.jpg"
-              },
-              {
-                "title": "Mengenal Pemrograman Komputer",
-                "issuer": "Codepolitan",
-                "date": "2025-04-08",
-                "imageUrl": "/certified/MengenalPemrogramanKomputer.jpg"
-              },
-              {
-                "title": "Menggunakan Bootstrap Framework",
-                "issuer": "Codepolitan",
-                "date": "2025-04-15",
-                "imageUrl": "/certified/MenggunakanBootstrapFramework.jpg"
-              },
-              {
-                "title": "Oracle Database Design",
-                "issuer": "Codepolitan",
-                "date": "2023-06-07",
-                "imageUrl": "/certified/OracleDatabaseDesign.jpg"
-              },
-              {
-                "title": "ORACLE DATABASE PROGRAMMING WITH SQL",
-                "issuer": "Codepolitan",
-                "date": "2023-12-18",
-                "imageUrl": "/certified/ORACLEDATABASEPROGRAMMINGWITHSQL.jpg"
-              },
-              {
-                "title": "Pemrograman PHP",
-                "issuer": "Codepolitan",
-                "date": "2025-04-20",
-                "imageUrl": "/certified/PemrogramanPHP.jpg"
-              },
-              {
-                "title": "Penggunaan Database MySQL pada Pemrograman PHP",
-                "issuer": "Codepolitan",
-                "date": "2025-04-08",
-                "imageUrl": "/certified/PenggunaanDatabaseMySQLpadaPemrogramanPHP.jpg"
-              },
-              {
-                "title": "Python Essentials 1",
-                "issuer": "Codepolitan",
-                "date": "2023-06-10",
-                "imageUrl": "/certified/PythonEssentials1.jpg"
-              },
-              {
-                "title": "Python Essentials 2",
-                "issuer": "Codepolitan",
-                "date": "2023-06-10",
-                "imageUrl": "/certified/PythonEssentials2.jpg"
-              }      
-        ]
-    },
-    "aboutMe": {
-        "title": "PROFIL PEMAIN",
-        "intro": "Aloo! Saya Fadel Muhamad Rifai, seorang prompter web developer yang antusias membuat sesuatu untuk memudahkan, Anda bisa coba dari beberapa project yang saya buat.",
-        "journey": "Perjalanan saya di dunia pemrograman dimulai dari minat pada video game, yang kemudian berkembang menjadi minat pada pengembangan web (terutama menggunakan Laravel) dan kecerdasan buatan. Saat ini, saya menempuh pendidikan di Universitas Dian Nusantara dan telah memasuki semester 7, di mana saya terus memperdalam pemahaman saya tentang teknologi. Saya terus mengeksplorasi berbagai teknologi untuk memperluas wawasan dan kemampuan saya.",
-        "philosophy": "#CobaAjaDulu",
-        "controls": {
-            "navigate": "[PANAH] atau [D-PAD] untuk menggulir. [MULAI] untuk keluar."
-        }
-    },
-    "contact": {
-        "title": "Hubungi Saya",
-        "description": "Punya pertanyaan atau ingin bekerja sama? Kirim pesan kepada saya!",
-        "namePlaceholder": "Nama Anda",
-        "emailPlaceholder": "Email Anda",
-        "messagePlaceholder": "Pesan Anda",
-        "sendButton": "Kirim",
-        "sending": "Mengirim...",
-        "toast": {
-            "successTitle": "Pesan Terkirim!",
-            "successDescription": "Terima kasih telah menghubungi. Saya akan segera membalas."
-        }
-    },
-    "settings": {
-        "title": "PENGATURAN",
-        "language": "Bahasa",
-        "music": "Musik",
-        "volume": "Volume",
-        "soundFx": "Efek Suara",
-        "scanlines": "Efek Garis Pindai",
-        "controls": {
-            "navigate": "[ATAS/BAWAH] untuk navigasi/menyesuaikan. [A] untuk mengaktifkan/memilih.",
-            "back": "[B] atau [ESC] untuk kembali."
-        }
+      "navigate": "Gunakan [TOMBOL ARAH] atau [D-PAD] untuk navigasi.",
+      "select": "[A] atau [ENTER] untuk memilih."
     }
+  },
+  "controls": {
+    "dpad": "D-PAD",
+    "upDown": "ATAS/BAWAH",
+    "start": "MULAI",
+    "bBack": "B (Kembali)",
+    "aSelect": "A (Pilih)"
+  },
+  "projects": {
+    "title": "DAFTAR PROYEK",
+    "created": "Dibuat",
+    "visitWebsite": "Kunjungi Website",
+    "controls": {
+      "list": {
+        "navigate": "Gunakan [TOMBOL ARAH] untuk navigasi. [A] atau [ENTER] untuk memilih.",
+        "back": "[B] atau [ESC] untuk kembali ke Menu Utama."
+      },
+      "detail": {
+        "navigate": "Gunakan [TOMBOL ARAH] untuk memilih. [A] atau [ENTER] untuk mengaktifkan.",
+        "back": "[B] atau [ESC] untuk kembali ke daftar."
+      }
+    },
+    "status": {
+      "active": "Aktif",
+      "discontinued": "Dihentikan"
+    },
+    "list": [
+      {
+        "title": "Tanma",
+        "date": "2024-12-08",
+        "description": "Sebuah aplikasi laporan harian di tempat kerja saya (asuransi reliance) untuk menyederhanakan pelaporan yang dapat diekspor dan menampilkan grafik untuk analisis jika diperlukan. ada alat tambahan untuk mendukung pekerjaan seperti notulen rapat, manajemen pengguna, ruang obrolan, alat PDF (menggabungkan, memilih), dan pisah tagihan secara manual.",
+        "imageUrl": "/project/tanma.png",
+        "imageHint": "Laporan Klaim Harian",
+        "liveUrl": "https://mentanma.cyou",
+        "githubUrl": "https://github.com/faaadelmr/tanma",
+        "technologies": [
+          "Laravel",
+          "PHP",
+          "MySQL",
+          "JavaScript",
+          "TailwindCSS"
+        ],
+        "status": "discontinued"
+      },
+      {
+        "title": "cewe(k)alcer",
+        "date": "2025-05-18",
+        "description": "aplikasi untuk menyediakan link afiliasi dengan fitur utama QR Code dan bisa menambahkan 3 link (Shopee, TiktokShop, Tokopedia).",
+        "imageUrl": "/project/cewekalcer.png",
+        "imageHint": "CewekKalcer",
+        "liveUrl": "https://cewekalcer.pages.dev/",
+        "technologies": [
+          "Next.js",
+          "TypeScript",
+          "TailwindCSS"
+        ],
+        "status": "discontinued"
+      },
+      {
+        "title": "bayarGess",
+        "date": "2025-07-09",
+        "description": "Aplikasi pisah tagihan yang menggunakan AI untuk pembacaan struk dan berbagi barang. cocok buat kamu yang ribet bagi uang makan bareng teman.",
+        "imageUrl": "/project/bayargess.png",
+        "imageHint": "berbagi tagihan",
+        "liveUrl": "https://bayargess.vercel.app/",
+        "githubUrl": "https://github.com/faaadelmr/bayarGess.git",
+        "technologies": [
+          "Next.js",
+          "TypeScript",
+          "React",
+          "TailwindCSS",
+          "Genkit AI"
+        ],
+        "status": "active"
+      },
+      {
+        "title": "PDF-adel",
+        "date": "2025-07-09",
+        "description": "Web Manipulasi PDF yang aman. tidak perlu upload, semua proses di browser lokal Anda.",
+        "imageUrl": "/project/PDF-adel.png",
+        "imageHint": "Alat PDF yang lebih cepat",
+        "liveUrl": "https://pdf-adel.pages.dev/",
+        "githubUrl": "https://github.com/faaadelmr/pdf-adel.git",
+        "technologies": [
+          "Next.js",
+          "JavaScript",
+          "React",
+          "TailwindCSS"
+        ],
+        "status": "active"
+      },
+      {
+        "title": "Battle Party",
+        "date": "2025-08-01",
+        "description": "Untuk Kaum Mendang Mending yang suka menimbang, membandingkan, dan mencari suatu nilai terbaik dari teknologi yang belum tentu kalian beli!.",
+        "imageUrl": "/project/battleParty.png",
+        "imageHint": "Komparasi HP dan Laptop",
+        "liveUrl": "https://battleparty.vercel.app/",
+        "githubUrl": "https://github.com/faaadelmr/KaumMendangMending.git",
+        "technologies": [
+          "Next.js",
+          "Genkit AI",
+          "React",
+          "TailwindCSS"
+        ],
+        "status": "discontinued"
+      },
+      {
+        "title": "GridStation",
+        "date": "2025-08-13",
+        "description": "Grid online yang menampilkan preview dan fleksibilitas dalam memotong ukuran gambar.",
+        "imageUrl": "/project/gridstation.png",
+        "imageHint": "Pemotongan Gambar, Grid",
+        "liveUrl": "https://gridstation.pages.dev/",
+        "githubUrl": "https://github.com/faaadelmr/gridstation.git",
+        "technologies": [
+          "Next.js",
+          "React",
+          "TailwindCSS"
+        ],
+        "status": "discontinued"
+      },
+      {
+        "title": "CV-lization",
+        "date": "2025-08-20",
+        "description": "Pembuatan CV online tanpa ribet, tanpa regis, dan banyak kostumisasi.",
+        "imageUrl": "/project/cvlization.png",
+        "imageHint": "CV Builder",
+        "liveUrl": "https://cv-lization.vercel.app/",
+        "githubUrl": "https://github.com/faaadelmr/CVlization.git",
+        "technologies": [
+          "Next.js",
+          "React",
+          "TailwindCSS",
+          "Genkit AI"
+        ],
+        "status": "active"
+      },
+      {
+        "title": "Rekonmatch",
+        "date": "2025-10-09",
+        "description": "Capek ribet pakai rumus Excel untuk cari data? RekonMatch hadir sebagai solusi praktis! Dengan aplikasi ini, Anda bisa mencari banyak data sekaligus hanya dalam satu kolom pencarian. Tidak perlu lagi pusing dengan VLOOKUP atau MATCH cukup unggah file Excel Anda, pilih data yang ingin dicari, dan hasilnya langsung tampil rapi. Mudah, cepat, dan ramah untuk semua pengguna.",
+        "imageUrl": "/project/rekonmatch.png",
+        "imageHint": "Alat Pencocokan Data Excel",
+        "liveUrl": "https://rekonmatch.pages.dev/",
+        "githubUrl": "https://github.com/faaadelmr/rekonmatch.git",
+        "technologies": [
+          "Next.js",
+          "TypeScript",
+          "TailwindCSS"
+        ],
+        "status": "active"
+      }
+    ]
+  },
+  "certifications": {
+    "title": "SERTIFIKASI",
+    "alt": "Sertifikat untuk",
+    "controls": {
+      "navigate": "Gunakan [TOMBOL ARAH] atau [D-PAD] untuk navigasi. [A] untuk melihat.",
+      "backToMain": "[B] atau [ESC] untuk kembali ke Menu Utama.",
+      "scroll": "Tahan [D-PAD] atau [TOMBOL ARAH] untuk menggulir.",
+      "backToList": "[B] atau [ESC] untuk kembali ke daftar."
+    },
+    "list": [
+      {
+        "title": "GIT untuk Pemula",
+        "issuer": "Codepolitan",
+        "date": "2025-04-08",
+        "imageUrl": "/certified/GITuntukPemula.jpg"
+      },
+      {
+        "title": "HTML dan CSS",
+        "issuer": "Codepolitan",
+        "date": "2022-04-15",
+        "imageUrl": "/certified/HTMLdanCSS.jpg"
+      },
+      {
+        "title": "JavaScript Dasar",
+        "issuer": "Codepolitan",
+        "date": "2025-04-15",
+        "imageUrl": "/certified/JavaScriptDasar.jpg"
+      },
+      {
+        "title": "Konsep Dasar Pemrograman Berorientasi Objek di PHP",
+        "issuer": "Codepolitan",
+        "date": "2025-05-03",
+        "imageUrl": "/certified/OOPPHP.jpg"
+      },
+      {
+        "title": "Laravel 6 Intermediate",
+        "issuer": "Codepolitan",
+        "date": "2025-04-10",
+        "imageUrl": "/certified/Laravel6Intermediate.jpg"
+      },
+      {
+        "title": "Laravel 8x Fundamental",
+        "issuer": "Codepolitan",
+        "date": "2025-04-10",
+        "imageUrl": "/certified/Laravel8xFundamental.jpg"
+      },
+      {
+        "title": "Laravel Development",
+        "issuer": "Codepolitan",
+        "date": "2022-03-01",
+        "imageUrl": "/certified/LaravelDevelopment.jpg"
+      },
+      {
+        "title": "Mengenal Pemrograman Komputer",
+        "issuer": "Codepolitan",
+        "date": "2025-04-08",
+        "imageUrl": "/certified/MengenalPemrogramanKomputer.jpg"
+      },
+      {
+        "title": "Menggunakan Bootstrap Framework",
+        "issuer": "Codepolitan",
+        "date": "2025-04-15",
+        "imageUrl": "/certified/MenggunakanBootstrapFramework.jpg"
+      },
+      {
+        "title": "Oracle Database Design",
+        "issuer": "Codepolitan",
+        "date": "2023-06-07",
+        "imageUrl": "/certified/OracleDatabaseDesign.jpg"
+      },
+      {
+        "title": "ORACLE DATABASE PROGRAMMING WITH SQL",
+        "issuer": "Codepolitan",
+        "date": "2023-12-18",
+        "imageUrl": "/certified/ORACLEDATABASEPROGRAMMINGWITHSQL.jpg"
+      },
+      {
+        "title": "Pemrograman PHP",
+        "issuer": "Codepolitan",
+        "date": "2025-04-20",
+        "imageUrl": "/certified/PemrogramanPHP.jpg"
+      },
+      {
+        "title": "Penggunaan Database MySQL pada Pemrograman PHP",
+        "issuer": "Codepolitan",
+        "date": "2025-04-08",
+        "imageUrl": "/certified/PenggunaanDatabaseMySQLpadaPemrogramanPHP.jpg"
+      },
+      {
+        "title": "Python Essentials 1",
+        "issuer": "Codepolitan",
+        "date": "2023-06-10",
+        "imageUrl": "/certified/PythonEssentials1.jpg"
+      },
+      {
+        "title": "Python Essentials 2",
+        "issuer": "Codepolitan",
+        "date": "2023-06-10",
+        "imageUrl": "/certified/PythonEssentials2.jpg"
+      }
+    ]
+  },
+  "aboutMe": {
+    "title": "PROFIL PEMAIN",
+    "intro": "Aloo! Saya Fadel Muhamad Rifai, seorang prompter web developer yang antusias membuat sesuatu untuk memudahkan, Anda bisa coba dari beberapa project yang saya buat.",
+    "journey": "Perjalanan saya di dunia pemrograman dimulai dari minat pada video game, yang kemudian berkembang menjadi minat pada pengembangan web (terutama menggunakan Laravel) dan kecerdasan buatan. Saat ini, saya menempuh pendidikan di Universitas Dian Nusantara dan telah memasuki semester 7, di mana saya terus memperdalam pemahaman saya tentang teknologi. Saya terus mengeksplorasi berbagai teknologi untuk memperluas wawasan dan kemampuan saya.",
+    "philosophy": "#CobaAjaDulu",
+    "controls": {
+      "navigate": "[PANAH] atau [D-PAD] untuk menggulir. [MULAI] untuk keluar."
+    }
+  },
+  "contact": {
+    "title": "Hubungi Saya",
+    "description": "Punya pertanyaan atau ingin bekerja sama? Kirim pesan kepada saya!",
+    "namePlaceholder": "Nama Anda",
+    "emailPlaceholder": "Email Anda",
+    "messagePlaceholder": "Pesan Anda",
+    "sendButton": "Kirim",
+    "sending": "Mengirim...",
+    "toast": {
+      "successTitle": "Pesan Terkirim!",
+      "successDescription": "Terima kasih telah menghubungi. Saya akan segera membalas."
+    }
+  },
+  "settings": {
+    "title": "PENGATURAN",
+    "language": "Bahasa",
+    "music": "Musik",
+    "volume": "Volume",
+    "soundFx": "Efek Suara",
+    "scanlines": "Efek Garis Pindai",
+    "controls": {
+      "navigate": "[ATAS/BAWAH] untuk navigasi/menyesuaikan. [A] untuk mengaktifkan/memilih.",
+      "back": "[B] atau [ESC] untuk kembali."
+    }
+  },
+  "gameStation": {
+    "title": "STASIUN PERMAINAN",
+    "controls": {
+      "navigate": "↑↓ Navigasi • A/Enter Main • B Kembali"
+    },
+    "games": {
+      "endlessCode": {
+        "title": "Endless Code",
+        "description": "Hindari bug coding! Kecepatan meningkat setiap 10 poin!"
+      }
+    }
+  },
+  "endlessCode": {
+    "title": "ENDLESS CODE",
+    "description": "Hindari bug! Kumpulkan Git untuk 2x poin!",
+    "controls": "Gunakan D-PAD ↑↓ untuk bergerak",
+    "start": "MULAI",
+    "gameOver": "GAME OVER",
+    "score": "Skor",
+    "newHighScore": "🎉 SKOR TERTINGGI BARU!",
+    "retry": "COBA LAGI",
+    "share": "BAGIKAN"
+  }
 }

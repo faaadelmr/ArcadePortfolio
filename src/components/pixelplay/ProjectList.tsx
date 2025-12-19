@@ -282,11 +282,11 @@ export default function ProjectList() {
                   {project.status && (
                     <span
                       className={`absolute top-2 right-2 px-2 py-0.5 rounded-md text-[0.6rem] font-bold uppercase tracking-wide transform -rotate-12 ${project.status === 'discontinued'
-                          ? 'bg-red-900/70 text-red-200 border border-red-600/50'
-                          : 'bg-blue-900/70 text-blue-200 border border-blue-600/50'
+                        ? 'bg-red-900/70 text-red-200 border border-red-600/50'
+                        : 'bg-blue-900/70 text-blue-200 border border-blue-600/50'
                         }`}
                     >
-                      {project.status === 'discontinued' ? 'DISCONTINUED' : project.status}
+                      {t(`projects.status.${project.status}`)}
                     </span>
                   )}
                 </div>
@@ -380,11 +380,11 @@ export default function ProjectList() {
                   {proj.status && (
                     <span
                       className={`px-1.5 py-0.5 rounded-md text-[0.6rem] font-bold uppercase tracking-wide transform -rotate-12 ${proj.status === 'discontinued'
-                          ? 'bg-red-900/60 text-red-200 border border-red-600/50'
-                          : 'bg-blue-900/60 text-blue-200 border border-blue-600/50'
+                        ? 'bg-red-900/60 text-red-200 border border-red-600/50'
+                        : 'bg-blue-900/60 text-blue-200 border border-blue-600/50'
                         }`}
                     >
-                      {proj.status === 'discontinued' ? 'DISCONTINUED' : proj.status}
+                      {t(`projects.status.${proj.status}`)}
                     </span>
                   )}
                   <span className="font-code text-accent text-opacity-80 text-xs flex-shrink-0">{proj.date}</span>
