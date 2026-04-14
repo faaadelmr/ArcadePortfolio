@@ -239,108 +239,132 @@ export default function ProjectList() {
 
 
   if (project) {
-    let buttonIndex = 2; // Start after back and image
     const title = project.title;
     return (
       <div className="w-full h-full flex flex-col p-1 sm:p-2 md:p-3 text-white animate-pixel-in relative">
         <div className="absolute inset-0 z-0 opacity-20">
           <AgendaNesBackground />
         </div>
-        <div className='relative z-10 flex flex-col h-full'>
-          <div className="relative">
-            <div className="flex items-center mb-1 sm:mb-2 md:mb-3 flex-shrink-0">
-              <Button
-                ref={el => { if (el) { detailItemRefs.current[0] = el; } }}
-                variant="ghost"
-                size="icon"
-                className={cn("mr-1 sm:mr-2 md:mr-3 text-accent hover:bg-accent/20 hover:text-accent focus:outline-none focus:ring-2 focus:ring-accent cursor-pointer", selectedDetailButton === 0 ? 'ring-2 ring-accent' : '')}
-                aria-label={t('controls.bBack')}
-                onClick={() => handleDetailButtonClick(0)}
-                onMouseEnter={() => handleDetailButtonHover(0)}
-              >
-                <ArrowLeft className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5" />
-              </Button>
-              <div className="flex items-center flex-1 relative">
-                <h1 className="text-base sm:text-lg md:text-xl font-headline text-primary truncate mr-2">{title}</h1>
-              </div>
-            </div>
+        <div className='relative z-10 flex flex-col h-full overflow-hidden'>
+          <div className="flex items-center mb-1 sm:mb-2 md:mb-3 flex-shrink-0">
+            <Button
+              ref={el => { if (el) { detailItemRefs.current[0] = el; } }}
+              variant="ghost"
+              size="icon"
+              className={cn(
+                "mr-1 sm:mr-2 md:mr-3 text-accent hover:bg-accent/20 hover:text-accent focus:outline-none focus:ring-2 focus:ring-accent cursor-pointer", 
+                selectedDetailButton === 0 ? 'ring-2 ring-accent bg-accent/10' : ''
+              )}
+              aria-label={t('controls.bBack')}
+              onClick={() => handleDetailButtonClick(0)}
+              onMouseEnter={() => handleDetailButtonHover(0)}
+            >
+              <ArrowLeft className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5" />
+            </Button>
+            <h1 className="text-base sm:text-lg md:text-xl font-headline text-primary truncate flex-1">{title}</h1>
           </div>
+
           <ScrollArea className="flex-grow pr-1 sm:pr-2">
-            <div className="flex flex-col md:flex-row gap-2 sm:gap-3 md:gap-4">
-              <div className={cn("w-full md:w-1/2 flex-shrink-0 rounded-md", selectedDetailButton === 1 ? 'ring-2 ring-primary' : '')}>
-                <div className="relative">
+            <div className="flex flex-col gap-3 sm:gap-4 pb-4">
+              <div 
+                className={cn(
+                  "w-full rounded-md overflow-hidden border border-primary/30 transition-all duration-200 cursor-pointer", 
+                  selectedDetailButton === 1 ? 'ring-4 ring-primary shadow-[0_0_15px_rgba(var(--primary),0.5)]' : 'hover:border-primary/60'
+                )}
+                onClick={() => handleDetailButtonClick(1)}
+                onMouseEnter={() => handleDetailButtonHover(1)}
+              >
+                <div className="relative aspect-video w-full">
                   <Image
-                    ref={el => { if (el) { detailItemRefs.current[1] = el; } }}
+                    ref={el => { if (el) { detailItemRefs.current[1] = el as any; } }}
                     src={project.imageUrl}
                     alt={`${title} project image`}
-                    width={600}
-                    height={400}
-                    className="rounded-md border border-primary/50 object-cover w-full h-auto"
+                    fill
+                    className="object-cover"
                     data-ai-hint={project.imageHint}
                     loading="lazy"
-                    quality={85}
+                    quality={90}
                     placeholder="blur"
                     blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIwIiBoZWlnaHQ9IjMyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2ZXJzaW9uPSIxLjEiLz4="
                   />
                   {project.status && (
                     <span
-                      className={`absolute top-2 right-2 px-2 py-0.5 rounded-md text-[0.6rem] font-bold uppercase tracking-wide transform -rotate-12 ${project.status === 'discontinued'
-                        ? 'bg-red-900/70 text-red-200 border border-red-600/50'
-                        : 'bg-blue-900/70 text-blue-200 border border-blue-600/50'
-                        }`}
+                      className={cn(
+                        "absolute top-2 right-2 px-2 py-0.5 rounded-md text-[0.6rem] font-bold uppercase tracking-wide transform -rotate-12 z-20",
+                        project.status === 'discontinued'
+                          ? 'bg-red-900/80 text-red-100 border border-red-500'
+                          : 'bg-blue-900/80 text-blue-100 border border-blue-500'
+                      )}
                     >
                       {t(`projects.status.${project.status}`)}
                     </span>
                   )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 hover:opacity-100 transition-opacity flex items-end justify-center pb-2">
+                    <span className="text-[10px] font-code text-white bg-black/40 px-2 py-1 rounded">{t('projects.controls.detail.navigate')}</span>
+                  </div>
                 </div>
               </div>
-              <div className="w-full md:w-1/2 flex flex-col">
-                <p className="text-xs sm:text-sm md:text-base text-gray-300 mb-2 sm:mb-3">{project.description}</p>
-                <div className="flex flex-wrap gap-1 sm:gap-2 mb-2 sm:mb-3">
+
+              <div className="space-y-3 sm:space-y-4">
+                <div className="bg-black/40 p-3 rounded-lg border border-primary/10 shadow-inner">
+                  <p className="text-xs sm:text-sm md:text-base text-gray-200 leading-relaxed">{project.description}</p>
+                </div>
+
+                <div className="flex flex-wrap gap-1.5 sm:gap-2">
                   {project.technologies.map(tech => (
-                    <Badge key={tech} variant="secondary" className="text-xs sm:text-sm">{tech}</Badge>
+                    <Badge key={tech} variant="secondary" className="text-[10px] sm:text-xs font-code py-0 px-2 bg-primary/10 text-primary border-primary/20 hover:bg-primary/20 transition-colors">
+                      {tech}
+                    </Badge>
                   ))}
                 </div>
-                <p className="text-xs sm:text-sm text-accent font-code mb-3 sm:mb-4">{t('projects.created')}: {project.date}</p>
-                <div className="flex flex-col gap-1 sm:gap-2 mt-auto">
+
+                <div className="flex items-center justify-between py-2 border-y border-primary/10">
+                  <span className="text-[10px] sm:text-xs text-accent font-code opacity-80">{t('projects.created')}</span>
+                  <span className="text-[10px] sm:text-xs text-white font-code font-bold bg-primary/20 px-2 py-0.5 rounded">{project.date}</span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2">
                   {project.liveUrl && (
                     <Button
-                      ref={el => { if (el) { detailItemRefs.current[buttonIndex++] = el; } }}
+                      ref={el => { if (el) { detailItemRefs.current[2] = el; } }}
                       className={cn(
-                        "w-full bg-primary text-primary-foreground font-headline text-xs py-1 sm:py-2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-white",
-                        selectedDetailButton === detailButtons.findIndex(b => b.id === 'live') ? 'ring-2 ring-white bg-primary/90' : ''
+                        "w-full bg-primary hover:bg-primary/90 text-primary-foreground font-headline text-xs py-4 sm:py-5 cursor-pointer transition-all",
+                        selectedDetailButton === detailButtons.findIndex(b => b.id === 'live') ? 'ring-4 ring-white scale-[1.02] z-10' : ''
                       )}
                       aria-label={`${t('projects.visitWebsite')} ${title}`}
                       onClick={() => handleDetailButtonClick(detailButtons.findIndex(b => b.id === 'live'))}
                       onMouseEnter={() => handleDetailButtonHover(detailButtons.findIndex(b => b.id === 'live'))}
                     >
-                      <Globe className="mr-1 h-3 w-3 sm:mr-2 sm:h-4 sm:w-4" />
-                      <span className="text-xs sm:text-sm">{t('projects.visitWebsite')}</span>
+                      <Globe className="mr-2 h-4 w-4" />
+                      <span className="text-xs sm:text-sm uppercase tracking-wider">{t('projects.visitWebsite')}</span>
                     </Button>
                   )}
                   {project.githubUrl && (
                     <Button
-                      ref={el => { if (el) { detailItemRefs.current[buttonIndex++] = el; } }}
+                      ref={el => { if (el) { detailItemRefs.current[detailButtons.findIndex(b => b.id === 'github')] = el; } }}
                       variant="outline"
                       className={cn(
-                        "w-full font-headline border-accent text-accent text-xs py-1 sm:py-2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-accent",
-                        selectedDetailButton === detailButtons.findIndex(b => b.id === 'github') ? 'ring-2 ring-accent bg-accent text-accent-foreground' : ''
+                        "w-full font-headline border-accent text-accent hover:bg-accent hover:text-accent-foreground text-xs py-4 sm:py-5 cursor-pointer transition-all",
+                        selectedDetailButton === detailButtons.findIndex(b => b.id === 'github') ? 'ring-4 ring-accent bg-accent/20 scale-[1.02] z-10' : ''
                       )}
                       aria-label={`View ${title} on GitHub`}
                       onClick={() => handleDetailButtonClick(detailButtons.findIndex(b => b.id === 'github'))}
                       onMouseEnter={() => handleDetailButtonHover(detailButtons.findIndex(b => b.id === 'github'))}
                     >
-                      <Github className="mr-1 h-3 w-3 sm:mr-2 sm:h-4 sm:w-4" />
-                      <span className="text-xs sm:text-sm">GitHub</span>
+                      <Github className="mr-2 h-4 w-4" />
+                      <span className="text-xs sm:text-sm uppercase tracking-wider">GitHub</span>
                     </Button>
                   )}
                 </div>
               </div>
             </div>
           </ScrollArea>
-          <div className="mt-1 sm:mt-2 text-center text-xs text-gray-400 font-code flex-shrink-0">
-            <p>{t('projects.controls.detail.navigate')}</p>
-            <p>{t('projects.controls.detail.back')}</p>
+          
+          <div className="mt-auto pt-2 text-center text-[10px] text-gray-400 font-code flex-shrink-0 border-t border-primary/10">
+            <p className="flex justify-center gap-4">
+              <span>↑↓ {t('projects.controls.detail.navigate')}</span>
+              <span>[B/ESC] {t('projects.controls.detail.back')}</span>
+            </p>
           </div>
         </div>
       </div>
