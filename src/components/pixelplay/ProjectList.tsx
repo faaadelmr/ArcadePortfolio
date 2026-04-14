@@ -71,10 +71,12 @@ export default function ProjectList() {
 
   useEffect(() => {
     if (viewingProjectIndex === null && itemRefs.current[selectedItem]) {
-      itemRefs.current[selectedItem]?.scrollIntoView({
+      const element = itemRefs.current[selectedItem];
+      element?.scrollIntoView({
         behavior: 'smooth',
         block: 'nearest',
       });
+      element?.focus();
     }
   }, [selectedItem, viewingProjectIndex]);
 
@@ -83,6 +85,7 @@ export default function ProjectList() {
       const element = detailItemRefs.current[selectedDetailButton];
       if (element) {
         element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        element.focus();
       }
     }
   }, [selectedDetailButton, viewingProjectIndex]);

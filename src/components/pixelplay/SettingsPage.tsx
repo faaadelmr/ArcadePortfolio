@@ -47,12 +47,14 @@ export default function SettingsPage() {
 
   useEffect(() => {
     if (itemRefs.current[selectedItem] && !isVolumeEditing) {
-      itemRefs.current[selectedItem]?.scrollIntoView({
+      const element = itemRefs.current[selectedItem];
+      element?.scrollIntoView({
         behavior: 'smooth',
         block: 'nearest',
       });
+      element?.focus();
     }
-  }, [selectedItem]);
+  }, [selectedItem, isVolumeEditing]);
 
   const handleNavigation = useCallback((direction: 'up' | 'down') => {
     if (isVolumeEditing) return;

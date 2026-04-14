@@ -445,7 +445,7 @@ export default function BugDodgeGame({ onExit }: BugDodgeGameProps) {
                                 "w-10 h-10 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg flex items-center justify-center border-2 border-blue-300 shadow-lg",
                                 hasDoublePoints && "shadow-yellow-500/50 border-yellow-400"
                             )}>
-                                <span className="text-lg">👨‍💻</span>
+                                <span className="text-lg" role="img" aria-label="Player">👨‍💻</span>
                             </div>
                             <div className={cn(
                                 "absolute inset-0 rounded-lg blur-md -z-10",
@@ -459,6 +459,8 @@ export default function BugDodgeGame({ onExit }: BugDodgeGameProps) {
                         <div
                             key={bug.id}
                             className="absolute transition-none flex items-center justify-center"
+                            role="img"
+                            aria-label="Bug obstacle"
                             style={{
                                 left: `${bug.x}%`,
                                 top: `${bug.lane * laneHeight + laneHeight / 2}%`,
@@ -478,6 +480,8 @@ export default function BugDodgeGame({ onExit }: BugDodgeGameProps) {
                         <div
                             key={git.id}
                             className="absolute transition-none flex items-center justify-center"
+                            role="img"
+                            aria-label="Git power-up"
                             style={{
                                 left: `${git.x}%`,
                                 top: `${git.lane * laneHeight + laneHeight / 2}%`,
@@ -494,7 +498,11 @@ export default function BugDodgeGame({ onExit }: BugDodgeGameProps) {
 
                     {/* Ready/GameOver Overlay */}
                     {gameState !== 'playing' && (
-                        <div className="absolute inset-0 bg-black/70 flex flex-col items-center justify-center p-2">
+                        <div 
+                          className="absolute inset-0 bg-black/70 flex flex-col items-center justify-center p-2"
+                          role="alert"
+                          aria-live="assertive"
+                        >
                             {gameState === 'ready' && (
                                 <>
                                     <h2 className="text-xl font-headline text-accent mb-1">{t('endlessCode.title')}</h2>
