@@ -43,6 +43,22 @@
     },
     "list": [
       {
+        "title": "BabynumTime",
+        "date": "2025-12-10",
+        "description": "Aplikasi pelacak aktivitas bayi yang dirancang untuk mencatat jadwal minum, buang air besar (eek), dan menganalisis tangisan bayi menggunakan AI. Membantu orang tua tetap terorganisir dan memahami kebutuhan bayi mereka.",
+        "imageUrl": "/project/babynumtime.png",
+        "imageHint": "Pelacak aktivitas bayi",
+        "liveUrl": "https://babynum.vercel.app/",
+        "githubUrl": "https://github.com/faaadelmr/BabynumTime.git",
+        "technologies": [
+          "Next.js",
+          "TypeScript",
+          "TailwindCSS",
+          "Firebase"
+        ],
+        "status": "active"
+      },
+      {
         "title": "Tanma",
         "date": "2024-12-08",
         "description": "Sebuah aplikasi laporan harian di tempat kerja saya (asuransi reliance) untuk menyederhanakan pelaporan yang dapat diekspor dan menampilkan grafik untuk analisis jika diperlukan. ada alat tambahan untuk mendukung pekerjaan seperti notulen rapat, manajemen pengguna, ruang obrolan, alat PDF (menggabungkan, memilih), dan pisah tagihan secara manual.",
@@ -85,8 +101,7 @@
           "Next.js",
           "TypeScript",
           "React",
-          "TailwindCSS",
-          "Genkit AI"
+          "TailwindCSS"
         ],
         "status": "active"
       },
@@ -116,7 +131,6 @@
         "githubUrl": "https://github.com/faaadelmr/KaumMendangMending.git",
         "technologies": [
           "Next.js",
-          "Genkit AI",
           "React",
           "TailwindCSS"
         ],
@@ -148,8 +162,7 @@
         "technologies": [
           "Next.js",
           "React",
-          "TailwindCSS",
-          "Genkit AI"
+          "TailwindCSS"
         ],
         "status": "active"
       },

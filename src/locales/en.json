@@ -43,6 +43,22 @@
         },
         "list": [
             {
+                "title": "BabynumTime",
+                "date": "2025-12-10",
+                "description": "A baby activity tracking application designed to log feeding, bowel movements, and analyze baby cries using AI. Built to help parents stay organized and understand their baby's needs.",
+                "imageUrl": "/project/babynumtime.png",
+                "imageHint": "Baby activity tracker",
+                "liveUrl": "https://babynum.vercel.app/",
+                "githubUrl": "https://github.com/faaadelmr/BabynumTime.git",
+                "technologies": [
+                    "Next.js",
+                    "TypeScript",
+                    "TailwindCSS",
+                    "Firebase"
+                ],
+                "status": "active"
+            },
+            {
                 "title": "Tanma",
                 "date": "2024-12-08",
                 "description": "An application about daily reports at my workplace (reliance insurance) to simplify reporting that can be exported and display graphs for an analysis if needed. there are additional tools to support work such as meeting minutes, user management, chat rooms, PDF tools (merging, selection), and separate bills manually.",
@@ -84,8 +100,7 @@
                 "technologies": [
                     "Next.js",
                     "TypeScript",
-                    "TailwindCSS",
-                    "Genkit AI"
+                    "TailwindCSS"
                 ],
                 "status": "active"
             },
@@ -145,8 +160,7 @@
                 "technologies": [
                     "Next.js",
                     "React",
-                    "TailwindCSS",
-                    "Genkit AI"
+                    "TailwindCSS"
                 ],
                 "status": "active"
             },
