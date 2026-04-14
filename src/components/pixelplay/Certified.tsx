@@ -428,7 +428,7 @@ export default function Certified() {
         <ScrollArea className="flex-1 min-h-0">
           <div
             ref={cardContainerRef}
-            className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3 p-1"
+            className="grid grid-cols-[repeat(auto-fill,minmax(100px,1fr))] gap-2 sm:gap-3 p-1"
           >
             {certifications.map((cert, index) => {
               // Create a ref for this card

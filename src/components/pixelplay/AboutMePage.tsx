@@ -126,73 +126,81 @@ export default function AboutMePage() {
         <h1 className="text-lg sm:text-xl md:text-2xl font-headline text-primary mb-1 sm:mb-2 text-center">{t('aboutMe.title')}</h1>
         
         <ScrollArea viewportRef={scrollViewportRef} className="flex-grow pr-1 sm:pr-2">
-            <div className="max-w-3xl mx-auto space-y-2 sm:space-y-3">
-                    <CardHeader className="p-2 sm:p-3">
+            <div className="max-w-3xl mx-auto space-y-2 sm:space-y-3 pb-2">
+                <Card className="bg-black/30 rounded-lg border border-primary/20 overflow-hidden">
+                    <CardHeader className="p-2 sm:p-3 bg-primary/5">
                         <div className="flex items-center gap-2 sm:gap-3">
                             <Image 
                                 src="/picture.jpg" 
                                 data-ai-hint="pixelated avatar" 
                                 alt="Fadel Muhamad Rifai" 
-                                width={40} 
-                                height={40} 
-                                className="rounded-full border border-primary w-8 h-8 sm:w-10 sm:h-10"
+                                width={48} 
+                                height={48} 
+                                className="rounded-full border-2 border-primary w-10 h-10 sm:w-12 sm:h-12"
                                 loading="lazy"
                                 quality={85}
                                 placeholder="blur"
                                 blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmVyc2lvbj0iMS4xIi8+"
                             />
-                            <div>
-                            <CardTitle className="text-base sm:text-lg font-headline text-primary">Fadel Muhamad Rifai</CardTitle>
-                            <p className="text-accent font-code text-xs sm:text-sm">Web Developer</p>
+                            <div className="min-w-0 flex-1">
+                                <CardTitle className="text-sm sm:text-base md:text-lg font-headline text-primary truncate">Fadel Muhamad Rifai</CardTitle>
+                                <p className="text-accent font-code text-[10px] sm:text-xs">Web Developer</p>
                             </div>
                         </div>
                     </CardHeader>
-                    <CardContent className="text-xs sm:text-sm text-gray-300 space-y-1 sm:space-y-2 pr-1 sm:pr-2">
-                        <p>{t('aboutMe.intro')}</p>
-                        <p>{t('aboutMe.journey')}</p>
-                        <p className='italic font-code text-xs sm:text-sm'>"${t('aboutMe.philosophy')}"</p>
+                    <CardContent className="p-2 sm:p-3 text-[10px] sm:text-xs md:text-sm text-gray-300 space-y-2">
+                        <p className="leading-relaxed">{t('aboutMe.intro')}</p>
+                        <p className="leading-relaxed">{t('aboutMe.journey')}</p>
+                        <p className="italic font-code text-accent border-l-2 border-accent pl-2 py-1 bg-accent/5">
+                            {t('aboutMe.philosophy')}
+                        </p>
                     </CardContent>
+                </Card>
 
-                <Card className="bg-black/30 p-2 sm:p-3 rounded-md border border-primary/30">
-                    <div className="flex items-center gap-2 sm:gap-3 mb-1 sm:mb-2">
+                <Card className="bg-black/40 p-2 sm:p-3 rounded-lg border border-primary/30 shadow-lg">
+                    <div className="flex items-center gap-2 mb-2">
                         <Mail className="w-3 h-3 sm:w-4 sm:h-4 text-primary"/>
-                        <h2 className="text-base sm:text-lg font-headline text-primary">{t('contact.title')}</h2>
+                        <h2 className="text-sm sm:text-base font-headline text-primary">{t('contact.title')}</h2>
                     </div>
-                    <form onSubmit={handleFormSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-3 items-end">
-                        <Input
-                            id="name"
-                            name="name"
-                            placeholder={t('contact.namePlaceholder')}
-                            className={cn("bg-gray-900 border-gray-700 text-white text-xs sm:text-sm focus:ring-2 focus:ring-accent")}
-                            aria-invalid={state.errors?.fieldErrors.name ? 'true' : 'false'}
-                            aria-label={t('contact.namePlaceholder')}
-                        />
-                        <Input
-                            id="email"
-                            type="email"
-                            name="email"
-                            placeholder={t('contact.emailPlaceholder')}
-                            className={cn("bg-gray-900 border-gray-700 text-white text-xs sm:text-sm focus:ring-2 focus:ring-accent")}
-                            aria-invalid={state.errors?.fieldErrors.email ? 'true' : 'false'}
-                            aria-label={t('contact.emailPlaceholder')}
-                        />
-                        <Textarea
-                            id="message"
-                            name="message"
-                            placeholder={t('contact.messagePlaceholder')}
-                            className={cn("bg-gray-900 border-gray-700 text-white text-xs sm:text-sm min-h-[30px] md:col-span-2 focus:ring-2 focus:ring-accent")}
-                            aria-invalid={state.errors?.fieldErrors.message ? 'true' : 'false'}
-                            rows={2}
-                            aria-label={t('contact.messagePlaceholder')}
-                        />
+                    <form onSubmit={handleFormSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
+                        <div className="space-y-2 sm:col-span-2 md:col-span-1">
+                            <Input
+                                id="name"
+                                name="name"
+                                placeholder={t('contact.namePlaceholder')}
+                                className={cn("bg-gray-900/50 border-gray-700 text-white text-[10px] sm:text-xs h-8 sm:h-9 focus:ring-1 focus:ring-accent")}
+                                aria-invalid={state.errors?.fieldErrors.name ? 'true' : 'false'}
+                                aria-label={t('contact.namePlaceholder')}
+                            />
+                            <Input
+                                id="email"
+                                type="email"
+                                name="email"
+                                placeholder={t('contact.emailPlaceholder')}
+                                className={cn("bg-gray-900/50 border-gray-700 text-white text-[10px] sm:text-xs h-8 sm:h-9 focus:ring-1 focus:ring-accent")}
+                                aria-invalid={state.errors?.fieldErrors.email ? 'true' : 'false'}
+                                aria-label={t('contact.emailPlaceholder')}
+                            />
+                        </div>
+                        <div className="sm:col-span-2 md:col-span-1">
+                            <Textarea
+                                id="message"
+                                name="message"
+                                placeholder={t('contact.messagePlaceholder')}
+                                className={cn("bg-gray-900/50 border-gray-700 text-white text-[10px] sm:text-xs min-h-[70px] sm:min-h-[82px] focus:ring-1 focus:ring-accent resize-none")}
+                                aria-invalid={state.errors?.fieldErrors.message ? 'true' : 'false'}
+                                rows={3}
+                                aria-label={t('contact.messagePlaceholder')}
+                            />
+                        </div>
                         <Button 
                             type="submit" 
                             disabled={state.submitting} 
-                            className={cn("w-full font-headline text-xs sm:text-sm bg-accent hover:bg-accent/90 text-accent-foreground md:col-span-2 focus:ring-2 focus:ring-accent py-1 sm:py-2")}
+                            className={cn("w-full sm:col-span-2 font-headline text-[10px] sm:text-xs bg-accent hover:bg-accent/90 text-accent-foreground focus:ring-1 focus:ring-accent h-8 sm:h-9")}
                             aria-label={state.submitting ? t('contact.sending') : t('contact.sendButton')}
                         >
                             {state.submitting ? <Loader2 className="h-3 w-3 sm:h-4 sm:w-4 animate-spin" /> : <Send className="h-3 w-3 sm:h-4 sm:w-4" />}
-                            <span className="ml-1">{state.submitting ? t('contact.sending') : t('contact.sendButton')}</span>
+                            <span className="ml-1.5">{state.submitting ? t('contact.sending') : t('contact.sendButton')}</span>
                         </Button>
                     </form>
                 </Card>

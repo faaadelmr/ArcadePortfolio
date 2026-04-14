@@ -274,7 +274,7 @@ export default function PixelPlayHub() {
         <div className="w-full h-full bg-[#1a1a1a] rounded-2xl shadow-2xl p-2 sm:p-3 flex flex-col border-4 border-yellow-600 shadow-[inset_0_0_20px_black]">
 
           {/* Screen Area - takes remaining space, content scrolls inside */}
-          <div className="bg-black rounded-lg p-2 border-2 border-yellow-700 relative overflow-hidden flex-1 flex flex-col min-h-0">
+          <div className="bg-black rounded-lg p-1 sm:p-2 border-2 border-yellow-700 relative overflow-hidden flex-1 flex flex-col min-h-0">
             {/* P1 Indicator - hidden in gamestation to avoid overlap */}
             {currentPage !== 'gamestation' && (
               <div className="absolute top-2 right-3 flex items-center gap-2 z-10">
