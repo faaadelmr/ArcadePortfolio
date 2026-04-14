@@ -280,6 +280,7 @@ export default function ProjectList() {
                     src={project.imageUrl}
                     alt={`${title} project image`}
                     fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
                     className="object-cover"
                     data-ai-hint={project.imageHint}
                     loading="lazy"
