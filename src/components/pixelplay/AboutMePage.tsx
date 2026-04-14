@@ -169,7 +169,7 @@ export default function AboutMePage() {
                                 name="name"
                                 placeholder={t('contact.namePlaceholder')}
                                 className={cn("bg-gray-900/50 border-gray-700 text-white text-[10px] sm:text-xs h-8 sm:h-9 focus:ring-1 focus:ring-accent")}
-                                aria-invalid={state.errors?.fieldErrors.name ? 'true' : 'false'}
+                                aria-invalid={(state.errors?.getFieldErrors('name')?.length ?? 0) > 0 ? 'true' : 'false'}
                                 aria-label={t('contact.namePlaceholder')}
                             />
                             <Input
@@ -178,7 +178,7 @@ export default function AboutMePage() {
                                 name="email"
                                 placeholder={t('contact.emailPlaceholder')}
                                 className={cn("bg-gray-900/50 border-gray-700 text-white text-[10px] sm:text-xs h-8 sm:h-9 focus:ring-1 focus:ring-accent")}
-                                aria-invalid={state.errors?.fieldErrors.email ? 'true' : 'false'}
+                                aria-invalid={(state.errors?.getFieldErrors('email')?.length ?? 0) > 0 ? 'true' : 'false'}
                                 aria-label={t('contact.emailPlaceholder')}
                             />
                         </div>
@@ -188,7 +188,7 @@ export default function AboutMePage() {
                                 name="message"
                                 placeholder={t('contact.messagePlaceholder')}
                                 className={cn("bg-gray-900/50 border-gray-700 text-white text-[10px] sm:text-xs min-h-[70px] sm:min-h-[82px] focus:ring-1 focus:ring-accent resize-none")}
-                                aria-invalid={state.errors?.fieldErrors.message ? 'true' : 'false'}
+                                aria-invalid={(state.errors?.getFieldErrors('message')?.length ?? 0) > 0 ? 'true' : 'false'}
                                 rows={3}
                                 aria-label={t('contact.messagePlaceholder')}
                             />

@@ -49,7 +49,7 @@ export default function ContactForm() {
                         name="name"
                         placeholder={t('contact.namePlaceholder')}
                         className="bg-gray-900 border-gray-700 text-white"
-                        aria-invalid={state.errors?.fieldErrors.name ? 'true' : 'false'}
+                        aria-invalid={(state.errors?.getFieldErrors('name')?.length ?? 0) > 0 ? 'true' : 'false'}
                     />
                     <ValidationError prefix="Name" field="name" errors={state.errors} className="text-red-500 text-sm mt-1" />
                 </div>
@@ -61,7 +61,7 @@ export default function ContactForm() {
                         name="email"
                         placeholder={t('contact.emailPlaceholder')}
                         className="bg-gray-900 border-gray-700 text-white"
-                         aria-invalid={state.errors?.fieldErrors.email ? 'true' : 'false'}
+                         aria-invalid={(state.errors?.getFieldErrors('email')?.length ?? 0) > 0 ? 'true' : 'false'}
                     />
                     <ValidationError prefix="Email" field="email" errors={state.errors} className="text-red-500 text-sm mt-1" />
                 </div>
@@ -72,7 +72,7 @@ export default function ContactForm() {
                         name="message"
                         placeholder={t('contact.messagePlaceholder')}
                         className="bg-gray-900 border-gray-700 text-white min-h-[100px]"
-                        aria-invalid={state.errors?.fieldErrors.message ? 'true' : 'false'}
+                        aria-invalid={(state.errors?.getFieldErrors('message')?.length ?? 0) > 0 ? 'true' : 'false'}
                     />
                     <ValidationError prefix="Message" field="message" errors={state.errors} className="text-red-500 text-sm mt-1" />
                 </div>

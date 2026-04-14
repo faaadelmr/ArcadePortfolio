@@ -42,7 +42,7 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({ 
         // Fallback to English if something goes wrong
         if (!translations.en) {
             const enTranslations = await import('@/locales/en.json');
-            setTranslations(prev => ({ ...prev, en: enTranslations.default }));
+            setTranslations((prev: any) => ({ ...prev, en: enTranslations.default }));
         }
     }
     setIsLoading(false);
