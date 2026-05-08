@@ -240,6 +240,9 @@ export default function ProjectList() {
 
   if (project) {
     const title = project.title;
+    const liveIndex = detailButtons.findIndex(b => b.id === 'live');
+    const githubIndex = detailButtons.findIndex(b => b.id === 'github');
+
     return (
       <div className="w-full h-full flex flex-col p-1 sm:p-2 md:p-3 text-white animate-pixel-in relative">
         <div className="absolute inset-0 z-0 opacity-20">
@@ -325,32 +328,32 @@ export default function ProjectList() {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2">
-                  {project.liveUrl && (
+                  {project.liveUrl && liveIndex !== -1 && (
                     <Button
-                      ref={el => { if (el) { detailItemRefs.current[2] = el; } }}
+                      ref={el => { if (el) { detailItemRefs.current[liveIndex] = el; } }}
                       className={cn(
                         "w-full bg-primary hover:bg-primary/90 text-primary-foreground font-headline text-xs py-4 sm:py-5 cursor-pointer transition-all",
-                        selectedDetailButton === detailButtons.findIndex(b => b.id === 'live') ? 'ring-4 ring-white scale-[1.02] z-10' : ''
+                        selectedDetailButton === liveIndex ? 'ring-4 ring-white scale-[1.02] z-10' : ''
                       )}
                       aria-label={`${t('projects.visitWebsite')} ${title}`}
-                      onClick={() => handleDetailButtonClick(detailButtons.findIndex(b => b.id === 'live'))}
-                      onMouseEnter={() => handleDetailButtonHover(detailButtons.findIndex(b => b.id === 'live'))}
+                      onClick={() => handleDetailButtonClick(liveIndex)}
+                      onMouseEnter={() => handleDetailButtonHover(liveIndex)}
                     >
                       <Globe className="mr-2 h-4 w-4" />
                       <span className="text-xs sm:text-sm uppercase tracking-wider">{t('projects.visitWebsite')}</span>
                     </Button>
                   )}
-                  {project.githubUrl && (
+                  {project.githubUrl && githubIndex !== -1 && (
                     <Button
-                      ref={el => { if (el) { detailItemRefs.current[detailButtons.findIndex(b => b.id === 'github')] = el; } }}
+                      ref={el => { if (el) { detailItemRefs.current[githubIndex] = el; } }}
                       variant="outline"
                       className={cn(
                         "w-full font-headline border-accent text-accent hover:bg-accent hover:text-accent-foreground text-xs py-4 sm:py-5 cursor-pointer transition-all",
-                        selectedDetailButton === detailButtons.findIndex(b => b.id === 'github') ? 'ring-4 ring-accent bg-accent/20 scale-[1.02] z-10' : ''
+                        selectedDetailButton === githubIndex ? 'ring-4 ring-accent bg-accent/20 scale-[1.02] z-10' : ''
                       )}
                       aria-label={`View ${title} on GitHub`}
-                      onClick={() => handleDetailButtonClick(detailButtons.findIndex(b => b.id === 'github'))}
-                      onMouseEnter={() => handleDetailButtonHover(detailButtons.findIndex(b => b.id === 'github'))}
+                      onClick={() => handleDetailButtonClick(githubIndex)}
+                      onMouseEnter={() => handleDetailButtonHover(githubIndex)}
                     >
                       <Github className="mr-2 h-4 w-4" />
                       <span className="text-xs sm:text-sm uppercase tracking-wider">GitHub</span>
