@@ -176,7 +176,7 @@ export default function BugDodgeGame({ onExit }: BugDodgeGameProps) {
                     return;
                 }
             } catch (e) {
-                console.log('Share failed, falling back to download');
+                // Share failed, falling back to download
             }
         }
 
