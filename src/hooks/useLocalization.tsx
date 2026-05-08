@@ -8,20 +8,25 @@ type Language = 'en' | 'id';
 interface LocalizationContextType {
   language: Language;
   setLanguage: (language: Language) => void;
-  t: (key: string) => any; 
+  t: <T = string>(key: string) => T;
   isLocalizationReady: boolean;
   isLoading: boolean;
 }
 
 const LocalizationContext = createContext<LocalizationContextType | undefined>(undefined);
 
-const getNestedValue = (obj: any, key: string): any | undefined => {
-  return key.split('.').reduce((acc, part) => acc && acc[part], obj);
+const getNestedValue = (obj: Record<string, unknown>, key: string): unknown => {
+  return key.split('.').reduce((acc: unknown, part: string) => {
+    if (acc && typeof acc === 'object' && part in acc) {
+      return (acc as Record<string, unknown>)[part];
+    }
+    return undefined;
+  }, obj);
 };
 
 export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [language, setLanguageState] = useState<Language>('en');
-  const [translations, setTranslations] = useState<any>({ en: null, id: null });
+  const [translations, setTranslations] = useState<{ en: Record<string, unknown> | null, id: Record<string, unknown> | null }>({ en: null, id: null });
   const [isLocalizationReady, setIsLocalizationReady] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -42,7 +47,7 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({ 
         // Fallback to English if something goes wrong
         if (!translations.en) {
             const enTranslations = await import('@/locales/en.json');
-            setTranslations((prev: any) => ({ ...prev, en: enTranslations.default }));
+            setTranslations((prev) => ({ ...prev, en: enTranslations.default as Record<string, unknown> }));
         }
     }
     setIsLoading(false);
@@ -63,23 +68,23 @@ export const LocalizationProvider: React.FC<{ children: React.ReactNode }> = ({ 
   }, []);
 
 
-  const t = useCallback((key: string): any => {
-    if (!isLocalizationReady || isLoading) return '...';
+  const t = useCallback(<T = string>(key: string): T => {
+    if (!isLocalizationReady || isLoading) return '...' as unknown as T;
 
     const source = translations[language] || translations.en;
-    if (!source) return key;
+    if (!source) return key as unknown as T;
     
     const translation = getNestedValue(source, key);
 
     if (typeof translation === 'string' && translation.trim().startsWith('[')) {
         try {
-            return JSON.parse(translation);
+            return JSON.parse(translation) as T;
         } catch {
             // fallback to string if parsing fails
         }
     }
 
-    return translation !== undefined ? translation : key;
+    return (translation !== undefined ? translation : key) as unknown as T;
   }, [language, translations, isLocalizationReady, isLoading]);
 
   const value = {
