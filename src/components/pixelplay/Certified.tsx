@@ -163,7 +163,10 @@ export default function Certified() {
       return [];
     }
 
-    return parsedCerts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    return parsedCerts
+      .map(cert => ({ cert, time: new Date(cert.date).getTime() }))
+      .sort((a, b) => b.time - a.time)
+      .map(item => item.cert);
 
   }, [t]);
 
