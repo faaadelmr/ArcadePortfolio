@@ -149,7 +149,7 @@ export default function ProjectList() {
         return;
       }
       if (selectedButton.url) {
-        window.open(selectedButton.url, '_blank');
+        window.open(selectedButton.url, '_blank', 'noopener,noreferrer');
       }
     }
   }, [detailButtons, playSelect, handleBackToList]);
@@ -173,7 +173,7 @@ export default function ProjectList() {
     }
 
     if (selectedButton.url) {
-      window.open(selectedButton.url, '_blank');
+      window.open(selectedButton.url, '_blank', 'noopener,noreferrer');
     }
   }, [viewingProjectIndex, selectedDetailButton, playSelect, handleBackToList, detailButtons]);
 
