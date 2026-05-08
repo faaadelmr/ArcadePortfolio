@@ -46,7 +46,10 @@ export default function ProjectList() {
       console.error("Could not parse projects data from localization file.", e);
       return [];
     }
-    return parsedProjects.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    return parsedProjects
+      .map(project => ({ project, time: new Date(project.date).getTime() }))
+      .sort((a, b) => b.time - a.time)
+      .map(item => item.project);
   }, [t]);
 
   const itemRefs = useRef<(HTMLLIElement | null)[]>([]);
